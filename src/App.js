@@ -1,7 +1,14 @@
-import "./App.css";
+/** @jsxRuntime classic */
+/** @jsx jsx */
+import { css, jsx } from "@emotion/react";
+import Home from "components/home";
 
 function App() {
-  return <div className="App">this is empty CRA</div>;
+  return (
+    <div className="App">
+      <Home />
+    </div>
+  );
 }
 
 export default App;
