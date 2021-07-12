@@ -3,6 +3,7 @@
 import { css, jsx } from "@emotion/react";
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
+import { COLORS } from "constants/theme";
 
 export default function InputForm({ inputValue, inputChangeHandler }) {
   const inputRef = useRef(null);
@@ -21,6 +22,10 @@ export default function InputForm({ inputValue, inputChangeHandler }) {
       ref={inputRef}
       css={css`
         padding: 100px;
+
+        h1 {
+          color: ${COLORS.TEXT_BRIGHT};
+        }
       `}
     >
       <h1>Search GIF</h1>

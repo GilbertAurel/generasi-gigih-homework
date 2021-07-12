@@ -21,7 +21,7 @@ export default function HandsonGIF() {
       src="https://media.giphy.com/media/Vh8pbGX3SGRwFDh3V0/source.gif"
       alt="running megaman"
       css={css`
-        padding: 100px;
+        padding: 50px;
         justify-self: center;
       `}
     />

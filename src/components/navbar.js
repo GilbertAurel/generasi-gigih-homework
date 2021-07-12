@@ -42,10 +42,15 @@ export default function Navbar({ selectedMenu, selectMenuHandler }) {
               padding: 0;
               font-family: "Noto Sans", sans-serif;
               font-size: ${FONTS.BODY}px;
+              cursor: pointer;
+              transition: color 0.6s;
               color: ${menu === selectedMenu
                 ? COLORS.BTN_ACTIVE_DARK
                 : COLORS.BTN_NOT_ACTIVE_DARK};
-              cursor: pointer;
+
+              :hover {
+                color: ${COLORS.BTN_ACTIVE_DARK};
+              }
             `}
           >
             {menu}
@@ -81,7 +86,6 @@ export default function Navbar({ selectedMenu, selectMenuHandler }) {
         flex-direction: row;
         justify-content: space-between;
         align-items: center;
-        background-color: ${COLORS.BG_DARK};
         visibility: hidden;
       `}
     >

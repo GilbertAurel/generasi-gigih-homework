@@ -1,11 +1,8 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import { css, jsx } from "@emotion/react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import gsap from "gsap";
-
-import RenderInputForm from "components/inputForm";
-import RenderGIF from "components/handsonGIF";
 
 export default function Index() {
   const containerRef = useRef(null);
@@ -27,7 +24,7 @@ export default function Index() {
         visibility: hidden;
       `}
     >
-      test
+      REQUIREMENTS: PUT ALL IN APP.JS
     </div>
   );
 }
