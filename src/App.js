@@ -1,28 +1,34 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import { css, jsx } from "@emotion/react";
-import { useEffect, useState } from "react";
-import axios from "axios";
-import HomePage from "components/home";
-import LoginPage from "components/login";
+import { useState } from "react";
+
+import { MENU_SELECTION } from "constants/dummyData";
+import Navbar from "components/navbar";
+import HandsonPage from "pages/handson";
+import HomeworkPage from "pages/homework";
 
 function App() {
-  // const [tracks, setTracks] = useState([]);
+  const [selectedMenu, setSelectedMenu] = useState(MENU_SELECTION[0]);
 
-  // useEffect(() => {
-  //   axios
-  //     .get("https://api.spotify.com/v1/tracks", {
-  //       headers: {
-  //         Authorization: `Bearer ${process.env.REACT_APP_SPOTIFY_ID}`,
-  //       },
-  //     })
-  //     .then((res) => console.log(res))
-  //     .catch((err) => console.log(err));
-  // }, []);
+  const selectMenuHandler = (menu) => {
+    setSelectedMenu(menu);
+  };
 
   return (
-    <div className="App">
-      <LoginPage />
+    <div
+      css={css`
+        height: 100vh;
+        width: 100vw;
+        display: grid;
+        grid-template-rows: 80px 1fr;
+      `}
+    >
+      <Navbar
+        selectedMenu={selectedMenu}
+        selectMenuHandler={selectMenuHandler}
+      />
+      {selectedMenu === "Hands on" ? <HandsonPage /> : <HomeworkPage />}
     </div>
   );
 }
