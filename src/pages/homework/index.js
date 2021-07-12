@@ -9,7 +9,6 @@ import RenderGIF from "components/handsonGIF";
 
 export default function Index() {
   const containerRef = useRef(null);
-  const [inputValue, setInputValue] = useState("");
 
   useEffect(() => {
     gsap.to(containerRef.current, {
@@ -17,14 +16,6 @@ export default function Index() {
       duration: 0.2,
     });
   }, []);
-
-  useEffect(() => {
-    console.log(inputValue);
-  }, [inputValue]);
-
-  const inputChangeHandler = (e) => {
-    setInputValue(e.target.value);
-  };
 
   return (
     <div

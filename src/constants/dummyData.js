@@ -75,6 +75,6 @@ export const ALBUM_DATA = {
   uri: "spotify:track:3z8h0TU7ReDPLIbEnYhWZb",
 };
 
-export const MENU_SELECTION = ["Hands on", "Homework"];
+export const MENU_SELECTION = ["Homework", "Hands on"];
 
 export const APP_NAME = "Generasi Spotify KW";

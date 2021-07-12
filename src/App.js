@@ -28,7 +28,7 @@ function App() {
         selectedMenu={selectedMenu}
         selectMenuHandler={selectMenuHandler}
       />
-      {selectedMenu === "Hands on" ? <HandsonPage /> : <HomeworkPage />}
+      {selectedMenu === MENU_SELECTION[0] ? <HomeworkPage /> : <HandsonPage />}
     </div>
   );
 }
