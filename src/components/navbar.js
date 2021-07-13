@@ -6,6 +6,7 @@ import gsap, { Power3 } from "gsap";
 
 import { COLORS, FONTS } from "constants/theme";
 import { MENU_SELECTION, APP_NAME } from "constants/dummyData";
+import ICONS from "assets/icons";
 
 export default function Navbar({ selectedMenu, selectMenuHandler }) {
   const tl = gsap.timeline();
@@ -30,7 +31,7 @@ export default function Navbar({ selectedMenu, selectMenuHandler }) {
         css={css`
           display: flex;
           flex-direction: row;
-          gap: 80px;
+          gap: 100px;
         `}
       >
         {MENU_SELECTION.map((menu, index) => (
@@ -62,18 +63,32 @@ export default function Navbar({ selectedMenu, selectMenuHandler }) {
 
   const RenderAppName = () => {
     return (
-      <h1
+      <div
         css={css`
-          margin: 0;
-          padding: 0;
-          font-family: "Noto Sans", sans-serif;
-          font-size: ${FONTS.MENU}px;
-          color: ${COLORS.TEXT_BRIGHT};
+          display: flex;
+          flex-direction: row;
           cursor: default;
+
+          img {
+            height: 40px;
+            width: 40px;
+            object-fit: contain;
+          }
         `}
       >
-        {APP_NAME}
-      </h1>
+        <img src={ICONS.LOGO} alt="app logo" />
+        <h1
+          css={css`
+            margin: 0;
+            padding: 0;
+            font-family: "Noto Sans", sans-serif;
+            font-size: ${FONTS.MENU}px;
+            color: ${COLORS.PRIMARY};
+          `}
+        >
+          {APP_NAME}
+        </h1>
+      </div>
     );
   };
 
@@ -81,11 +96,14 @@ export default function Navbar({ selectedMenu, selectMenuHandler }) {
     <div
       ref={navbarRef}
       css={css`
-        padding: 0 10%;
+        grid-row: 1/2;
+        grid-column: 1/2;
+        padding: 0 20%;
         display: flex;
         flex-direction: row;
         justify-content: space-between;
         align-items: center;
+        z-index: 1000;
         visibility: hidden;
       `}
     >

@@ -1,4 +1,5 @@
 export const COLORS = {
+  PRIMARY: "#00FF85",
   DARK: "#0E1215",
   BRIGHT: "#ffffff",
   BG_DARK: "#0E1215",
@@ -9,7 +10,7 @@ export const COLORS = {
 
   BTN_NOT_ACTIVE: "#CCCCCC",
   BTN_ACTIVE: "#000000",
-  BTN_NOT_ACTIVE_DARK: "#3B4348",
+  BTN_NOT_ACTIVE_DARK: "#6c7377",
   BTN_ACTIVE_DARK: "#CCCCCC",
 };
 

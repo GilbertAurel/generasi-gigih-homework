@@ -30,8 +30,11 @@ export default function Index() {
     <div
       ref={containerRef}
       css={css`
+        padding: 0 20%;
+        grid-row: 2/3;
         display: grid;
         grid-template-columns: 1fr 1fr;
+        justify-items: center;
         align-items: center;
         visibility: hidden;
       `}
