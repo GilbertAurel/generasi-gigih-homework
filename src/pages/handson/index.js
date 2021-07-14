@@ -4,8 +4,10 @@ import { css, jsx } from "@emotion/react";
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 
+import { GIF_DATA } from "constants/dummyData";
 import RenderInputForm from "components/inputForm";
 import RenderGIF from "components/handsonGIF";
+import FrostedBackground from "components/frostedBackground";
 
 export default function Index() {
   const containerRef = useRef(null);
@@ -31,15 +33,18 @@ export default function Index() {
       ref={containerRef}
       css={css`
         padding: 0 20%;
-        grid-row: 2/3;
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        justify-items: center;
+        grid-row: 1/3;
+        grid-column: 1/2;
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
         align-items: center;
         visibility: hidden;
       `}
     >
-      <RenderGIF />
+      <FrostedBackground imageUrl={GIF_DATA.url} />
+      <RenderGIF url={GIF_DATA.url} title={GIF_DATA.title} />
       <RenderInputForm
         inputChangeHandler={inputChangeHandler}
         inputValue={inputValue}
