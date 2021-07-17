@@ -42,7 +42,7 @@ export default function Navbar({ selectedMenu, selectMenuHandler }) {
               margin: 0;
               padding: 0;
               font-family: "Noto Sans", sans-serif;
-              font-size: ${FONTS.BODY}px;
+              font-size: ${FONTS.BODY};
               cursor: pointer;
               transition: color 0.6s;
               color: ${menu === selectedMenu
@@ -82,7 +82,7 @@ export default function Navbar({ selectedMenu, selectMenuHandler }) {
             margin: 0;
             padding: 0;
             font-family: "Noto Sans", sans-serif;
-            font-size: ${FONTS.MENU}px;
+            font-size: ${FONTS.MENU};
             color: ${COLORS.PRIMARY};
           `}
         >

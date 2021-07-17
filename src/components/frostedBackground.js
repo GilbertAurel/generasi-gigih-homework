@@ -24,10 +24,10 @@ export default function FrostedBackground({ imageUrl }) {
       css={css`
         height: 110vh;
         position: absolute;
-        bottom: -20px;
-        left: -20px;
+        top: 4rem;
+        left: -1.25rem;
         opacity: 0.1;
-        filter: blur(20px);
+        filter: blur(1.25rem);
         object-fit: contain;
       `}
     />

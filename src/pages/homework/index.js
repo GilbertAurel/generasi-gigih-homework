@@ -1,66 +1,46 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import { css, jsx } from "@emotion/react";
-import { useState, useRef, useEffect } from "react";
-import gsap from "gsap";
+import { useState } from "react";
 
-import { ALBUM_DATA } from "constants/dummyData";
+import { SONG_DATA } from "constants/dummyData";
 
-import FrostedBackground from "components/frostedBackground";
-import SongDetails from "components/songDetails";
-import SongAlbum from "components/songAlbum";
+import PageLayout from "components/pageLayout";
+import SongListWidget from "components/songListWidget";
+import PlayingWidget from "components/playingWidget";
 
 export default function App() {
-  const containerRef = useRef(null);
-  const [playSong, setPlaySong] = useState("PLAY");
+  const [currentlyPlaying, setCurrentlyPlaying] = useState(SONG_DATA[0]);
 
-  const playPauseHandler = () => {
-    if (playSong === "PAUSE") return setPlaySong("PLAY");
-    setPlaySong("PAUSE");
+  const changeSongHandler = (song) => {
+    setCurrentlyPlaying(song);
   };
 
-  useEffect(() => {
-    gsap.to(containerRef.current, {
-      visibility: "visible",
-      duration: 0.2,
-    });
-  }, []);
-
   return (
-    <div
-      ref={containerRef}
-      css={css`
-        padding: 0 20%;
-        grid-row: 1/3;
-        grid-column: 1/2;
-        position: relative;
-        overflow: hidden;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        visibility: hidden;
-      `}
-    >
-      <FrostedBackground imageUrl={ALBUM_DATA.album.images[0].url} />
+    <PageLayout>
       <div
         css={css`
           width: 100%;
+          margin: 10rem 0;
           display: grid;
-          grid-template-columns: 1fr 1fr;
-          align-items: center;
+          grid-template-columns: 25rem 1fr;
+          align-items: flex-start;
+          gap: 5rem;
+
+          @media (max-width: 1600px) {
+            grid-template-columns: repeat(auto-fit, minmax(25rem, 1fr));
+          }
         `}
       >
-        <SongDetails
-          artist={ALBUM_DATA.artists[0].name}
-          album={ALBUM_DATA.album.name}
-          song={ALBUM_DATA.name}
-        />
-        <SongAlbum
-          imageUrl={ALBUM_DATA.album.images[0].url}
-          playPauseHandler={playPauseHandler}
-          icon={playSong}
+        <PlayingWidget currentlyPlaying={currentlyPlaying} />
+
+        {/* Homework to show all song data */}
+        <SongListWidget
+          songData={SONG_DATA}
+          currentlyPlaying={currentlyPlaying}
+          changeSongHandler={changeSongHandler}
         />
       </div>
-    </div>
+    </PageLayout>
   );
 }

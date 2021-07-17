@@ -21,7 +21,12 @@ export default function InputForm({ inputValue, inputChangeHandler }) {
     <div
       ref={inputRef}
       css={css`
-        padding: 100px;
+        grid-column: 1/3;
+        padding: 2rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
 
         h1 {
           color: ${COLORS.TEXT_BRIGHT};
@@ -29,16 +34,19 @@ export default function InputForm({ inputValue, inputChangeHandler }) {
       `}
     >
       <h1>Search GIF</h1>
-      <section
+      <input
+        type="text"
+        value={inputValue}
+        onChange={inputChangeHandler}
         css={css`
-          display: flex;
-          flex-direction: row;
-          gap: 10px;
+          width: 20rem;
+          padding: 0.5rem;
+          background-color: ${COLORS.BTN_NOT_ACTIVE};
+          border-radius: 1rem;
+          border: none;
+          outline: none;
         `}
-      >
-        <input type="text" value={inputValue} onChange={inputChangeHandler} />
-        <button onClick={() => alert(`search: ${inputValue}`)}>search</button>
-      </section>
+      />
     </div>
   );
 }
