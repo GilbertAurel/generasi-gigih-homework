@@ -26,21 +26,13 @@ export default function App() {
     });
   }, []);
 
-  const renderPage = () => {
-    // if (selectedMenu === MENU_SELECTION[0]) return <HomeworkClassic />;
-    if (selectedMenu === MENU_SELECTION[0]) return <HomeworkEnhancedPage />;
-    return <HandsonPage />;
-  };
-
   return (
     <div
       ref={containerRef}
       css={css`
-        height: 100vh;
-        width: 100vw;
-        min-height: 800px;
+        min-height: 100vh;
         display: grid;
-        grid-template-rows: 120px 1fr;
+        grid-template-rows: 8rem 1fr;
         background-color: ${COLORS.BG_DARK};
         visibility: hidden;
       `}
@@ -49,7 +41,11 @@ export default function App() {
         selectedMenu={selectedMenu}
         selectMenuHandler={selectMenuHandler}
       />
-      {renderPage()}
+      {selectedMenu === MENU_SELECTION[0] ? (
+        <HomeworkEnhancedPage />
+      ) : (
+        <HandsonPage />
+      )}
     </div>
   );
 }

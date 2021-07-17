@@ -5,7 +5,7 @@ import { COLORS, FONTS } from "constants/theme";
 import gsap from "gsap";
 import { useEffect } from "react";
 
-export default function SongDetails({ artist, album, song }) {
+export default function PlayingDetails({ artist, album, song }) {
   useEffect(() => {
     gsap.from("#text", {
       y: 100,
@@ -18,18 +18,19 @@ export default function SongDetails({ artist, album, song }) {
   return (
     <div
       css={css`
-        grid-column: 1/2;
-        grid-row: 1/2;
+        align-self: center;
 
         p {
+          margin: 0.2rem;
+          padding: 0;
           font-family: "Noto Sans", sans-serif;
-          font-size: ${FONTS.BODY}px;
+          font-size: ${FONTS.CONTENT};
           cursor: default;
           color: ${COLORS.TEXT_BRIGHT};
         }
 
         p:first-of-type {
-          margin-bottom: 30px;
+          margin-bottom: 1rem;
           font-weight: 700;
           color: ${COLORS.PRIMARY};
         }

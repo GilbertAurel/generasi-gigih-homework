@@ -1,19 +1,16 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import { css, jsx } from "@emotion/react";
-import { useEffect, useRef } from "react";
 import gsap from "gsap";
+import { useRef, useEffect } from "react";
 
-import { COLORS } from "constants/theme";
-
-export default function HandsonGIF({ url, title }) {
+export default function PlayingImage({ imageUrl }) {
   const containerRef = useRef(null);
 
   useEffect(() => {
     gsap.from(containerRef.current, {
-      y: 100,
       opacity: 0,
-      duration: 0.8,
+      duration: 0.6,
     });
   }, []);
 
@@ -21,34 +18,22 @@ export default function HandsonGIF({ url, title }) {
     <div
       ref={containerRef}
       css={css`
-        height: 500px;
-        width: 500px;
-        padding: 50px;
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
+        gap: 30px;
       `}
     >
       <img
-        src={url}
-        alt="gif"
+        src={imageUrl}
+        alt="Album img"
         css={css`
-          height: 300px;
-          width: 300px;
-          object-fit: contain;
+          height: 8rem;
+          width: 8rem;
           justify-self: center;
         `}
       />
-      <p
-        css={css`
-          margin: o;
-          padding: 0;
-          color: ${COLORS.TEXT_BRIGHT};
-        `}
-      >
-        {title}
-      </p>
     </div>
   );
 }
