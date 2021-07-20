@@ -3,24 +3,38 @@
 import { css, jsx } from "@emotion/react";
 import { useState } from "react";
 
-import { GIF_DATA } from "constants/dummyData";
+import { GIPHY_SEARCH_URL } from "constants/urls";
 import PageLayout from "components/pageLayout";
-import FrostedBackground from "components/frostedBackground";
+import Skeleton from "components/skeleton";
 import InputForm from "./inputForm";
 import HandsonGIF from "./handsonGIF";
 
 export default function Index() {
   const [inputValue, setInputValue] = useState("");
+  const [showGif, setShowGif] = useState([]);
+  const [loaded, setLoaded] = useState(true);
+
+  const searchButtonHandler = (event) => {
+    const GIPHY_KEY = process.env.REACT_APP_GIPHY_KEY;
+
+    if (event.key === "Enter") {
+      setLoaded(false);
+      return fetch(GIPHY_SEARCH_URL(GIPHY_KEY, inputValue, 6))
+        .then((data) => data.json())
+        .then((json) => {
+          setShowGif(json.data.map((gif) => gif.images.original.url));
+          setLoaded(true);
+        })
+        .catch((error) => console.log(error));
+    }
+  };
 
   const inputChangeHandler = (e) => {
     setInputValue(e.target.value);
   };
 
   const RenderGIFResult = () => {
-    return GIF_DATA.map(
-      (gif, index) =>
-        gif.rating === inputValue && <HandsonGIF key={index} url={gif.url} />
-    );
+    return showGif.map((gif, index) => <HandsonGIF key={index} url={gif} />);
   };
 
   return (
@@ -33,15 +47,15 @@ export default function Index() {
           grid-template-columns: 1fr 1fr;
           justify-items: center;
           align-items: center;
-          row-gap: 1.5rem;
+          gap: 2rem;
         `}
       >
-        <FrostedBackground imageUrl={GIF_DATA.url} />
         <InputForm
           inputChangeHandler={inputChangeHandler}
           inputValue={inputValue}
+          searchButtonHandler={searchButtonHandler}
         />
-        {RenderGIFResult()}
+        {loaded ? RenderGIFResult() : <Skeleton type={"gif"} />}
       </div>
     </PageLayout>
   );

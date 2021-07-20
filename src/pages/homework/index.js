@@ -33,8 +33,6 @@ export default function App() {
         `}
       >
         <PlayingWidget currentlyPlaying={currentlyPlaying} />
-
-        {/* Homework to show all song data */}
         <SongListWidget
           songData={SONG_DATA}
           currentlyPlaying={currentlyPlaying}

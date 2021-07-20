@@ -840,6 +840,6 @@ export const GIF_DATA = [
   },
 ];
 
-export const MENU_SELECTION = ["Homework", "Hands on"];
+export const MENU_SELECTION = ["Playlist", "Search", "Hands on"];
 
 export const APP_NAME = "My Spotify";
