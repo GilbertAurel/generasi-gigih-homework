@@ -7,20 +7,21 @@ export default function SongCard({ songData, changeSongHandler, selected }) {
   return (
     <div
       css={css`
-        padding: 2rem 2rem;
+        padding: 1rem 0;
+        grid-column: 1/5;
         display: flex;
         flex-direction: row;
         align-items: center;
-        border: 1px solid ${selected ? COLORS.PRIMARY : COLORS.BRIGHT};
-        border-radius: 1.25rem;
         gap: 1rem;
+        z-index: 1000;
 
         img {
-          height: 5rem;
-          width: 5rem;
+          height: 3rem;
+          width: 3rem;
           object-fit: cover;
         }
       `}
+      onClick={() => changeSongHandler(songData)}
     >
       <img src={songData.album.images[0].url} alt="" />
       <p
@@ -31,12 +32,11 @@ export default function SongCard({ songData, changeSongHandler, selected }) {
           font-family: "Noto Sans", sans-serif;
           font-size: ${FONTS.CONTENT};
           cursor: default;
-          color: ${COLORS.TEXT_BRIGHT};
+          color: ${selected ? COLORS.PRIMARY : COLORS.BRIGHT};
         `}
       >
         {songData.artists[0].name} - {songData.name}
       </p>
-      <button onClick={() => changeSongHandler(songData)}>select</button>
     </div>
   );
 }

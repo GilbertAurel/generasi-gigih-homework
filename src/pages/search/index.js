@@ -2,27 +2,36 @@
 /** @jsx jsx */
 import { css, jsx } from "@emotion/react";
 import { useState } from "react";
+import axios from "axios";
 
-import { GIPHY_SEARCH_URL } from "constants/urls";
 import PageLayout from "components/pageLayout";
 import Skeleton from "components/skeleton";
-import InputForm from "./inputForm";
-import HandsonGIF from "./handsonGIF";
+import InputForm from "pages/handson/inputForm";
+import HandsonGIF from "pages/handson/handsonGIF";
 
-export default function Index() {
+export default function Index({ hashToken }) {
   const [inputValue, setInputValue] = useState("");
-  const [showGif, setShowGif] = useState([]);
+  const [showSong, setShowSong] = useState([]);
   const [loaded, setLoaded] = useState(true);
 
-  const searchButtonHandler = (event) => {
-    const GIPHY_KEY = process.env.REACT_APP_GIPHY_KEY;
-
+  const searchButtonHandler = async (event) => {
     if (event.key === "Enter") {
       setLoaded(false);
-      return fetch(GIPHY_SEARCH_URL(GIPHY_KEY, inputValue, 6))
-        .then((data) => data.json())
-        .then((json) => {
-          setShowGif(json.data.map((gif) => gif.images.original.url));
+      return await axios
+        .get(`https://api.spotify.com/v1/search`, {
+          headers: {
+            Authorization: `Bearer ${hashToken}`,
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          params: {
+            q: inputValue,
+            type: "track",
+            limit: 5,
+          },
+        })
+        .then((response) => {
+          setShowSong(response.data.tracks.items);
           setLoaded(true);
         })
         .catch((error) => console.log(error));
@@ -33,8 +42,10 @@ export default function Index() {
     setInputValue(e.target.value);
   };
 
-  const RenderGIFResult = () => {
-    return showGif.map((gif, index) => <HandsonGIF key={index} url={gif} />);
+  const RenderSongList = () => {
+    return showSong.map((song, index) => (
+      <HandsonGIF key={index} url={song.album.images[0].url} />
+    ));
   };
 
   return (
@@ -55,7 +66,7 @@ export default function Index() {
           inputValue={inputValue}
           searchButtonHandler={searchButtonHandler}
         />
-        {loaded ? RenderGIFResult() : <Skeleton type={"gif"} />}
+        {loaded ? RenderSongList() : <Skeleton type={"gif"} />}
       </div>
     </PageLayout>
   );
