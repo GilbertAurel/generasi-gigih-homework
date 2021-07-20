@@ -51,7 +51,7 @@ export default function InputForm({
         }
       `}
     >
-      <h1>Search GIF</h1>
+      <h1>Search By Name</h1>
       <section>
         <input
           type="text"

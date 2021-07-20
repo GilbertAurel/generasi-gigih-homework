@@ -30,7 +30,7 @@ function skeleton({ type }) {
   };
 
   return [1, 2, 3, 4, 5, 6].map((item, index) => (
-    <div key={`${item}-index`} css={styles[type]}>
+    <div key={`${item}-${index}`} css={styles[type]}>
       <div
         css={css`
           height: 100%;

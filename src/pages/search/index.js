@@ -16,6 +16,9 @@ export default function Index({ hashToken }) {
 
   const searchButtonHandler = async (event) => {
     if (event.key === "Enter") {
+      const authKey = encodeURIComponent(
+        `${process.env.REACT_APP_SPOTIFY_ID}:${process.env.REACT_APP_SPOTIFY_SECRET}`
+      );
       setLoaded(false);
       return await axios
         .get(`https://api.spotify.com/v1/search`, {

@@ -1,6 +1,8 @@
 export const DEV_URL = "http://localhost:3000";
 
-export const SPOTIFY_AUTH_URL = `https://accounts.spotify.com/authorize?client_id=${process.env.REACT_APP_SPOTIFY_ID}&response_type=token&redirect_uri=${DEV_URL}&scope=playlist-modify-private`;
+export const SPOTIFY_AUTH_URL = `https://accounts.spotify.com/authorize?client_id=${process.env.REACT_APP_SPOTIFY_ID}&response_type=token&redirect_uri=${DEV_URL}&scope=playlist-modify-private&expires_in=300`;
+
+export const SPOTIFY_AUTH_LOGOUT = `https://accounts.spotify.com/logout?redirect_uri=${DEV_URL}`;
 
 export const GIPHY_SEARCH_URL = (apiKey, query, limitPerPage) => {
   return `https://api.giphy.com/v1/gifs/search?api_key=${apiKey}&q=${query}&limit=${limitPerPage}`;

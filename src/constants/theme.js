@@ -16,6 +16,7 @@ export const COLORS = {
 };
 
 export const FONTS = {
+  HEADING: "6rem",
   TITLE: "4rem",
   SUBTITLE: "1.875rem",
   MENU: "1.5rem",

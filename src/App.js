@@ -19,10 +19,6 @@ export default function App() {
   const [hashToken, setHashToken] = useState();
   const getHashToken = window.location.hash.split("=")[1];
 
-  const selectMenuHandler = (menu) => {
-    setSelectedMenu(menu);
-  };
-
   useEffect(() => {
     gsap.to(containerRef.current, {
       visibility: "visible",
@@ -36,42 +32,41 @@ export default function App() {
 
   const renderPage = () => {
     if (selectedMenu === MENU_SELECTION[0]) return <HomeworkEnhancedPage />;
+
     if (selectedMenu === MENU_SELECTION[1])
       return <SearchPage hashToken={hashToken} />;
+
     return <HandsonPage />;
+  };
+
+  const styles = {
+    home: css`
+      min-height: 100vh;
+      display: grid;
+      grid-template-rows: 8rem 1fr;
+      background-color: ${COLORS.BG_DARK};
+      visibility: hidden;
+    `,
+    landing: css`
+      background-color: ${COLORS.BG_DARK};
+      visibility: hidden;
+    `,
   };
 
   if (hashToken)
     return (
-      <div
-        ref={containerRef}
-        css={css`
-          min-height: 100vh;
-          display: grid;
-          grid-template-rows: 8rem 1fr;
-          background-color: ${COLORS.BG_DARK};
-          visibility: hidden;
-        `}
-      >
+      <div ref={containerRef} css={styles.home}>
         <Navbar
           selectedMenu={selectedMenu}
-          selectMenuHandler={selectMenuHandler}
+          setSelectedMenu={setSelectedMenu}
+          setHashToken={setHashToken}
         />
         {renderPage()}
       </div>
     );
 
   return (
-    <div
-      ref={containerRef}
-      css={css`
-        min-height: 100vh;
-        display: grid;
-        grid-template-rows: 8rem 1fr;
-        background-color: ${COLORS.BG_DARK};
-        visibility: hidden;
-      `}
-    >
+    <div ref={containerRef} css={styles.landing}>
       <LandingPage />
     </div>
   );
