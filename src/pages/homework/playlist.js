@@ -5,12 +5,11 @@ import { useState } from "react";
 
 import { SONG_DATA } from "constants/dummyData";
 
-import FrostedBackground from "components/frostedBackground";
 import PageLayout from "components/pageLayout";
 import SongListWidget from "components/songListWidget";
 import PlayingWidget from "components/playingWidget";
 
-export default function Index() {
+export default function App() {
   const [currentlyPlaying, setCurrentlyPlaying] = useState(SONG_DATA[0]);
 
   const changeSongHandler = (song) => {
@@ -39,7 +38,6 @@ export default function Index() {
           currentlyPlaying={currentlyPlaying}
           changeSongHandler={changeSongHandler}
         />
-        <FrostedBackground imageUrl={currentlyPlaying.album.images[0].url} />
       </div>
     </PageLayout>
   );
