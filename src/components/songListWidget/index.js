@@ -13,6 +13,8 @@ export default function SongList({
   return (
     <div
       css={css`
+        grid-row: 1/2;
+        grid-column: 2/3;
         display: grid;
         grid-template-rows: repeat(auto-fill, 1fr);
         grid-template-columns: repeat(4, 1fr);

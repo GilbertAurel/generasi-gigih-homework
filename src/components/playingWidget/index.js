@@ -3,7 +3,6 @@
 import { css, jsx } from "@emotion/react";
 import { useState } from "react";
 
-import FrostedBackground from "components/frostedBackground";
 import SongDetails from "./details";
 import SongImage from "./image";
 import Tracker from "./tracker";
@@ -32,7 +31,6 @@ export default function PlayingCard({ currentlyPlaying }) {
         song={currentlyPlaying.name}
       />
       <Tracker playPauseHandler={playPauseHandler} icon={playSong} />
-      <FrostedBackground imageUrl={currentlyPlaying.album.images[0].url} />
     </div>
   );
 }

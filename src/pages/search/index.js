@@ -14,23 +14,18 @@ export default function Index({ hashToken }) {
   const [showSong, setShowSong] = useState([]);
   const [loaded, setLoaded] = useState(true);
 
-  const searchButtonHandler = async (event) => {
+  const searchButtonHandler = (event) => {
     if (event.key === "Enter") {
-      const authKey = encodeURIComponent(
-        `${process.env.REACT_APP_SPOTIFY_ID}:${process.env.REACT_APP_SPOTIFY_SECRET}`
-      );
       setLoaded(false);
-      return await axios
+      return axios
         .get(`https://api.spotify.com/v1/search`, {
           headers: {
-            Authorization: `Bearer ${hashToken}`,
-            Accept: "application/json",
-            "Content-Type": "application/json",
+            Authorization: "Bearer " + hashToken.access_token,
           },
           params: {
             q: inputValue,
             type: "track",
-            limit: 5,
+            limit: 6,
           },
         })
         .then((response) => {

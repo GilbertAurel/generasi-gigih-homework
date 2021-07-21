@@ -17,7 +17,6 @@ export default function App() {
   const containerRef = useRef(null);
   const [selectedMenu, setSelectedMenu] = useState(MENU_SELECTION[0]);
   const [hashToken, setHashToken] = useState();
-  const getHashToken = window.location.hash.split("=")[1];
 
   useEffect(() => {
     gsap.to(containerRef.current, {
@@ -26,9 +25,24 @@ export default function App() {
     });
   }, []);
 
+  const getTokenFromSpotifyIGF = (hash) => {
+    const tokenHash = hash.substring(1);
+    const params = tokenHash.split("&");
+    const keyValueParams = {};
+
+    params.map((param) => {
+      const value = param.split("=");
+      keyValueParams[value[0]] = value[1];
+    });
+
+    return keyValueParams;
+  };
+
   useEffect(() => {
-    setHashToken(getHashToken);
-  }, [getHashToken]);
+    if (window.location.hash) {
+      setHashToken(getTokenFromSpotifyIGF(window.location.hash));
+    }
+  }, [window.location.hash]);
 
   const renderPage = () => {
     if (selectedMenu === MENU_SELECTION[0]) return <HomeworkEnhancedPage />;
@@ -53,7 +67,8 @@ export default function App() {
     `,
   };
 
-  if (hashToken)
+  // HOME PAGE
+  if (hashToken) {
     return (
       <div ref={containerRef} css={styles.home}>
         <Navbar
@@ -64,7 +79,9 @@ export default function App() {
         {renderPage()}
       </div>
     );
+  }
 
+  // LOGIN PAGE
   return (
     <div ref={containerRef} css={styles.landing}>
       <LandingPage />
