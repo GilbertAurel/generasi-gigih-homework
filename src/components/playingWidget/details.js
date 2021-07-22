@@ -19,6 +19,7 @@ export default function PlayingDetails({ artist, album, song }) {
     <div
       css={css`
         align-self: center;
+        overflow: hidden;
 
         p {
           margin: 0.2rem;
@@ -27,6 +28,9 @@ export default function PlayingDetails({ artist, album, song }) {
           font-size: ${FONTS.CONTENT};
           cursor: default;
           color: ${COLORS.TEXT_BRIGHT};
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
         }
 
         p:first-of-type {

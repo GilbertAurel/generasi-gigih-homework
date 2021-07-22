@@ -9,7 +9,7 @@ import PageLayout from "components/pageLayout";
 import SongListWidget from "components/songListWidget";
 import PlayingWidget from "components/playingWidget";
 
-export default function App() {
+export default function Playlist() {
   const [currentlyPlaying, setCurrentlyPlaying] = useState(SONG_DATA[0]);
 
   const changeSongHandler = (song) => {

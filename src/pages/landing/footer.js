@@ -1,7 +1,7 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import { css, jsx } from "@emotion/react";
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import { COLORS, FONTS } from "constants/theme";
 import gsap from "gsap";
 

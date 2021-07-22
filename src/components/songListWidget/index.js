@@ -1,37 +1,48 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import { css, jsx } from "@emotion/react";
-import { COLORS, FONTS } from "constants/theme";
 
 import SongCard from "./songCard";
+import SearchBar from "./searchBar";
+import TableHeader from "./tableHeader";
 
-export default function SongList({
-  songData,
-  currentlyPlaying,
-  changeSongHandler,
-}) {
+export default function SongList(props) {
+  const {
+    playlist,
+    currentlyPlaying,
+    changeSongHandler,
+    inputValue,
+    inputChangeHandler,
+    searchButtonHandler,
+    searchState,
+  } = props;
+
+  const containerStyle = css`
+    grid-column: 2/3;
+    grid-row: 1/3;
+    overflow-y: scroll;
+    display: grid;
+    grid-template-rows: repeat(auto-fill, 3rem);
+    row-gap: 0.8rem;
+    scrollbar-width: none;
+    z-index: 1000;
+
+    ::-webkit-scrollbar {
+      display: none;
+    }
+  `;
+
   return (
-    <div
-      css={css`
-        grid-row: 1/2;
-        grid-column: 2/3;
-        display: grid;
-        grid-template-rows: repeat(auto-fill, 1fr);
-        grid-template-columns: repeat(4, 1fr);
-        row-gap: 0.5rem;
-      `}
-    >
-      <h1
-        css={css`
-          font-family: "Noto Sans", sans-serif;
-          font-size: ${FONTS.BODY};
-          color: ${COLORS.TEXT_BRIGHT};
-          grid-column: 1/5;
-        `}
-      >
-        Current playlist
-      </h1>
-      {songData.map((song) => (
+    <div css={containerStyle}>
+      {searchState && (
+        <SearchBar
+          inputValue={inputValue}
+          inputChangeHandler={inputChangeHandler}
+          searchButtonHandler={searchButtonHandler}
+        />
+      )}
+      <TableHeader />
+      {playlist.map((song) => (
         <SongCard
           key={song.id}
           songData={song}
