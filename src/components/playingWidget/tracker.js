@@ -53,6 +53,7 @@ export default function Tracker({ playPauseHandler, icon }) {
     <div
       css={css`
         grid-column: 1/3;
+        grid-row: 2/3;
         display: flex;
         flex-direction: column;
         justify-content: center;

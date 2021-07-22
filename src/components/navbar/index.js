@@ -30,15 +30,22 @@ export default function Index(props) {
     <div
       ref={navbarRef}
       css={css`
-        grid-row: 1/2;
-        grid-column: 1/2;
+        min-width: 100%;
         padding: 0 20%;
+        position: absolute;
+        top: 4rem;
+        left: 0;
+
         display: flex;
         flex-direction: row;
         justify-content: space-between;
         align-items: center;
         z-index: 1000;
         visibility: hidden;
+
+        @media (max-width: 1600px) {
+          visibility: hidden;
+        }
       `}
     >
       <Title />

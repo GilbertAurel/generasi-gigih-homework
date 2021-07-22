@@ -8,6 +8,7 @@ import PageLayout from "components/pageLayout";
 import Skeleton from "components/skeleton";
 import InputForm from "./inputForm";
 import HandsonGIF from "./handsonGIF";
+import { GIPHY_FETCH_SEARCH } from "constants/fetchData";
 
 export default function Index() {
   const [inputValue, setInputValue] = useState("");
@@ -16,16 +17,23 @@ export default function Index() {
 
   const searchButtonHandler = (event) => {
     const GIPHY_KEY = process.env.REACT_APP_GIPHY_KEY;
+    const DATA_LIMIT = 6;
 
     if (event.key === "Enter") {
       setLoaded(false);
-      return fetch(GIPHY_SEARCH_URL(GIPHY_KEY, inputValue, 6))
-        .then((data) => data.json())
-        .then((json) => {
-          setShowGif(json.data.map((gif) => gif.images.original.url));
-          setLoaded(true);
-        })
-        .catch((error) => console.log(error));
+
+      const config = {
+        params: {
+          api_key: GIPHY_KEY,
+          q: inputValue,
+          limit: DATA_LIMIT,
+        },
+      };
+
+      return GIPHY_FETCH_SEARCH(GIPHY_SEARCH_URL, config).then((res) => {
+        setShowGif(res.data.map((gif) => gif.images.original.url));
+        setTimeout(() => setLoaded(true), 1000);
+      });
     }
   };
 

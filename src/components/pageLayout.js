@@ -18,12 +18,8 @@ export default function PageLayout({ children }) {
     <div
       ref={containerRef}
       css={css`
+        min-height: 90vh;
         padding: 0 20%;
-        grid-row: 1/3;
-        grid-column: 1/2;
-        justify-self: stretch;
-        align-self: stretch;
-
         display: flex;
         flex-direction: row;
         position: relative;

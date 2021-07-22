@@ -17,6 +17,7 @@ export default function Menu({ selectedMenu, setSelectedMenu, setHashToken }) {
     return setTimeout(() => {
       spotifyLogoutWindow.close();
       setHashToken("");
+      window.location = "";
     }, 2000);
   };
 
@@ -75,6 +76,10 @@ export default function Menu({ selectedMenu, setSelectedMenu, setHashToken }) {
         display: flex;
         flex-direction: row;
         gap: 100px;
+
+        @media (max-width: 1600px) {
+          visibility: hidden;
+        }
       `}
     >
       <RenderMenuList />

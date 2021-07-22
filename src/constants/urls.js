@@ -4,8 +4,6 @@ export const SPOTIFY_AUTH_URL = `https://accounts.spotify.com/authorize?client_i
 
 export const SPOTIFY_AUTH_LOGOUT = `https://accounts.spotify.com/logout?redirect_uri=${DEV_URL}`;
 
-export const GIPHY_SEARCH_URL = (apiKey, query, limitPerPage) => {
-  return `https://api.giphy.com/v1/gifs/search?api_key=${apiKey}&q=${query}&limit=${limitPerPage}`;
-};
+export const GIPHY_SEARCH_URL = "https://api.giphy.com/v1/gifs/search";
 
 export const SPOTIFY_SEARCH_URL = "https://api.spotify.com/v1/search";

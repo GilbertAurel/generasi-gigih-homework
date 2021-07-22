@@ -4,7 +4,6 @@ import { css, jsx } from "@emotion/react";
 
 import { COLORS, FONTS } from "constants/theme";
 import { APP_NAME } from "constants/dummyData";
-import ICONS from "assets/icons";
 
 export default function Title() {
   return (

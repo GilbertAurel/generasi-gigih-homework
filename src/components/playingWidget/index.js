@@ -18,10 +18,12 @@ export default function PlayingCard({ currentlyPlaying }) {
   return (
     <div
       css={css`
+        max-height: 12rem;
+        grid-column: 1/2;
+        grid-row: 1/2;
         display: grid;
-        grid-template-columns: 8rem 1fr;
-        grid-template-rows: 10rem 5rem;
-        column-gap: 1rem;
+        grid-template: 8rem auto / 8rem auto;
+        gap: 1rem;
       `}
     >
       <SongImage imageUrl={currentlyPlaying.album.images[0].url} />

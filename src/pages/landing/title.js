@@ -47,31 +47,34 @@ function Title() {
       color: ${COLORS.TEXT_BRIGHT};
     }
 
-    a {
+    button {
       width: 15rem;
       margin-top: 2rem;
       box-sizing: border-box;
       padding: 0.5rem 4rem;
       background-color: ${COLORS.PRIMARY};
+      border: none;
       border-radius: 1rem;
 
       font-family: "Noto Sans", sans-serif;
       font-weight: 700;
       font-size: ${FONTS.BODY};
       color: ${COLORS.BG_DARK};
-      text-align: center;
-      text-decoration: none;
     }
   `;
+
+  const loginButtonHandler = () => {
+    window.location = SPOTIFY_AUTH_URL;
+  };
 
   return (
     <div css={containerStyle}>
       <p id="name">My Spotify</p>
       <h1 id="headline">Free Music Everyday</h1>
       <h1 id="headline">Just For You.</h1>
-      <a id="button" href={SPOTIFY_AUTH_URL}>
+      <button id="button" onClick={loginButtonHandler}>
         Sign in
-      </a>
+      </button>
     </div>
   );
 }
