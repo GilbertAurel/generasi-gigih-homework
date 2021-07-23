@@ -4,14 +4,14 @@ import { css, jsx } from "@emotion/react";
 
 import { COLORS, FONTS } from "constants/theme";
 import { MENU_SELECTION } from "constants/dummyData";
+import { SPOTIFY_AUTH_LOGOUT } from "constants/urls";
 
 export default function Menu({ selectedMenu, setSelectedMenu, setHashToken }) {
   const logoutHandler = () => {
-    const url = "https://accounts.spotify.com/en/logout";
     const spotifyLogoutWindow = window.open(
-      url,
+      SPOTIFY_AUTH_LOGOUT,
       "Spotify Logout",
-      "width=700,height=500,top=40,left=40"
+      "width=700,height=500"
     );
 
     return setTimeout(() => {

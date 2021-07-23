@@ -20,7 +20,6 @@ export default function SongCard(props) {
     grid-template-columns: 10% 40% 25% 10% auto;
     align-items: center;
     gap: 1rem;
-    z-index: 1000;
     position: relative;
 
     img {

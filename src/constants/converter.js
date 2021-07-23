@@ -12,5 +12,6 @@ export function hashSeparator(hash, index) {
 }
 
 export function msToMinutesConverter(ms) {
-  return Math.round((ms * 0.0000166667 + Number.EPSILON) * 100) / 100;
+  const minutes = ms * 0.0000166667;
+  return minutes.toFixed(2);
 }
