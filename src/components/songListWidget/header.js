@@ -34,7 +34,6 @@ export default function TableHeader() {
 
         img {
           grid-area: length;
-          scale: 0.65;
           transform: scale(0.65);
         }
       `}

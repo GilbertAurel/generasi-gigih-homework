@@ -5,7 +5,7 @@ import { useEffect, useRef } from "react";
 import gsap, { Power3 } from "gsap";
 
 import Menu from "./menu";
-import Title from "./title";
+import Logo from "./logo";
 
 export default function Index(props) {
   const navbarRef = useRef(null);
@@ -48,7 +48,7 @@ export default function Index(props) {
         }
       `}
     >
-      <Title />
+      <Logo />
       <Menu {...props} />
     </div>
   );

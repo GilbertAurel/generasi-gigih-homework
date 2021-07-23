@@ -4,9 +4,9 @@ import { css, jsx } from "@emotion/react";
 
 import { COLORS, FONTS } from "constants/theme";
 
-export default function Header({ setSearchState }) {
+export default function Header({ setOpenSearchBar }) {
   const searchButtonToggle = () => {
-    setSearchState((prevState) => !prevState);
+    setOpenSearchBar((prevState) => !prevState);
   };
 
   return (

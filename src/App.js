@@ -11,9 +11,10 @@ import Navbar from "components/navbar";
 import HandsonPage from "pages/handson";
 import HomeworkPage from "pages/homework";
 import LandingPage from "pages/landing";
-import { hashSeparator } from "constants/hashFragmentSeparator";
+import { hashSeparator } from "constants/converter";
 
 export default function App() {
+  const HASH_SUBSTRING_INDEX = 1;
   const containerRef = useRef(null);
   const [selectedMenu, setSelectedMenu] = useState(MENU_SELECTION[0]);
   const [hashToken, setHashToken] = useState();
@@ -25,12 +26,7 @@ export default function App() {
     });
 
     if (window.location.hash) {
-      const HASH_SUBSTRING_INDEX = 1;
-      const hash_params = hashSeparator(
-        window.location.hash,
-        HASH_SUBSTRING_INDEX
-      );
-      setHashToken(hash_params);
+      setHashToken(hashSeparator(window.location.hash, HASH_SUBSTRING_INDEX));
     }
   }, []);
 

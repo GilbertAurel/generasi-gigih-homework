@@ -6,8 +6,8 @@ import { useState } from "react";
 import { GIPHY_SEARCH_URL } from "constants/urls";
 import PageLayout from "components/pageLayout";
 import Skeleton from "components/skeleton";
-import InputForm from "./inputForm";
-import HandsonGIF from "./handsonGIF";
+import InputBar from "./inputBar";
+import GifCard from "./gifCard";
 import { GIPHY_FETCH_SEARCH } from "constants/fetchData";
 
 export default function Index() {
@@ -15,7 +15,7 @@ export default function Index() {
   const [showGif, setShowGif] = useState([]);
   const [loaded, setLoaded] = useState(true);
 
-  const searchButtonHandler = (event) => {
+  const searchButtonHandler = async (event) => {
     const GIPHY_KEY = process.env.REACT_APP_GIPHY_KEY;
     const DATA_LIMIT = 6;
 
@@ -30,7 +30,7 @@ export default function Index() {
         },
       };
 
-      return GIPHY_FETCH_SEARCH(GIPHY_SEARCH_URL, config).then((res) => {
+      return await GIPHY_FETCH_SEARCH(GIPHY_SEARCH_URL, config).then((res) => {
         setShowGif(res.data.map((gif) => gif.images.original.url));
         setTimeout(() => setLoaded(true), 1000);
       });
@@ -42,7 +42,7 @@ export default function Index() {
   };
 
   const RenderGIFResult = () => {
-    return showGif.map((gif, index) => <HandsonGIF key={index} url={gif} />);
+    return showGif.map((gif, index) => <GifCard key={index} url={gif} />);
   };
 
   return (
@@ -58,7 +58,7 @@ export default function Index() {
           gap: 2rem;
         `}
       >
-        <InputForm
+        <InputBar
           inputChangeHandler={inputChangeHandler}
           inputValue={inputValue}
           searchButtonHandler={searchButtonHandler}

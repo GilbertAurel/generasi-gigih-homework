@@ -1,12 +1,15 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import { css, jsx } from "@emotion/react";
+import { useState } from "react";
 
 import SongCard from "./songCard";
 import SearchBar from "./searchBar";
-import TableHeader from "./tableHeader";
+import Header from "./header";
 
 export default function SongList(props) {
+  const [toggleMenu, setToggleMenu] = useState("");
+
   const {
     playlist,
     currentlyPlaying,
@@ -14,10 +17,10 @@ export default function SongList(props) {
     inputValue,
     inputChangeHandler,
     searchButtonHandler,
-    searchState,
+    openSearchBar,
   } = props;
 
-  const containerStyle = css`
+  const styles = css`
     grid-column: 2/3;
     grid-row: 1/3;
     overflow-y: scroll;
@@ -33,21 +36,23 @@ export default function SongList(props) {
   `;
 
   return (
-    <div css={containerStyle}>
-      {searchState && (
+    <div css={styles}>
+      {openSearchBar && (
         <SearchBar
           inputValue={inputValue}
           inputChangeHandler={inputChangeHandler}
           searchButtonHandler={searchButtonHandler}
         />
       )}
-      <TableHeader />
+      <Header />
       {playlist.map((song) => (
         <SongCard
           key={song.id}
           songData={song}
           changeSongHandler={changeSongHandler}
-          selected={currentlyPlaying.id === song.id}
+          selected={song.id === currentlyPlaying.id}
+          setToggleMenu={setToggleMenu}
+          openMenu={song.id === toggleMenu}
         />
       ))}
     </div>

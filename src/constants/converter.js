@@ -10,3 +10,7 @@ export function hashSeparator(hash, index) {
 
   return keyValueParams;
 }
+
+export function msToMinutesConverter(ms) {
+  return Math.round((ms * 0.0000166667 + Number.EPSILON) * 100) / 100;
+}

@@ -15,7 +15,7 @@ export default function Index(props) {
         z-index: 1000;
       `}
     >
-      <Header setSearchState={props.setSearchState} />
+      <Header setOpenSearchBar={props.setOpenSearchBar} />
       <PlaylistList {...props} />
     </div>
   );
