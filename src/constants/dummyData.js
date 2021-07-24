@@ -853,4 +853,6 @@ export const GIF_DATA = [
 
 export const MENU_SELECTION = ["Playlist", "Hands on"];
 
+export const SIGN_OUT_TEXT = "Sign out";
+
 export const APP_NAME = "My Spotify";
