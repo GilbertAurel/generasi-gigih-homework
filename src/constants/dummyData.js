@@ -770,10 +770,6 @@ export const PLAYLISTS_DATA = [
     name: "Generasi Gigih",
     data: SONG_DATA,
   },
-  {
-    name: "History",
-    data: [],
-  },
 ];
 
 export const GIF_DATA = [

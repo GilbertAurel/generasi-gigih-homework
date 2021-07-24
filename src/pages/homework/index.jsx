@@ -5,7 +5,11 @@ import { useState } from "react";
 
 import { SONG_DATA, PLAYLISTS_DATA } from "constants/dummyData";
 import { SPOTIFY_FETCH_SEARCH } from "adapters/fetchHandlers";
-import { SPOTIFY_SEARCH_URL } from "constants/urls";
+import { SPOTIFY_CREATE_PLAYLIST } from "adapters/postHandler";
+import {
+  SPOTIFY_CREATE_PLAYLIST_URL,
+  SPOTIFY_SEARCH_URL,
+} from "constants/urls";
 import { songIsUnique } from "constants/uniqueChecker";
 
 import Background from "components/frostedBackground";
@@ -14,7 +18,7 @@ import SongList from "components/song-list";
 import SongPlayer from "components/song-player";
 import PlaylistSelections from "components/playlist-selection";
 
-export default function Index({ hashToken }) {
+export default function Index({ hashToken, user }) {
   const [currentlyPlaying, setCurrentlyPlaying] = useState(SONG_DATA[0]);
   const [playlists, setPlaylists] = useState(PLAYLISTS_DATA);
   const [selectedPlaylist, setSelectedPlaylist] = useState(PLAYLISTS_DATA[0]);
@@ -30,7 +34,7 @@ export default function Index({ hashToken }) {
     setCurrentlyPlaying(song);
     const newPlaylist = playlists[1];
 
-    if (songIsUnique(newPlaylist, song)) {
+    if (songIsUnique(newPlaylist, song) && newPlaylist) {
       newPlaylist.data.push(song);
       setPlaylists((prevState) => [...prevState.slice(0, 1), newPlaylist]);
     }
@@ -62,6 +66,27 @@ export default function Index({ hashToken }) {
     }
   };
 
+  const createNewPlaylist = (newPlaylist) => {
+    if (newPlaylist) {
+      const config = {
+        headers: {
+          Authorization: "Bearer " + hashToken.access_token,
+          "Content-Type": "application/json",
+        },
+        body: {
+          name: newPlaylist.name,
+          description: newPlaylist.description,
+          public: false,
+        },
+      };
+
+      return SPOTIFY_CREATE_PLAYLIST(
+        SPOTIFY_CREATE_PLAYLIST_URL(user.id),
+        config
+      ).then(() => setPlaylists([...playlists, newPlaylist]));
+    }
+  };
+
   const params = {
     songList: {
       songs: openSearchBar ? searchResult : selectedPlaylist.data,
@@ -72,11 +97,12 @@ export default function Index({ hashToken }) {
       searchButtonHandler,
       openSearchBar,
     },
-    playlist: {
+    playlistSelection: {
       playlists,
       selectedPlaylist,
       selectPlaylistHandler,
       searchButtonToggle,
+      createNewPlaylist,
     },
   };
 
@@ -98,7 +124,7 @@ export default function Index({ hashToken }) {
     <PageLayout>
       <div css={styles.container}>
         <SongPlayer currentlyPlaying={currentlyPlaying} />
-        <PlaylistSelections {...params.playlist} />
+        <PlaylistSelections {...params.playlistSelection} />
         <SongList {...params.songList} />
         <Background imageUrl={currentlyPlaying.album.images[0].url} />
       </div>
