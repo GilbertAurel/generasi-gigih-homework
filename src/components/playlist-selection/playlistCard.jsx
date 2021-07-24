@@ -35,7 +35,7 @@ export default function PlaylistCard({
       onClick={() => selectPlaylistHandler(playlistData)}
       css={styles.container}
     >
-      <img src={playlist.image} alt="playlist image" />
+      <img src={playlist.image} alt="playlist" />
       <p
         css={css`
           color: ${selectedPlaylist.name === playlist.name

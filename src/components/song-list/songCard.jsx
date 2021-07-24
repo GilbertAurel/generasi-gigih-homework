@@ -48,7 +48,7 @@ export default function SongCard(props) {
 
   return (
     <div css={styles.container}>
-      <img css={styles.albumImage} src={song.image} alt="album image" />
+      <img css={styles.albumImage} src={song.image} alt="song album" />
       <p css={styles.label} onClick={() => changeSongHandler(songData)}>
         {song.title}
       </p>
@@ -56,7 +56,7 @@ export default function SongCard(props) {
       <p css={styles.label}>{song.length}</p>
       <img
         src={ICONS.MORE}
-        alt="menu icon"
+        alt="menu"
         onClick={() => menuHandler(song.id)}
         css={styles.menuButton}
       />
