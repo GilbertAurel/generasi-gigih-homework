@@ -14,14 +14,14 @@ export default function Index() {
   const [inputValue, setInputValue] = useState("");
   const [showGif, setShowGif] = useState([]);
   const [loaded, setLoaded] = useState(true);
+  const GIPHY_KEY = process.env.REACT_APP_GIPHY_KEY;
+  const DATA_LIMIT = 6;
 
   const inputChangeHandler = (e) => setInputValue(e.target.value);
 
   const searchButtonHandler = (event) => {
     event.preventDefault();
     setLoaded(false);
-    const GIPHY_KEY = process.env.REACT_APP_GIPHY_KEY;
-    const DATA_LIMIT = 6;
     const config = {
       params: {
         api_key: GIPHY_KEY,
