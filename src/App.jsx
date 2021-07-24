@@ -28,9 +28,7 @@ export default function App() {
 
   const logoutHandler = () => spotifyLogout().then(() => setHashToken(""));
 
-  const selectMenuHandler = (menu) => {
-    setSelectedMenu(menu);
-  };
+  const selectMenuHandler = (menu) => setSelectedMenu(menu);
 
   if (!hashToken) return <LandingPage loginHandler={loginHandler} />;
 
