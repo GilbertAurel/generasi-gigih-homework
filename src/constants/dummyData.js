@@ -770,10 +770,6 @@ export const PLAYLISTS_DATA = [
     name: "Generasi Gigih",
     data: SONG_DATA,
   },
-  {
-    name: "History",
-    data: [],
-  },
 ];
 
 export const GIF_DATA = [
@@ -854,5 +850,7 @@ export const GIF_DATA = [
 export const MENU_SELECTION = ["Playlist", "Hands on"];
 
 export const SIGN_OUT_TEXT = "Sign out";
+
+export const SEARCH_GIF_HEADING = "Search GIF";
 
 export const APP_NAME = "My Spotify";

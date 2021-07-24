@@ -11,7 +11,7 @@ export default function SongList(props) {
   const [toggleMenu, setToggleMenu] = useState("");
 
   const {
-    playlist,
+    songs,
     currentlyPlaying,
     changeSongHandler,
     inputValue,
@@ -20,23 +20,27 @@ export default function SongList(props) {
     openSearchBar,
   } = props;
 
-  const styles = css`
-    grid-column: 2/3;
-    grid-row: 1/3;
-    overflow-y: scroll;
-    display: grid;
-    grid-template-rows: repeat(auto-fill, 3rem);
-    row-gap: 0.8rem;
-    scrollbar-width: none;
-    z-index: 1000;
+  const menuHandler = (id) => setToggleMenu(toggleMenu === id ? "" : id);
 
-    ::-webkit-scrollbar {
-      display: none;
-    }
-  `;
+  const styles = {
+    container: css`
+      grid-column: 2/3;
+      grid-row: 1/3;
+      overflow-y: scroll;
+      display: grid;
+      grid-template-rows: repeat(auto-fill, 3rem);
+      row-gap: 0.8rem;
+      scrollbar-width: none;
+      z-index: 1000;
+
+      ::-webkit-scrollbar {
+        display: none;
+      }
+    `,
+  };
 
   return (
-    <div css={styles}>
+    <div css={styles.container}>
       {openSearchBar && (
         <SearchBar
           inputValue={inputValue}
@@ -45,13 +49,13 @@ export default function SongList(props) {
         />
       )}
       <Header />
-      {playlist.map((song) => (
+      {songs.map((song) => (
         <SongCard
           key={song.id}
           songData={song}
           changeSongHandler={changeSongHandler}
           selected={song.id === currentlyPlaying.id}
-          setToggleMenu={setToggleMenu}
+          menuHandler={menuHandler}
           openMenu={song.id === toggleMenu}
         />
       ))}

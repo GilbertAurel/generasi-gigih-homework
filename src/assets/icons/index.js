@@ -6,6 +6,7 @@ import LOGO from "./logo.svg";
 import DELETE from "./delete.svg";
 import MORE from "./more.svg";
 import TIMER from "./timer.svg";
+import ADD from "./add.svg";
 
 const index = {
   NEXT,
@@ -16,6 +17,7 @@ const index = {
   DELETE,
   MORE,
   TIMER,
+  ADD,
 };
 
 export default index;
