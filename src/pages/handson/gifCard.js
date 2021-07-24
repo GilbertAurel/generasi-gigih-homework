@@ -4,7 +4,7 @@ import { css, jsx } from "@emotion/react";
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 
-export default function HandsonGIF({ url }) {
+export default function GifCard({ url }) {
   const containerRef = useRef(null);
 
   useEffect(() => {

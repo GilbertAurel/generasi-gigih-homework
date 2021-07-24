@@ -7,10 +7,10 @@ export default function PlaylistList({
   playlists,
   selectedPlaylist,
   setSelectedPlaylist,
-  setSearchState,
+  setOpenSearchBar,
 }) {
   const selectPlaylistHandler = (playlist) => {
-    setSearchState(false);
+    setOpenSearchBar(false);
     setSelectedPlaylist(playlist);
   };
 

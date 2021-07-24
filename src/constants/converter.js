@@ -10,3 +10,8 @@ export function hashSeparator(hash, index) {
 
   return keyValueParams;
 }
+
+export function msToMinutesConverter(ms) {
+  const minutes = ms * 0.0000166667;
+  return minutes.toFixed(2);
+}

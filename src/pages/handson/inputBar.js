@@ -5,7 +5,7 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { COLORS, FONTS } from "constants/theme";
 
-export default function InputForm({
+export default function InputBar({
   inputValue,
   inputChangeHandler,
   searchButtonHandler,

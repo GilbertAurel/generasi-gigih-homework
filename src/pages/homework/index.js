@@ -3,9 +3,10 @@
 import { css, jsx } from "@emotion/react";
 import { useState } from "react";
 
-import { SONG_DATA } from "constants/dummyData";
+import { SONG_DATA, PLAYLISTS_DATA } from "constants/dummyData";
 import { SPOTIFY_FETCH_SEARCH } from "constants/fetchData";
 import { SPOTIFY_SEARCH_URL } from "constants/urls";
+import { songIsUnique } from "constants/uniqueChecker";
 
 import FrostedBackground from "components/frostedBackground";
 import PageLayout from "components/pageLayout";
@@ -13,37 +14,29 @@ import SongListWidget from "components/songListWidget";
 import PlayingWidget from "components/playingWidget";
 import PlaylistSelectionWidget from "components/playlistSelectionWidget";
 
-const initializePlaylist = [
-  {
-    name: "Generasi Gigih",
-    data: SONG_DATA,
-  },
-  {
-    name: "New Playlist",
-    data: [],
-  },
-];
-
 export default function Index({ hashToken }) {
   const [currentlyPlaying, setCurrentlyPlaying] = useState(SONG_DATA[0]);
-  const [searchState, setSearchState] = useState(false);
-  const [search, setSearch] = useState([]);
+  const [playlists, setPlaylists] = useState(PLAYLISTS_DATA);
+  const [selectedPlaylist, setSelectedPlaylist] = useState(PLAYLISTS_DATA[0]);
   const [inputValue, setInputValue] = useState("");
-  const [playlists, setPlaylists] = useState(initializePlaylist);
-  const [selectedPlaylist, setSelectedPlaylist] = useState(
-    initializePlaylist[0]
-  );
+  const [openSearchBar, setOpenSearchBar] = useState(false);
+  const [searchResult, setSearchResult] = useState([]);
 
   const changeSongHandler = (song) => {
     setCurrentlyPlaying(song);
-    setPlaylists((prevState) => [...prevState]);
+    let newPlaylist = playlists[1];
+
+    if (songIsUnique(newPlaylist, song)) {
+      newPlaylist.data.push(song);
+      setPlaylists((prevState) => [...prevState.slice(0, 1), newPlaylist]);
+    }
   };
 
   const inputChangeHandler = (e) => {
     setInputValue(e.target.value);
   };
 
-  const searchButtonHandler = (event) => {
+  const searchButtonHandler = async (event) => {
     if (event.key === "Enter" && inputValue) {
       const config = {
         headers: {
@@ -56,27 +49,27 @@ export default function Index({ hashToken }) {
         },
       };
 
-      SPOTIFY_FETCH_SEARCH(SPOTIFY_SEARCH_URL, config).then((res) =>
-        setSearch(res.tracks.items)
+      await SPOTIFY_FETCH_SEARCH(SPOTIFY_SEARCH_URL, config).then((res) =>
+        setSearchResult(res.tracks.items)
       );
     }
   };
 
   const propsParams = {
     listProps: {
-      playlist: searchState ? search : selectedPlaylist.data,
+      playlist: openSearchBar ? searchResult : selectedPlaylist.data,
       currentlyPlaying,
       changeSongHandler,
       inputValue,
       inputChangeHandler,
       searchButtonHandler,
-      searchState,
+      openSearchBar,
     },
     playlistListProps: {
       playlists,
       selectedPlaylist,
       setSelectedPlaylist,
-      setSearchState,
+      setOpenSearchBar,
     },
   };
 
