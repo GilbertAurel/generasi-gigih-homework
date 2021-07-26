@@ -6,6 +6,7 @@ import { useState } from "react";
 import SongCard from "./songCard";
 import SearchBar from "./searchBar";
 import Header from "./header";
+import { COLORS, FONTS } from "constants/theme";
 
 export default function SongList(props) {
   const [toggleMenu, setToggleMenu] = useState("");
@@ -37,6 +38,14 @@ export default function SongList(props) {
         display: none;
       }
     `,
+    noSongAlert: css`
+      display: grid;
+      justify-items: center;
+      align-items: center;
+      font-family: "Noto Sans", sans-serif;
+      font-size: ${FONTS.CONTENT};
+      color: ${COLORS.GRAY};
+    `,
   };
 
   return (
@@ -49,16 +58,22 @@ export default function SongList(props) {
         />
       )}
       <Header />
-      {songs.map((song) => (
-        <SongCard
-          key={song.id}
-          songData={song}
-          changeSongHandler={changeSongHandler}
-          selected={song.id === currentlyPlaying.id}
-          menuHandler={menuHandler}
-          openMenu={song.id === toggleMenu}
-        />
-      ))}
+      {songs?.length > 0 ? (
+        songs.map((song) => (
+          <SongCard
+            key={song.id}
+            songData={song}
+            changeSongHandler={changeSongHandler}
+            selected={song.id === currentlyPlaying.id}
+            menuHandler={menuHandler}
+            openMenu={song.id === toggleMenu}
+          />
+        ))
+      ) : (
+        <div css={styles.noSongAlert}>
+          <p>playlist empty</p>
+        </div>
+      )}
     </div>
   );
 }

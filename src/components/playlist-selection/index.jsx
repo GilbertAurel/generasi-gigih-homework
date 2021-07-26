@@ -8,14 +8,7 @@ import { COLORS, FONTS } from "constants/theme";
 import ICONS from "assets/icons";
 import PopupForm from "components/popupForm";
 
-const initialFormData = {
-  name: "",
-  description: "",
-  data: [],
-};
-
 export default function Index(props) {
-  const [newPlaylist, setNewPlaylist] = useState(initialFormData);
   const [formToggle, setFormToggle] = useState(false);
 
   const {
@@ -23,7 +16,9 @@ export default function Index(props) {
     selectedPlaylist,
     selectPlaylistHandler,
     searchButtonToggle,
-    createNewPlaylist,
+    newPlaylistSubmitHandler,
+    newPlaylist,
+    formInputChangeHandler,
   } = props;
 
   const styles = {
@@ -67,29 +62,13 @@ export default function Index(props) {
     `,
   };
 
-  const createNewButtonHandler = () => setFormToggle(true);
-
-  const formInputChangeHandler = (event) => {
-    setNewPlaylist({
-      ...newPlaylist,
-      [event.target?.name]: event.target?.value,
-    });
-  };
-
-  const formSubmitHandler = (event) => {
-    event.preventDefault();
-    return (
-      newPlaylist.name.length > 10 &&
-      newPlaylist.description.length > 20 &&
-      createNewPlaylist(newPlaylist)
-    );
-  };
+  const createNewButtonHandler = () => setFormToggle((prevState) => !prevState);
 
   return (
     <div css={styles.container}>
       {formToggle && (
         <PopupForm
-          formSubmitHandler={formSubmitHandler}
+          formSubmitHandler={newPlaylistSubmitHandler}
           inputValue={newPlaylist}
           inputHandler={formInputChangeHandler}
         />

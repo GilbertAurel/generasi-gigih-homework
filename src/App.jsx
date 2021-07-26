@@ -13,41 +13,51 @@ import Navbar from "components/navbar";
 import HandsonPage from "pages/handson";
 import HomeworkPage from "pages/homework";
 import LandingPage from "pages/landing";
-import { SPOTIFY_USER_DATA_URL } from "constants/urls";
+
+const initialAuthState = {
+  spotifyToken: "",
+  user: "",
+};
+
+const HASH_SUBSTRING_INDEX = 1;
 
 export default function App() {
-  const HASH_SUBSTRING_INDEX = 1;
   const [selectedMenu, setSelectedMenu] = useState(MENU_SELECTION[0]);
-  const [hashToken, setHashToken] = useState();
-  const [user, setUser] = useState();
+  const [{ spotifyToken, user }, setSpotifyAuth] = useState(initialAuthState);
 
   useEffect(() => {
     if (window.location.hash) {
-      setHashToken(hashSeparator(window.location.hash, HASH_SUBSTRING_INDEX));
+      setSpotifyAuth((currentState) => ({
+        ...currentState,
+        spotifyToken: hashSeparator(window.location.hash, HASH_SUBSTRING_INDEX),
+      }));
     }
   }, []);
 
   useEffect(() => {
-    if (hashToken) {
+    if (spotifyToken) {
       const config = {
         headers: {
-          Authorization: "Bearer " + hashToken.access_token,
+          Authorization: "Bearer " + spotifyToken.access_token,
         },
       };
 
-      SPOTIFY_FETCH_USER_DATA(SPOTIFY_USER_DATA_URL, config).then((res) =>
-        setUser(res)
+      SPOTIFY_FETCH_USER_DATA(config).then((res) =>
+        setSpotifyAuth((currentState) => ({ ...currentState, user: res }))
       );
     }
-  }, [hashToken]);
+  }, [spotifyToken]);
 
   const loginHandler = () => spotifyLogin();
 
-  const logoutHandler = () => spotifyLogout().then(() => setHashToken(""));
+  const logoutHandler = async () => {
+    await spotifyLogout();
+    return setSpotifyAuth(initialAuthState);
+  };
 
   const selectMenuHandler = (menu) => setSelectedMenu(menu);
 
-  if (!hashToken) return <LandingPage loginHandler={loginHandler} />;
+  if (!spotifyToken) return <LandingPage loginHandler={loginHandler} />;
 
   return (
     <div
@@ -61,7 +71,7 @@ export default function App() {
         logoutHandler={logoutHandler}
       />
       {selectedMenu === MENU_SELECTION[0] ? (
-        <HomeworkPage hashToken={hashToken} user={user} />
+        <HomeworkPage spotifyToken={spotifyToken} user={user} />
       ) : (
         <HandsonPage />
       )}

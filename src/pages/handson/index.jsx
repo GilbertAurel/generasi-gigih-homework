@@ -3,12 +3,12 @@
 import { css, jsx } from "@emotion/react";
 import { useState } from "react";
 
-import { GIPHY_SEARCH_URL } from "constants/urls";
+import { GIPHY_FETCH_SEARCH } from "adapters/fetchHandlers";
 import PageLayout from "components/pageLayout";
 import Skeleton from "components/skeleton";
+
 import InputForm from "./inputForm";
 import GifCard from "./gifCard";
-import { GIPHY_FETCH_SEARCH } from "adapters/fetchHandlers";
 
 export default function Index() {
   const [inputValue, setInputValue] = useState("");
@@ -30,7 +30,7 @@ export default function Index() {
       },
     };
 
-    return GIPHY_FETCH_SEARCH(GIPHY_SEARCH_URL, config).then((res) => {
+    return GIPHY_FETCH_SEARCH(config).then((res) => {
       setShowGif(res.data.map((gif) => gif.images.original.url));
       setTimeout(() => setLoaded(true), 1000);
     });
