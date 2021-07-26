@@ -1,39 +1,32 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import { css, jsx } from "@emotion/react";
+import { useSelector, useDispatch } from "react-redux";
 import { useState } from "react";
 
-import { GIPHY_FETCH_SEARCH } from "adapters/fetchHandlers";
 import PageLayout from "components/pageLayout";
 import Skeleton from "components/skeleton";
+import { getNewGIF } from "redux/actions";
 
 import InputForm from "./inputForm";
 import GifCard from "./gifCard";
 
+const DATA_LIMIT = 6;
+
 export default function Index() {
+  const showGif = useSelector((store) => store.gifState.currentGIF);
+  const dispatch = useDispatch();
   const [inputValue, setInputValue] = useState("");
-  const [showGif, setShowGif] = useState([]);
   const [loaded, setLoaded] = useState(true);
   const GIPHY_KEY = process.env.REACT_APP_GIPHY_KEY;
-  const DATA_LIMIT = 6;
 
   const inputChangeHandler = (e) => setInputValue(e.target.value);
 
   const searchButtonHandler = (event) => {
     event.preventDefault();
     setLoaded(false);
-    const config = {
-      params: {
-        api_key: GIPHY_KEY,
-        q: inputValue,
-        limit: DATA_LIMIT,
-      },
-    };
-
-    return GIPHY_FETCH_SEARCH(config).then((res) => {
-      setShowGif(res.data.map((gif) => gif.images.original.url));
-      setTimeout(() => setLoaded(true), 1000);
-    });
+    dispatch(getNewGIF(GIPHY_KEY, inputValue, DATA_LIMIT));
+    setLoaded(true);
   };
 
   const styles = {

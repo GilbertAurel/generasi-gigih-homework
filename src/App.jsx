@@ -9,6 +9,9 @@ import { COLORS } from "constants/theme";
 import { spotifyLogin, spotifyLogout } from "adapters/spotifyAuth";
 import { SPOTIFY_FETCH_USER_DATA } from "adapters/fetchHandlers";
 
+import { Provider } from "react-redux";
+import rootReducer from "redux/reducers";
+
 import Navbar from "components/navbar";
 import HandsonPage from "pages/handson";
 import HomeworkPage from "pages/homework";
@@ -20,6 +23,8 @@ const initialAuthState = {
 };
 
 const HASH_SUBSTRING_INDEX = 1;
+
+const store = rootReducer;
 
 export default function App() {
   const [selectedMenu, setSelectedMenu] = useState(MENU_SELECTION[0]);
@@ -60,21 +65,23 @@ export default function App() {
   if (!spotifyToken) return <LandingPage loginHandler={loginHandler} />;
 
   return (
-    <div
-      css={css`
-        background-color: ${COLORS.BG_DARK};
-      `}
-    >
-      <Navbar
-        selectedMenu={selectedMenu}
-        selectMenuHandler={selectMenuHandler}
-        logoutHandler={logoutHandler}
-      />
-      {selectedMenu === MENU_SELECTION[0] ? (
-        <HomeworkPage spotifyToken={spotifyToken} user={user} />
-      ) : (
-        <HandsonPage />
-      )}
-    </div>
+    <Provider store={store}>
+      <div
+        css={css`
+          background-color: ${COLORS.BG_DARK};
+        `}
+      >
+        <Navbar
+          selectedMenu={selectedMenu}
+          selectMenuHandler={selectMenuHandler}
+          logoutHandler={logoutHandler}
+        />
+        {selectedMenu === MENU_SELECTION[0] ? (
+          <HomeworkPage spotifyToken={spotifyToken} user={user} />
+        ) : (
+          <HandsonPage />
+        )}
+      </div>
+    </Provider>
   );
 }
