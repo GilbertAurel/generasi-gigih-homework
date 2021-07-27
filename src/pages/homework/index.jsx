@@ -1,30 +1,45 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import { css, jsx } from "@emotion/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { spotifyLoginAuth } from "redux/actions";
 
-import { SONG_DATA, PLAYLISTS_DATA } from "constants/dummyData";
 import { SPOTIFY_FETCH_SEARCH } from "adapters/fetchHandlers";
 import { SPOTIFY_CREATE_PLAYLIST } from "adapters/postHandler";
-import {
-  SPOTIFY_CREATE_PLAYLIST_URL,
-  SPOTIFY_SEARCH_URL,
-} from "constants/urls";
+import { SONG_DATA, PLAYLISTS_DATA } from "constants/dummyData";
 import { songIsUnique } from "constants/uniqueChecker";
+import { useForm } from "constants/useForm";
 
-import Background from "components/frostedBackground";
-import PageLayout from "components/pageLayout";
-import SongList from "components/song-list";
-import SongPlayer from "components/song-player";
-import PlaylistSelections from "components/playlist-selection";
+import {
+  PageLayout,
+  SongList,
+  SongPlayer,
+  PlaylistSelection,
+  FrostedBackground,
+} from "components";
 
-export default function Index({ hashToken, user }) {
+const initialFormData = {
+  name: "",
+  description: "",
+  data: [],
+};
+
+export default function Index({ spotifyToken }) {
+  const dispatch = useDispatch();
+  const user = useSelector((store) => store.userState.user);
   const [currentlyPlaying, setCurrentlyPlaying] = useState(SONG_DATA[0]);
   const [playlists, setPlaylists] = useState(PLAYLISTS_DATA);
   const [selectedPlaylist, setSelectedPlaylist] = useState(PLAYLISTS_DATA[0]);
   const [inputValue, setInputValue] = useState("");
   const [openSearchBar, setOpenSearchBar] = useState(false);
   const [searchResult, setSearchResult] = useState([]);
+  const [newPlaylist, formInputChangeHandler, resetPlaylistForm] =
+    useForm(initialFormData);
+
+  useEffect(() => {
+    dispatch(spotifyLoginAuth(spotifyToken));
+  }, []);
 
   const inputChangeHandler = (e) => setInputValue(e.target.value);
 
@@ -51,7 +66,7 @@ export default function Index({ hashToken, user }) {
     if (inputValue) {
       const config = {
         headers: {
-          Authorization: "Bearer " + hashToken.access_token,
+          Authorization: "Bearer " + spotifyToken.access_token,
         },
         params: {
           q: inputValue,
@@ -60,31 +75,42 @@ export default function Index({ hashToken, user }) {
         },
       };
 
-      return SPOTIFY_FETCH_SEARCH(SPOTIFY_SEARCH_URL, config).then((res) =>
+      return SPOTIFY_FETCH_SEARCH(config).then((res) =>
         setSearchResult(res.tracks.items)
       );
     }
   };
 
-  const createNewPlaylist = (newPlaylist) => {
+  const createNewPlaylist = () => {
     if (newPlaylist) {
       const config = {
         headers: {
-          Authorization: "Bearer " + hashToken.access_token,
+          Authorization: "Bearer " + spotifyToken.access_token,
           "Content-Type": "application/json",
-        },
-        body: {
-          name: newPlaylist.name,
-          description: newPlaylist.description,
-          public: false,
+          Accept: "application/json",
         },
       };
 
-      return SPOTIFY_CREATE_PLAYLIST(
-        SPOTIFY_CREATE_PLAYLIST_URL(user.id),
-        config
-      ).then(() => setPlaylists([...playlists, newPlaylist]));
+      const postData = {
+        name: newPlaylist.name,
+        description: newPlaylist.description,
+        public: false,
+      };
+
+      return SPOTIFY_CREATE_PLAYLIST(user.id, postData, config).then(() => {
+        setPlaylists([...playlists, newPlaylist]);
+        resetPlaylistForm(initialFormData);
+      });
     }
+  };
+
+  const newPlaylistSubmitHandler = (event) => {
+    event.preventDefault();
+    return (
+      newPlaylist.name.length > 10 &&
+      newPlaylist.description.length > 20 &&
+      createNewPlaylist(newPlaylist)
+    );
   };
 
   const params = {
@@ -102,7 +128,9 @@ export default function Index({ hashToken, user }) {
       selectedPlaylist,
       selectPlaylistHandler,
       searchButtonToggle,
-      createNewPlaylist,
+      newPlaylist,
+      formInputChangeHandler,
+      newPlaylistSubmitHandler,
     },
   };
 
@@ -124,9 +152,9 @@ export default function Index({ hashToken, user }) {
     <PageLayout>
       <div css={styles.container}>
         <SongPlayer currentlyPlaying={currentlyPlaying} />
-        <PlaylistSelections {...params.playlistSelection} />
+        <PlaylistSelection {...params.playlistSelection} />
         <SongList {...params.songList} />
-        <Background imageUrl={currentlyPlaying.album.images[0].url} />
+        <FrostedBackground imageUrl={currentlyPlaying.album.images[0].url} />
       </div>
     </PageLayout>
   );

@@ -13,6 +13,7 @@ export default function TableHeader() {
       grid-template-areas: "image title artist length menu";
       align-items: center;
       gap: 1rem;
+      border-bottom: 0.5px solid ${COLORS.GRAY};
 
       p:nth-of-type(1) {
         grid-area: title;

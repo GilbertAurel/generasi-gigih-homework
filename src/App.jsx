@@ -7,64 +7,58 @@ import { MENU_SELECTION } from "constants/dummyData";
 import { hashSeparator } from "constants/converter";
 import { COLORS } from "constants/theme";
 import { spotifyLogin, spotifyLogout } from "adapters/spotifyAuth";
-import { SPOTIFY_FETCH_USER_DATA } from "adapters/fetchHandlers";
+
+import { Provider } from "react-redux";
+import rootReducer from "redux/reducers";
 
 import Navbar from "components/navbar";
 import HandsonPage from "pages/handson";
 import HomeworkPage from "pages/homework";
 import LandingPage from "pages/landing";
-import { SPOTIFY_USER_DATA_URL } from "constants/urls";
+
+const HASH_SUBSTRING_INDEX = 1;
+
+const store = rootReducer;
 
 export default function App() {
-  const HASH_SUBSTRING_INDEX = 1;
   const [selectedMenu, setSelectedMenu] = useState(MENU_SELECTION[0]);
-  const [hashToken, setHashToken] = useState();
-  const [user, setUser] = useState();
+  const [spotifyToken, setSpotifyAuth] = useState("");
 
   useEffect(() => {
     if (window.location.hash) {
-      setHashToken(hashSeparator(window.location.hash, HASH_SUBSTRING_INDEX));
+      setSpotifyAuth(hashSeparator(window.location.hash, HASH_SUBSTRING_INDEX));
     }
   }, []);
 
-  useEffect(() => {
-    if (hashToken) {
-      const config = {
-        headers: {
-          Authorization: "Bearer " + hashToken.access_token,
-        },
-      };
-
-      SPOTIFY_FETCH_USER_DATA(SPOTIFY_USER_DATA_URL, config).then((res) =>
-        setUser(res)
-      );
-    }
-  }, [hashToken]);
-
   const loginHandler = () => spotifyLogin();
 
-  const logoutHandler = () => spotifyLogout().then(() => setHashToken(""));
+  const logoutHandler = async () => {
+    await spotifyLogout();
+    return setSpotifyAuth("");
+  };
 
   const selectMenuHandler = (menu) => setSelectedMenu(menu);
 
-  if (!hashToken) return <LandingPage loginHandler={loginHandler} />;
+  if (!spotifyToken) return <LandingPage loginHandler={loginHandler} />;
 
   return (
-    <div
-      css={css`
-        background-color: ${COLORS.BG_DARK};
-      `}
-    >
-      <Navbar
-        selectedMenu={selectedMenu}
-        selectMenuHandler={selectMenuHandler}
-        logoutHandler={logoutHandler}
-      />
-      {selectedMenu === MENU_SELECTION[0] ? (
-        <HomeworkPage hashToken={hashToken} user={user} />
-      ) : (
-        <HandsonPage />
-      )}
-    </div>
+    <Provider store={store}>
+      <div
+        css={css`
+          background-color: ${COLORS.BG_DARK};
+        `}
+      >
+        <Navbar
+          selectedMenu={selectedMenu}
+          selectMenuHandler={selectMenuHandler}
+          logoutHandler={logoutHandler}
+        />
+        {selectedMenu === MENU_SELECTION[0] ? (
+          <HomeworkPage spotifyToken={spotifyToken} />
+        ) : (
+          <HandsonPage />
+        )}
+      </div>
+    </Provider>
   );
 }

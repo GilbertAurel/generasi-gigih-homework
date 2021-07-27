@@ -1,0 +1,3 @@
+export const GET_NEW_GIF = "GET_NEW_GIF";
+export const SPOTIFY_LOGIN_AUTH = "SPOTIFY_LOGIN_AUTH";
+export const SET_PLAYLIST = "SET_PLAYLIST";
