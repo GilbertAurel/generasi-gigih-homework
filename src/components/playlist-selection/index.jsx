@@ -4,9 +4,9 @@ import { css, jsx } from "@emotion/react";
 import { useState } from "react";
 
 import PlaylistCard from "./playlistCard";
-import { COLORS, FONTS } from "constants/theme";
-import ICONS from "assets/icons";
-import PopupForm from "components/popupForm";
+import { PopupForm } from "components";
+import CreateNewCard from "./createNewCard";
+import Header from "./header";
 
 export default function Index(props) {
   const [formToggle, setFormToggle] = useState(false);
@@ -14,10 +14,10 @@ export default function Index(props) {
   const {
     playlists,
     selectedPlaylist,
-    selectPlaylistHandler,
     searchButtonToggle,
-    newPlaylistSubmitHandler,
     newPlaylist,
+    selectPlaylistHandler,
+    newPlaylistSubmitHandler,
     formInputChangeHandler,
   } = props;
 
@@ -30,39 +30,11 @@ export default function Index(props) {
       z-index: 1000;
       font-family: "Noto Sans", sans-serif;
     `,
-    header: css`
-      display: flex;
-      flex-direction: row;
-      gap: 1rem;
-
-      h1:nth-of-type(1) {
-        margin: 0;
-        padding: 0;
-        font-size: ${FONTS.BODY};
-        color: ${COLORS.PRIMARY};
-      }
-    `,
-    searchButton: css`
-      margin: 0;
-      padding: 0;
-      font-weight: 500;
-      font-size: ${FONTS.BODY};
-      color: ${COLORS.GRAY};
-      cursor: pointer;
-    `,
-    createNewButton: css`
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      gap: 1rem;
-      cursor: pointer;
-      font-family: "Noto Sans", sans-serif;
-      font-size: ${FONTS.CONTENT};
-      color: ${COLORS.GRAY};
-    `,
   };
 
   const createNewButtonHandler = () => setFormToggle((prevState) => !prevState);
+
+  const searchFormButtonHandler = () => searchButtonToggle({ state: true });
 
   return (
     <div css={styles.container}>
@@ -73,15 +45,7 @@ export default function Index(props) {
           inputHandler={formInputChangeHandler}
         />
       )}
-      <div css={styles.header}>
-        <h1>My Playlist</h1>
-        <h1
-          css={styles.searchButton}
-          onClick={() => searchButtonToggle({ state: true })}
-        >
-          search
-        </h1>
-      </div>
+      <Header searchFormButtonHandler={searchFormButtonHandler} />
       {playlists.map((playlist, index) => (
         <PlaylistCard
           key={index}
@@ -90,10 +54,7 @@ export default function Index(props) {
           selectedPlaylist={selectedPlaylist}
         />
       ))}
-      <div css={styles.createNewButton} onClick={createNewButtonHandler}>
-        <img src={ICONS.ADD} alt="new playlist" />
-        <p>Create new playlist</p>
-      </div>
+      <CreateNewCard createNewButtonHandler={createNewButtonHandler} />
     </div>
   );
 }
