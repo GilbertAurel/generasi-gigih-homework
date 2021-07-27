@@ -1,8 +1,13 @@
 import {
   GIPHY_FETCH_SEARCH,
   SPOTIFY_FETCH_USER_DATA,
+  SPOTIFY_FETCH_PLAYLIST,
 } from "adapters/fetchHandlers";
-import { GET_NEW_GIF, SPOTIFY_LOGIN_AUTH } from "redux/constant";
+import {
+  GET_NEW_GIF,
+  SPOTIFY_LOGIN_AUTH,
+  SPOTIFY_SET_PLAYLIST,
+} from "redux/constant";
 
 export function getNewGIF(GIPHY_KEY, inputValue, DATA_LIMIT) {
   const config = {
@@ -42,6 +47,25 @@ export function spotifyLoginAuth(hashParams) {
       dispatch({
         type: SPOTIFY_LOGIN_AUTH,
         payload: payload,
+      });
+    });
+  };
+}
+
+export function spotifyFetchPlaylist(hashParams) {
+  const { access_token } = hashParams;
+
+  const config = {
+    headers: {
+      Authorization: "Bearer " + access_token,
+    },
+  };
+
+  return (dispatch) => {
+    SPOTIFY_FETCH_PLAYLIST(config).then((res) => {
+      dispatch({
+        type: SPOTIFY_SET_PLAYLIST,
+        payload: res.items,
       });
     });
   };

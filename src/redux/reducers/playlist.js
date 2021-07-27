@@ -1,4 +1,4 @@
-import { SET_PLAYLIST } from "redux/constant";
+import { SPOTIFY_SET_PLAYLIST } from "redux/constant";
 
 const initialState = {
   playlists: [],
@@ -6,7 +6,7 @@ const initialState = {
 
 export const playlistReducer = (state = initialState, action) => {
   switch (action.type) {
-    case SET_PLAYLIST:
+    case SPOTIFY_SET_PLAYLIST:
       return {
         ...state,
         playlists: action.payload,

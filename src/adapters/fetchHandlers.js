@@ -3,6 +3,7 @@ import {
   SPOTIFY_SEARCH_URL,
   SPOTIFY_USER_DATA_URL,
   GIPHY_SEARCH_URL,
+  SPOTIFY_FETCH_PLAYLIST_URL,
 } from "constants/urls";
 
 function fetchData(url, config) {
@@ -22,4 +23,8 @@ export function SPOTIFY_FETCH_SEARCH(config) {
 
 export function SPOTIFY_FETCH_USER_DATA(config) {
   return fetchData(SPOTIFY_USER_DATA_URL, config);
+}
+
+export function SPOTIFY_FETCH_PLAYLIST(config) {
+  return fetchData(SPOTIFY_FETCH_PLAYLIST_URL, config);
 }

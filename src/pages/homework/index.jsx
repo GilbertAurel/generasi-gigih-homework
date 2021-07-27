@@ -3,7 +3,7 @@
 import { css, jsx } from "@emotion/react";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { spotifyLoginAuth } from "redux/actions";
+import { spotifyLoginAuth, spotifyFetchPlaylist } from "redux/actions";
 
 import { SPOTIFY_FETCH_SEARCH } from "adapters/fetchHandlers";
 import { SPOTIFY_CREATE_PLAYLIST } from "adapters/postHandler";
@@ -28,8 +28,9 @@ const initialFormData = {
 export default function Index({ spotifyToken }) {
   const dispatch = useDispatch();
   const user = useSelector((store) => store.userState.user);
+  const reduxPlaylist = useSelector((store) => store.playlistState.playlists);
   const [currentlyPlaying, setCurrentlyPlaying] = useState(SONG_DATA[0]);
-  const [playlists, setPlaylists] = useState(PLAYLISTS_DATA);
+  const [playlists, setPlaylists] = useState(reduxPlaylist);
   const [selectedPlaylist, setSelectedPlaylist] = useState(PLAYLISTS_DATA[0]);
   const [inputValue, setInputValue] = useState("");
   const [openSearchBar, setOpenSearchBar] = useState(false);
@@ -39,7 +40,8 @@ export default function Index({ spotifyToken }) {
 
   useEffect(() => {
     dispatch(spotifyLoginAuth(spotifyToken));
-  }, []);
+    dispatch(spotifyFetchPlaylist(spotifyToken));
+  }, [dispatch, spotifyToken]);
 
   const inputChangeHandler = (e) => setInputValue(e.target.value);
 
