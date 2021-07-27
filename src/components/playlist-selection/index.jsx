@@ -7,12 +7,13 @@ import PlaylistCard from "./playlistCard";
 import { PopupForm } from "components";
 import CreateNewCard from "./createNewCard";
 import Header from "./header";
+import { useSelector } from "react-redux";
 
 export default function Index(props) {
+  const playlists = useSelector((store) => store.playlistState.playlists);
   const [formToggle, setFormToggle] = useState(false);
 
   const {
-    playlists,
     selectedPlaylist,
     searchButtonToggle,
     newPlaylist,
@@ -46,7 +47,7 @@ export default function Index(props) {
         />
       )}
       <Header searchFormButtonHandler={searchFormButtonHandler} />
-      {playlists.map((playlist, index) => (
+      {playlists?.map((playlist, index) => (
         <PlaylistCard
           key={index}
           playlistData={playlist}

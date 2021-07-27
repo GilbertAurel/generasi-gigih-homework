@@ -1,22 +1,39 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import { css, jsx } from "@emotion/react";
-import { useState } from "react";
+import { FrostedBackground } from "components";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
 import Details from "./details";
 import Tracker from "./tracker";
 
 export default function PlayingCard({ currentlyPlaying }) {
-  const [playSong, setPlaySong] = useState("PLAY");
+  const initialPlaying = useSelector(
+    (store) => store.playlistState.currentlyPlaying
+  );
+  const [togglePlay, setTogglePlay] = useState("PLAY");
+  const [playing, setPlaying] = useState();
+
+  useEffect(() => {
+    if (initialPlaying) {
+      setPlaying(initialPlaying);
+    }
+  }, [initialPlaying]);
+
+  useEffect(() => {
+    setPlaying(currentlyPlaying);
+  }, [currentlyPlaying]);
 
   const playPauseHandler = () =>
-    playSong === "PAUSE" ? setPlaySong("PLAY") : setPlaySong("PAUSE");
+    togglePlay === "PAUSE" ? setTogglePlay("PLAY") : setTogglePlay("PAUSE");
 
   const song = {
-    image: currentlyPlaying.album.images[0].url,
-    title: currentlyPlaying.name,
-    artist: currentlyPlaying.artists[0].name,
-    album: currentlyPlaying.album.name,
+    background: playing?.album.images[2].url,
+    image: playing?.album.images[1].url,
+    title: playing?.name,
+    artist: playing?.artists[0].name,
+    album: playing?.album.name,
   };
 
   const styles = {
@@ -37,11 +54,14 @@ export default function PlayingCard({ currentlyPlaying }) {
     `,
   };
 
+  if (!playing) return <h1>loading</h1>; //TODO: Put skeleton here
+
   return (
     <div css={styles.container}>
       <img src={song.image} alt="Album img" css={styles.albumImage} />
       <Details artist={song.artist} album={song.album} song={song.title} />
-      <Tracker playPauseHandler={playPauseHandler} icon={playSong} />
+      <Tracker playPauseHandler={playPauseHandler} icon={togglePlay} />
+      <FrostedBackground imageUrl={song.background} />
     </div>
   );
 }

@@ -3,12 +3,15 @@
 import { css, jsx } from "@emotion/react";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { spotifyLoginAuth, spotifyFetchPlaylist } from "redux/actions";
+import {
+  spotifyLoginAuth,
+  spotifyFetchPlaylist,
+  spotifyFetchPlaylistTracks,
+  spotifyFetchCurrentlyPlaying,
+} from "redux/actions";
 
 import { SPOTIFY_FETCH_SEARCH } from "adapters/fetchHandlers";
 import { SPOTIFY_CREATE_PLAYLIST } from "adapters/postHandler";
-import { SONG_DATA, PLAYLISTS_DATA } from "constants/dummyData";
-import { songIsUnique } from "constants/uniqueChecker";
 import { useForm } from "constants/useForm";
 
 import {
@@ -16,7 +19,6 @@ import {
   SongList,
   SongPlayer,
   PlaylistSelection,
-  FrostedBackground,
 } from "components";
 
 const initialFormData = {
@@ -28,10 +30,12 @@ const initialFormData = {
 export default function Index({ spotifyToken }) {
   const dispatch = useDispatch();
   const user = useSelector((store) => store.userState.user);
-  const reduxPlaylist = useSelector((store) => store.playlistState.playlists);
-  const [currentlyPlaying, setCurrentlyPlaying] = useState(SONG_DATA[0]);
-  const [playlists, setPlaylists] = useState(reduxPlaylist);
-  const [selectedPlaylist, setSelectedPlaylist] = useState(PLAYLISTS_DATA[0]);
+  const currentTracks = useSelector(
+    (store) => store.playlistState.currentTracks
+  );
+  const initialPlaylist = useSelector((store) => store.playlistState.playlists);
+  const [currentlyPlaying, setCurrentlyPlaying] = useState();
+  const [selectedPlaylist, setSelectedPlaylist] = useState(initialPlaylist[0]);
   const [inputValue, setInputValue] = useState("");
   const [openSearchBar, setOpenSearchBar] = useState(false);
   const [searchResult, setSearchResult] = useState([]);
@@ -41,23 +45,17 @@ export default function Index({ spotifyToken }) {
   useEffect(() => {
     dispatch(spotifyLoginAuth(spotifyToken));
     dispatch(spotifyFetchPlaylist(spotifyToken));
+    dispatch(spotifyFetchCurrentlyPlaying(spotifyToken, "ES"));
   }, [dispatch, spotifyToken]);
 
   const inputChangeHandler = (e) => setInputValue(e.target.value);
 
   const searchButtonToggle = ({ state }) => setOpenSearchBar(state);
 
-  const changeSongHandler = (song) => {
-    setCurrentlyPlaying(song);
-    const newPlaylist = playlists[1];
-
-    if (songIsUnique(newPlaylist, song) && newPlaylist) {
-      newPlaylist.data.push(song);
-      setPlaylists((prevState) => [...prevState.slice(0, 1), newPlaylist]);
-    }
-  };
+  const changeSongHandler = (song) => setCurrentlyPlaying(song);
 
   const selectPlaylistHandler = (playlist) => {
+    dispatch(spotifyFetchPlaylistTracks(spotifyToken, playlist.id, "ES"));
     searchButtonToggle({ state: false });
     setSelectedPlaylist(playlist);
   };
@@ -99,10 +97,9 @@ export default function Index({ spotifyToken }) {
         public: false,
       };
 
-      return SPOTIFY_CREATE_PLAYLIST(user.id, postData, config).then(() => {
-        setPlaylists([...playlists, newPlaylist]);
-        resetPlaylistForm(initialFormData);
-      });
+      return SPOTIFY_CREATE_PLAYLIST(user.id, postData, config).then(() =>
+        resetPlaylistForm(initialFormData)
+      );
     }
   };
 
@@ -117,7 +114,7 @@ export default function Index({ spotifyToken }) {
 
   const params = {
     songList: {
-      songs: openSearchBar ? searchResult : selectedPlaylist.data,
+      songs: openSearchBar ? searchResult : currentTracks,
       currentlyPlaying,
       changeSongHandler,
       inputValue,
@@ -126,7 +123,6 @@ export default function Index({ spotifyToken }) {
       openSearchBar,
     },
     playlistSelection: {
-      playlists,
       selectedPlaylist,
       selectPlaylistHandler,
       searchButtonToggle,
@@ -156,7 +152,6 @@ export default function Index({ spotifyToken }) {
         <SongPlayer currentlyPlaying={currentlyPlaying} />
         <PlaylistSelection {...params.playlistSelection} />
         <SongList {...params.songList} />
-        <FrostedBackground imageUrl={currentlyPlaying.album.images[0].url} />
       </div>
     </PageLayout>
   );

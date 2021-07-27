@@ -64,7 +64,7 @@ export default function SongList(props) {
             key={song.id}
             songData={song}
             changeSongHandler={changeSongHandler}
-            selected={song.id === currentlyPlaying.id}
+            selected={song.id === currentlyPlaying?.id}
             menuHandler={menuHandler}
             openMenu={song.id === toggleMenu}
           />
