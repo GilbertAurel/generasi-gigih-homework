@@ -4,8 +4,7 @@ import { css, jsx } from "@emotion/react";
 import { useSelector, useDispatch } from "react-redux";
 import { useState } from "react";
 
-import PageLayout from "components/pageLayout";
-import Skeleton from "components/skeleton";
+import { PageLayout, Skeleton } from "components";
 import { getNewGIF } from "redux/actions";
 
 import InputForm from "./inputForm";
