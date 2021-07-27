@@ -1,13 +1,20 @@
-import {
-  GIPHY_FETCH_SEARCH,
-  SPOTIFY_FETCH_USER_DATA,
-  SPOTIFY_FETCH_PLAYLIST,
-} from "adapters/fetchHandlers";
+import fetchHandler from "adapters/fetchHandlers";
+
 import {
   GET_NEW_GIF,
   SPOTIFY_LOGIN_AUTH,
   SPOTIFY_SET_PLAYLIST,
+  SPOTIFY_SET_CURRENT_TRACKS,
+  SPOTIFY_SET_CURRENTLY_PLAYING,
 } from "redux/constant";
+
+import {
+  SPOTIFY_USER_DATA_URL,
+  GIPHY_SEARCH_URL,
+  SPOTIFY_FETCH_PLAYLIST_URL,
+  SPOTIFY_FETCH_PLAYLIST_TRACK_URL,
+  SPOTIFY_FETCH_CURRENTLY_PLAYING_URL,
+} from "constants/urls";
 
 export function getNewGIF(GIPHY_KEY, inputValue, DATA_LIMIT) {
   const config = {
@@ -19,7 +26,7 @@ export function getNewGIF(GIPHY_KEY, inputValue, DATA_LIMIT) {
   };
 
   return (dispatch) => {
-    GIPHY_FETCH_SEARCH(config).then((res) => {
+    fetchHandler(GIPHY_SEARCH_URL, config).then((res) => {
       dispatch({
         type: GET_NEW_GIF,
         payload: res.data.map((gif) => gif.images.original.url),
@@ -38,7 +45,7 @@ export function spotifyLoginAuth(hashParams) {
   };
 
   return (dispatch) => {
-    SPOTIFY_FETCH_USER_DATA(config).then((res) => {
+    fetchHandler(SPOTIFY_USER_DATA_URL, config).then((res) => {
       const payload = {
         token: access_token,
         user: res,
@@ -62,11 +69,56 @@ export function spotifyFetchPlaylist(hashParams) {
   };
 
   return (dispatch) => {
-    SPOTIFY_FETCH_PLAYLIST(config).then((res) => {
+    fetchHandler(SPOTIFY_FETCH_PLAYLIST_URL, config).then((res) =>
       dispatch({
         type: SPOTIFY_SET_PLAYLIST,
         payload: res.items,
+      })
+    );
+  };
+}
+
+export function spotifyFetchPlaylistTracks(hashParams, id, market) {
+  const { access_token } = hashParams;
+
+  const config = {
+    headers: {
+      Authorization: "Bearer " + access_token,
+    },
+    params: {
+      market: market,
+      limit: 20,
+    },
+  };
+
+  return (dispatch) => {
+    fetchHandler(SPOTIFY_FETCH_PLAYLIST_TRACK_URL(id), config).then((res) => {
+      dispatch({
+        type: SPOTIFY_SET_CURRENT_TRACKS,
+        payload: res.items.map((item) => item.track),
       });
     });
+  };
+}
+
+export function spotifyFetchCurrentlyPlaying(hashParams, market) {
+  const { access_token } = hashParams;
+
+  const config = {
+    headers: {
+      Authorization: "Bearer " + access_token,
+    },
+    params: {
+      market: market,
+    },
+  };
+
+  return (dispatch) => {
+    fetchHandler(SPOTIFY_FETCH_CURRENTLY_PLAYING_URL, config).then((res) =>
+      dispatch({
+        type: SPOTIFY_SET_CURRENTLY_PLAYING,
+        payload: res.item,
+      })
+    );
   };
 }
