@@ -2,22 +2,20 @@
 /** @jsx jsx */
 import { css, jsx } from "@emotion/react";
 import { useState, useEffect } from "react";
-
-import { MENU_SELECTION } from "constants/dummyData";
-import { hashSeparator } from "constants/converter";
-import { COLORS } from "constants/theme";
-import { spotifyLogin, spotifyLogout } from "adapters/spotifyAuth";
-
 import { Provider } from "react-redux";
 import rootReducer from "redux/reducers";
 
-import Navbar from "components/navbar";
+import { spotifyLogin, spotifyLogout } from "adapters/spotifyAuth";
+import { MENU_SELECTION } from "constants/dummyData";
+import { hashSeparator } from "constants/converter";
+import { COLORS } from "constants/theme";
+
+import { Navbar } from "components";
 import HandsonPage from "pages/handson";
 import HomeworkPage from "pages/homework";
 import LandingPage from "pages/landing";
 
 const HASH_SUBSTRING_INDEX = 1;
-
 const store = rootReducer;
 
 export default function App() {
