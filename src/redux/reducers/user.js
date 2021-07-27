@@ -5,7 +5,7 @@ const initialState = {
   user: {},
 };
 
-export const userState = (state = initialState, action) => {
+export const userReducer = (state = initialState, action) => {
   switch (action.type) {
     case SPOTIFY_LOGIN_AUTH:
       return {
