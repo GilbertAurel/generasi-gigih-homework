@@ -2,6 +2,7 @@ import {
   SPOTIFY_SET_PLAYLIST,
   SPOTIFY_SET_CURRENT_TRACKS,
   SPOTIFY_SET_CURRENTLY_PLAYING,
+  SPOTIFY_ADD_CURRENT_TRACKS,
 } from "redux/constant";
 
 const initialState = {
@@ -21,6 +22,11 @@ export const playlistReducer = (state = initialState, action) => {
       return {
         ...state,
         currentTracks: action.payload,
+      };
+    case SPOTIFY_ADD_CURRENT_TRACKS:
+      return {
+        ...state,
+        currentTracks: [...state.currentTracks, ...action.payload],
       };
     case SPOTIFY_SET_CURRENTLY_PLAYING:
       return {

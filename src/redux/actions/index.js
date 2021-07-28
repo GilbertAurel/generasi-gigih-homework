@@ -6,6 +6,7 @@ import {
   SPOTIFY_SET_PLAYLIST,
   SPOTIFY_SET_CURRENT_TRACKS,
   SPOTIFY_SET_CURRENTLY_PLAYING,
+  SPOTIFY_ADD_CURRENT_TRACKS,
 } from "redux/constant";
 
 import {
@@ -15,6 +16,10 @@ import {
   SPOTIFY_FETCH_PLAYLIST_TRACK_URL,
   SPOTIFY_FETCH_CURRENTLY_PLAYING_URL,
 } from "constants/urls";
+
+import { SPOTIFY_PLAYLIST_OFFSET_LIMIT } from "constants/dummyData";
+
+const { offset, limit } = SPOTIFY_PLAYLIST_OFFSET_LIMIT;
 
 export function getNewGIF(GIPHY_KEY, inputValue, DATA_LIMIT) {
   const config = {
@@ -87,7 +92,8 @@ export function spotifyFetchPlaylistTracks(hashParams, id, market) {
     },
     params: {
       market: market,
-      limit: 20,
+      limit,
+      offset,
     },
   };
 
@@ -95,6 +101,30 @@ export function spotifyFetchPlaylistTracks(hashParams, id, market) {
     fetchHandler(SPOTIFY_FETCH_PLAYLIST_TRACK_URL(id), config).then((res) => {
       dispatch({
         type: SPOTIFY_SET_CURRENT_TRACKS,
+        payload: res.items.map((item) => item.track),
+      });
+    });
+  };
+}
+
+export function spotifyAddPlaylistTracks(hashParams, id, market, newOffset) {
+  const { access_token } = hashParams;
+
+  const config = {
+    headers: {
+      Authorization: "Bearer " + access_token,
+    },
+    params: {
+      market: market,
+      limit,
+      offset: limit * newOffset,
+    },
+  };
+
+  return (dispatch) => {
+    fetchHandler(SPOTIFY_FETCH_PLAYLIST_TRACK_URL(id), config).then((res) => {
+      dispatch({
+        type: SPOTIFY_ADD_CURRENT_TRACKS,
         payload: res.items.map((item) => item.track),
       });
     });
