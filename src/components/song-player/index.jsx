@@ -1,7 +1,7 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import { css, jsx } from "@emotion/react";
-import { FrostedBackground } from "components";
+import { FrostedBackground, Skeleton } from "components";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 
@@ -54,5 +54,12 @@ export default function PlayingCard() {
     );
   }
 
-  return <h1>loading</h1>; //TODO: Put skeleton here
+  return (
+    <div css={styles.container}>
+      <Skeleton type={"album"} />
+      <Details artist={""} album={""} song={"No current song"} />
+      <Tracker playPauseHandler={playPauseHandler} icon={togglePlay} />
+      <FrostedBackground imageUrl={""} />
+    </div>
+  );
 }

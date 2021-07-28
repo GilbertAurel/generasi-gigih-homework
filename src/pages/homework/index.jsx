@@ -9,6 +9,7 @@ import {
   spotifyFetchPlaylistTracks,
   spotifyFetchCurrentlyPlaying,
   spotifyChangeSong,
+  spotifyAddPlaylistTracks,
 } from "redux/actions";
 
 import { SPOTIFY_FETCH_SEARCH } from "adapters/fetchHandlers";
@@ -32,6 +33,8 @@ const initialFormData = {
   },
 };
 
+const initialScrollIndex = 1;
+
 export default function Index({ spotifyToken }) {
   const dispatch = useDispatch();
   const user = useSelector((store) => store.userState.user);
@@ -47,6 +50,7 @@ export default function Index({ spotifyToken }) {
   const [newPlaylist, formInputChangeHandler, resetPlaylistForm] = useForm(
     initialFormData.playlist
   );
+  const [scrollIndex, setScrollIndex] = useState(initialScrollIndex);
 
   useEffect(() => {
     dispatch(spotifyLoginAuth(spotifyToken));
@@ -62,6 +66,7 @@ export default function Index({ spotifyToken }) {
     dispatch(spotifyFetchPlaylistTracks(spotifyToken, playlist.id, "ES"));
     searchButtonToggle({ state: false });
     setSelectedPlaylist(playlist);
+    setScrollIndex(initialScrollIndex);
   };
 
   const searchButtonHandler = (event) => {
@@ -132,23 +137,41 @@ export default function Index({ spotifyToken }) {
     );
   };
 
+  const onScrollReloadNewData = (e) => {
+    const scrollAtBottom =
+      e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight;
+
+    if (scrollAtBottom) {
+      setScrollIndex((prevState) => prevState + 1);
+      dispatch(
+        spotifyAddPlaylistTracks(
+          spotifyToken,
+          selectedPlaylist.id,
+          "ES",
+          scrollIndex
+        )
+      );
+    }
+  };
+
   const params = {
     songList: {
       songs: openSearchBar ? searchResult : currentTracks,
       changeSongHandler,
-      searchValue,
-      searchInputChangeHandler,
       searchButtonHandler,
+      searchInputChangeHandler,
+      searchValue,
       openSearchBar,
       addSongToPlaylist,
+      onScrollReloadNewData,
     },
     playlistSelection: {
-      selectedPlaylist,
       selectPlaylistHandler,
-      searchButtonToggle,
-      newPlaylist,
       formInputChangeHandler,
       newPlaylistSubmitHandler,
+      searchButtonToggle,
+      selectedPlaylist,
+      newPlaylist,
     },
   };
 

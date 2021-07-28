@@ -41,6 +41,9 @@ export default function PlaylistCard({
           color: ${selectedPlaylist?.name === playlist.name
             ? COLORS.PRIMARY
             : COLORS.TEXT_BRIGHT};
+          :hover {
+            color: ${COLORS.PRIMARY};
+          }
         `}
       >
         {playlist.name}

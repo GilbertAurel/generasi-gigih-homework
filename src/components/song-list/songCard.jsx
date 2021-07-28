@@ -25,6 +25,10 @@ export default function SongCard(props) {
       align-items: center;
       gap: 1rem;
       position: relative;
+
+      :hover {
+        background-color: ${COLORS.HOVER};
+      }
     `,
     albumImage: css`
       height: 3rem;
@@ -72,6 +76,7 @@ export default function SongCard(props) {
           menuHandler={menuHandler}
           songData={songData}
           addSongToPlaylist={addSongToPlaylist}
+          openMenuHandler={openMenuHandler}
         />
       )}
     </div>

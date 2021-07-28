@@ -8,6 +8,7 @@ import SearchBar from "./searchBar";
 import Header from "./header";
 import { COLORS, FONTS } from "constants/theme";
 import { useSelector } from "react-redux";
+import { Skeleton } from "components";
 
 export default function SongList(props) {
   const currentlyPlaying = useSelector(
@@ -23,6 +24,7 @@ export default function SongList(props) {
     searchButtonHandler,
     openSearchBar,
     addSongToPlaylist,
+    onScrollReloadNewData,
   } = props;
 
   const openMenuHandler = (id) => setToggleMenu(toggleMenu === id ? "" : id);
@@ -57,10 +59,18 @@ export default function SongList(props) {
       font-size: ${FONTS.CONTENT};
       color: ${COLORS.GRAY};
     `,
+    loading: css`
+      display: grid;
+      justify-items: center;
+      align-items: center;
+      font-family: "Noto Sans", sans-serif;
+      font-size: ${FONTS.CONTENT};
+      color: ${COLORS.GRAY};
+    `,
   };
 
   return (
-    <div css={styles.container}>
+    <div css={styles.container} onScroll={onScrollReloadNewData}>
       {openSearchBar && (
         <SearchBar
           searchValue={searchValue}
@@ -85,6 +95,11 @@ export default function SongList(props) {
       ) : (
         <div css={styles.noSongAlert}>
           <p>playlist empty</p>
+        </div>
+      )}
+      {songs?.length > 0 && (
+        <div css={styles.loading}>
+          <p>Loading..</p>
         </div>
       )}
     </div>

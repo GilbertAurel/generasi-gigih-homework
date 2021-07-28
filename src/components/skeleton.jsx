@@ -16,7 +16,7 @@ export default function skeleton({ type }) {
     }
 `;
 
-  const styles = {
+  const types = {
     gif: css`
       min-height: 20rem;
       justify-self: stretch;
@@ -27,6 +27,37 @@ export default function skeleton({ type }) {
       text-decoration: none;
       overflow: hidden;
     `,
+    album: css`
+      grid-column: 1/2;
+      grid-row: 1/2;
+      height: 8rem;
+      width: 8rem;
+      justify-self: stretch;
+      align-self: stretch;
+      position: relative;
+      background-color: ${COLORS.GRAY};
+      border-radius: 5px;
+      text-decoration: none;
+      overflow: hidden;
+    `,
+    song: css`
+      height: 100%;
+      width: 100%;
+      justify-self: stretch;
+      align-self: stretch;
+      position: relative;
+      background-color: ${COLORS.GRAY};
+      border-radius: 5px;
+      text-decoration: none;
+      overflow: hidden;
+    `,
+  };
+
+  const gif = [1, 2, 3, 4, 5, 6];
+  const album = [1];
+  const song = [1, 2, 3];
+
+  const styles = {
     innerContainer: css`
       height: 100%;
       width: 100%;
@@ -44,10 +75,11 @@ export default function skeleton({ type }) {
     `,
   };
 
-  return [1, 2, 3, 4, 5, 6].map((item, index) => (
-    <div key={`${item}-${index}`} css={styles[type]}>
+  return [type].map((item, index) => (
+    <div key={`${item}-${index}`} css={types[type]}>
       <div css={styles.innerContainer}>
         <div css={styles.shimmer} />
+        &nbsp;
       </div>
     </div>
   ));

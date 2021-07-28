@@ -5,7 +5,12 @@ import { useSelector } from "react-redux";
 import { COLORS, FONTS } from "constants/theme";
 import { useState } from "react";
 
-export default function Menu({ menuHandler, songData, addSongToPlaylist }) {
+export default function Menu({
+  menuHandler,
+  songData,
+  addSongToPlaylist,
+  openMenuHandler,
+}) {
   const playlists = useSelector((store) => store.playlistState.playlists);
   const [openPlaylistsSelection, setOpenPlaylistsSelection] = useState(false);
 
@@ -17,10 +22,8 @@ export default function Menu({ menuHandler, songData, addSongToPlaylist }) {
       position: absolute;
       top: 100%;
       right: 0;
-      z-index: 1000;
       background-color: ${COLORS.FROSTED_DARK};
-      backdrop-filter: blur(5px);
-      box-shadow: 0 0 1rem 0 rgba(0, 0, 0, 0.2);
+      z-index: 1000;
     `,
     innerContainer: css`
       width: 12rem;
@@ -56,7 +59,9 @@ export default function Menu({ menuHandler, songData, addSongToPlaylist }) {
         <p css={styles.button} onClick={togglePlaylistSelection}>
           add to playlist
         </p>
-        <p css={styles.button}>more info</p>
+        <p css={styles.button} onClick={() => openMenuHandler(songData.id)}>
+          Close
+        </p>
       </section>
     );
   };

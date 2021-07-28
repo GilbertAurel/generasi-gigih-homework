@@ -24,12 +24,20 @@ export default function Index(props) {
 
   const styles = {
     container: css`
+      grid-column: 1/2;
+      grid-row: 2/3;
+      overflow-y: scroll;
       display: grid;
       grid-template-rows: repeat(auto-fill, 1fr);
       grid-auto-rows: min-content;
-      gap: 1rem;
+      gap: 0.9rem;
       z-index: 1000;
       font-family: "Noto Sans", sans-serif;
+      scrollbar-width: none;
+
+      ::-webkit-scrollbar {
+        display: none;
+      }
     `,
   };
 
