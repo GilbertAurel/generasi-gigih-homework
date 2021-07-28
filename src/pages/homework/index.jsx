@@ -8,10 +8,14 @@ import {
   spotifyFetchPlaylist,
   spotifyFetchPlaylistTracks,
   spotifyFetchCurrentlyPlaying,
+  spotifyChangeSong,
 } from "redux/actions";
 
 import { SPOTIFY_FETCH_SEARCH } from "adapters/fetchHandlers";
-import { SPOTIFY_CREATE_PLAYLIST } from "adapters/postHandler";
+import {
+  SPOTIFY_CREATE_PLAYLIST,
+  SPOTIFY_ADD_TO_PLAYLIST,
+} from "adapters/postHandler";
 import { useForm } from "constants/useForm";
 
 import {
@@ -22,9 +26,10 @@ import {
 } from "components";
 
 const initialFormData = {
-  name: "",
-  description: "",
-  data: [],
+  playlist: { name: "", description: "", data: [] },
+  search: {
+    search: "",
+  },
 };
 
 export default function Index({ spotifyToken }) {
@@ -33,14 +38,15 @@ export default function Index({ spotifyToken }) {
   const currentTracks = useSelector(
     (store) => store.playlistState.currentTracks
   );
-  const initialPlaylist = useSelector((store) => store.playlistState.playlists);
-  const [currentlyPlaying, setCurrentlyPlaying] = useState();
-  const [selectedPlaylist, setSelectedPlaylist] = useState(initialPlaylist[0]);
-  const [inputValue, setInputValue] = useState("");
+  const [selectedPlaylist, setSelectedPlaylist] = useState("");
   const [openSearchBar, setOpenSearchBar] = useState(false);
   const [searchResult, setSearchResult] = useState([]);
-  const [newPlaylist, formInputChangeHandler, resetPlaylistForm] =
-    useForm(initialFormData);
+  const [searchValue, searchInputChangeHandler] = useForm(
+    initialFormData.search
+  );
+  const [newPlaylist, formInputChangeHandler, resetPlaylistForm] = useForm(
+    initialFormData.playlist
+  );
 
   useEffect(() => {
     dispatch(spotifyLoginAuth(spotifyToken));
@@ -48,11 +54,9 @@ export default function Index({ spotifyToken }) {
     dispatch(spotifyFetchCurrentlyPlaying(spotifyToken, "ES"));
   }, [dispatch, spotifyToken]);
 
-  const inputChangeHandler = (e) => setInputValue(e.target.value);
-
   const searchButtonToggle = ({ state }) => setOpenSearchBar(state);
 
-  const changeSongHandler = (song) => setCurrentlyPlaying(song);
+  const changeSongHandler = (song) => dispatch(spotifyChangeSong(song));
 
   const selectPlaylistHandler = (playlist) => {
     dispatch(spotifyFetchPlaylistTracks(spotifyToken, playlist.id, "ES"));
@@ -63,13 +67,13 @@ export default function Index({ spotifyToken }) {
   const searchButtonHandler = (event) => {
     event.preventDefault();
 
-    if (inputValue) {
+    if (searchValue) {
       const config = {
         headers: {
           Authorization: "Bearer " + spotifyToken.access_token,
         },
         params: {
-          q: inputValue,
+          q: searchValue.search,
           type: "track",
           limit: 15,
         },
@@ -97,9 +101,10 @@ export default function Index({ spotifyToken }) {
         public: false,
       };
 
-      return SPOTIFY_CREATE_PLAYLIST(user.id, postData, config).then(() =>
-        resetPlaylistForm(initialFormData)
-      );
+      return SPOTIFY_CREATE_PLAYLIST(user.id, postData, config).then(() => {
+        dispatch(spotifyFetchPlaylist(spotifyToken));
+        resetPlaylistForm(initialFormData.playlist);
+      });
     }
   };
 
@@ -112,15 +117,30 @@ export default function Index({ spotifyToken }) {
     );
   };
 
+  const addSongToPlaylist = (playlistId, songUri) => {
+    const config = {
+      headers: {
+        Authorization: "Bearer " + spotifyToken.access_token,
+      },
+      params: {
+        uris: songUri,
+      },
+    };
+
+    return SPOTIFY_ADD_TO_PLAYLIST(config, playlistId).then((res) =>
+      dispatch(spotifyFetchPlaylist(spotifyToken))
+    );
+  };
+
   const params = {
     songList: {
       songs: openSearchBar ? searchResult : currentTracks,
-      currentlyPlaying,
       changeSongHandler,
-      inputValue,
-      inputChangeHandler,
+      searchValue,
+      searchInputChangeHandler,
       searchButtonHandler,
       openSearchBar,
+      addSongToPlaylist,
     },
     playlistSelection: {
       selectedPlaylist,
@@ -149,7 +169,7 @@ export default function Index({ spotifyToken }) {
   return (
     <PageLayout>
       <div css={styles.container}>
-        <SongPlayer currentlyPlaying={currentlyPlaying} />
+        <SongPlayer />
         <PlaylistSelection {...params.playlistSelection} />
         <SongList {...params.songList} />
       </div>

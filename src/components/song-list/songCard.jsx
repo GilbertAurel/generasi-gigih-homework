@@ -8,8 +8,15 @@ import ICONS from "assets/icons";
 import MenuBar from "./menuBar";
 
 export default function SongCard(props) {
-  const { songData, changeSongHandler, selected, menuHandler, openMenu } =
-    props;
+  const {
+    songData,
+    changeSongHandler,
+    selected,
+    openMenuHandler,
+    openMenu,
+    menuHandler,
+    addSongToPlaylist,
+  } = props;
 
   const styles = {
     container: css`
@@ -57,10 +64,16 @@ export default function SongCard(props) {
       <img
         src={ICONS.MORE}
         alt="menu"
-        onClick={() => menuHandler(song.id)}
+        onClick={() => openMenuHandler(song.id)}
         css={styles.menuButton}
       />
-      {openMenu && <MenuBar />}
+      {openMenu && (
+        <MenuBar
+          menuHandler={menuHandler}
+          songData={songData}
+          addSongToPlaylist={addSongToPlaylist}
+        />
+      )}
     </div>
   );
 }

@@ -3,6 +3,7 @@ export const DEV_URL = encodeURIComponent("http://localhost:3000");
 const scope = [
   "user-read-currently-playing",
   "playlist-modify-private",
+  "playlist-modify-public",
   "playlist-read-private",
 ].join("%20");
 
@@ -27,3 +28,6 @@ export const SPOTIFY_FETCH_PLAYLIST_TRACK_URL = (playlist_id) =>
 
 export const SPOTIFY_FETCH_CURRENTLY_PLAYING_URL =
   "https://api.spotify.com/v1/me/player/currently-playing";
+
+export const SPOTIFY_ADD_TO_PLAYLIST_URL = (playlist_id) =>
+  `https://api.spotify.com/v1/playlists/${playlist_id}/tracks`;

@@ -3,7 +3,7 @@
 import { css, jsx } from "@emotion/react";
 
 export default function SearchBar(props) {
-  const { inputValue, inputChangeHandler, searchButtonHandler } = props;
+  const { searchValue, searchInputChangeHandler, searchButtonHandler } = props;
 
   const styles = {
     container: css`
@@ -26,8 +26,9 @@ export default function SearchBar(props) {
     <form onSubmit={searchButtonHandler} css={styles.container}>
       <input
         type="text"
-        value={inputValue}
-        onChange={inputChangeHandler}
+        name="search"
+        value={searchValue.search}
+        onChange={searchInputChangeHandler}
         placeholder="Artists, songs, or podcasts"
         css={styles.inputText}
       />

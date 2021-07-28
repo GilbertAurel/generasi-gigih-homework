@@ -4,7 +4,7 @@ import { css, jsx } from "@emotion/react";
 import { useState } from "react";
 
 import PlaylistCard from "./playlistCard";
-import { PopupForm } from "components";
+import PopupForm from "./popupForm";
 import CreateNewCard from "./createNewCard";
 import Header from "./header";
 import { useSelector } from "react-redux";
