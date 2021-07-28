@@ -122,3 +122,12 @@ export function spotifyFetchCurrentlyPlaying(hashParams, market) {
     );
   };
 }
+
+export function spotifyChangeSong(song) {
+  return (dispatch) => {
+    dispatch({
+      type: SPOTIFY_SET_CURRENTLY_PLAYING,
+      payload: song,
+    });
+  };
+}

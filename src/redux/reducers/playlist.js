@@ -7,7 +7,7 @@ import {
 const initialState = {
   playlists: [],
   currentTracks: [],
-  currentlyPlaying: {},
+  currentlyPlaying: "",
 };
 
 export const playlistReducer = (state = initialState, action) => {
