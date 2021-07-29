@@ -1,31 +1,20 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import { css, jsx } from "@emotion/react";
-import { useEffect, useRef } from "react";
-import gsap, { Power3 } from "gsap";
+import { useRef } from "react";
 
 import { COLORS, FONTS } from "constants/theme";
 import { APP_NAME } from "constants/dummyData";
 import Menu from "./menu";
+import { useHistory, useLocation } from "react-router-dom";
+import { spotifyLogout } from "adapters/spotifyAuth";
 
-export default function Index(props) {
+export default function Index() {
   const navbarRef = useRef(null);
+  const history = useHistory();
+  const path = useLocation().pathname;
 
-  useEffect(() => {
-    gsap
-      .timeline()
-      .to(navbarRef.current, {
-        visibility: "visible",
-        duration: 0.2,
-        delay: 0.5,
-      })
-      .from(navbarRef.current, {
-        y: -100,
-        opacity: 0,
-        duration: 1.6,
-        ease: Power3.easeInOut,
-      });
-  }, []);
+  const logoutHandler = () => spotifyLogout().then(() => history.push("/"));
 
   const styles = {
     container: css`
@@ -40,7 +29,7 @@ export default function Index(props) {
       justify-content: space-between;
       align-items: center;
       z-index: 1000;
-      visibility: hidden;
+      visibility: ${path === "/" && "hidden"};
 
       @media (max-width: 1600px) {
         visibility: hidden;
@@ -59,7 +48,7 @@ export default function Index(props) {
   return (
     <div ref={navbarRef} css={styles.container}>
       <h1 css={styles.logo}>{APP_NAME}</h1>
-      <Menu {...props} />
+      <Menu logoutHandler={logoutHandler} />
     </div>
   );
 }

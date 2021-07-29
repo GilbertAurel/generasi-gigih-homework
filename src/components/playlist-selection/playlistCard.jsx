@@ -26,7 +26,7 @@ export default function PlaylistCard({
   };
 
   const playlist = {
-    image: playlistData.data[0]?.album.images[2].url,
+    image: playlistData.images[0]?.url,
     name: playlistData.name,
   };
 
@@ -38,9 +38,12 @@ export default function PlaylistCard({
       <img src={playlist.image} alt="playlist" />
       <p
         css={css`
-          color: ${selectedPlaylist.name === playlist.name
+          color: ${selectedPlaylist?.name === playlist.name
             ? COLORS.PRIMARY
             : COLORS.TEXT_BRIGHT};
+          :hover {
+            color: ${COLORS.PRIMARY};
+          }
         `}
       >
         {playlist.name}

@@ -3,12 +3,19 @@
 import { css, jsx } from "@emotion/react";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { spotifyLoginAuth } from "redux/actions";
+import {
+  spotifyFetchPlaylist,
+  spotifyFetchPlaylistTracks,
+  spotifyFetchCurrentlyPlaying,
+  spotifyChangeSong,
+  spotifyAddPlaylistTracks,
+} from "redux/actions";
 
 import { SPOTIFY_FETCH_SEARCH } from "adapters/fetchHandlers";
-import { SPOTIFY_CREATE_PLAYLIST } from "adapters/postHandler";
-import { SONG_DATA, PLAYLISTS_DATA } from "constants/dummyData";
-import { songIsUnique } from "constants/uniqueChecker";
+import {
+  SPOTIFY_CREATE_PLAYLIST,
+  SPOTIFY_ADD_TO_PLAYLIST,
+} from "adapters/postHandler";
 import { useForm } from "constants/useForm";
 
 import {
@@ -16,60 +23,62 @@ import {
   SongList,
   SongPlayer,
   PlaylistSelection,
-  FrostedBackground,
 } from "components";
 
 const initialFormData = {
-  name: "",
-  description: "",
-  data: [],
+  playlist: { name: "", description: "", data: [] },
+  search: {
+    search: "",
+  },
 };
 
-export default function Index({ spotifyToken }) {
+const initialScrollIndex = 1;
+
+export default function Index() {
   const dispatch = useDispatch();
-  const user = useSelector((store) => store.userState.user);
-  const [currentlyPlaying, setCurrentlyPlaying] = useState(SONG_DATA[0]);
-  const [playlists, setPlaylists] = useState(PLAYLISTS_DATA);
-  const [selectedPlaylist, setSelectedPlaylist] = useState(PLAYLISTS_DATA[0]);
-  const [inputValue, setInputValue] = useState("");
+  const { user, token: spotifyToken } = useSelector((store) => store.userState);
+  const currentTracks = useSelector(
+    (store) => store.playlistState.currentTracks
+  );
+  const [selectedPlaylist, setSelectedPlaylist] = useState("");
   const [openSearchBar, setOpenSearchBar] = useState(false);
   const [searchResult, setSearchResult] = useState([]);
-  const [newPlaylist, formInputChangeHandler, resetPlaylistForm] =
-    useForm(initialFormData);
+  const [searchValue, searchInputChangeHandler] = useForm(
+    initialFormData.search
+  );
+  const [newPlaylist, formInputChangeHandler, resetPlaylistForm] = useForm(
+    initialFormData.playlist
+  );
+  const [scrollIndex, setScrollIndex] = useState(initialScrollIndex);
 
   useEffect(() => {
-    dispatch(spotifyLoginAuth(spotifyToken));
-  }, []);
-
-  const inputChangeHandler = (e) => setInputValue(e.target.value);
+    if (spotifyToken) {
+      dispatch(spotifyFetchPlaylist(spotifyToken));
+      dispatch(spotifyFetchCurrentlyPlaying(spotifyToken, "ES"));
+    }
+  }, [dispatch, spotifyToken]);
 
   const searchButtonToggle = ({ state }) => setOpenSearchBar(state);
 
-  const changeSongHandler = (song) => {
-    setCurrentlyPlaying(song);
-    const newPlaylist = playlists[1];
-
-    if (songIsUnique(newPlaylist, song) && newPlaylist) {
-      newPlaylist.data.push(song);
-      setPlaylists((prevState) => [...prevState.slice(0, 1), newPlaylist]);
-    }
-  };
+  const changeSongHandler = (song) => dispatch(spotifyChangeSong(song));
 
   const selectPlaylistHandler = (playlist) => {
+    dispatch(spotifyFetchPlaylistTracks(spotifyToken, playlist.id, "ES"));
     searchButtonToggle({ state: false });
     setSelectedPlaylist(playlist);
+    setScrollIndex(initialScrollIndex);
   };
 
   const searchButtonHandler = (event) => {
     event.preventDefault();
 
-    if (inputValue) {
+    if (searchValue) {
       const config = {
         headers: {
           Authorization: "Bearer " + spotifyToken.access_token,
         },
         params: {
-          q: inputValue,
+          q: searchValue.search,
           type: "track",
           limit: 15,
         },
@@ -98,8 +107,8 @@ export default function Index({ spotifyToken }) {
       };
 
       return SPOTIFY_CREATE_PLAYLIST(user.id, postData, config).then(() => {
-        setPlaylists([...playlists, newPlaylist]);
-        resetPlaylistForm(initialFormData);
+        dispatch(spotifyFetchPlaylist(spotifyToken));
+        resetPlaylistForm(initialFormData.playlist);
       });
     }
   };
@@ -113,24 +122,56 @@ export default function Index({ spotifyToken }) {
     );
   };
 
+  const addSongToPlaylist = (playlistId, songUri) => {
+    const config = {
+      headers: {
+        Authorization: "Bearer " + spotifyToken.access_token,
+      },
+      params: {
+        uris: songUri,
+      },
+    };
+
+    return SPOTIFY_ADD_TO_PLAYLIST(config, playlistId).then((res) =>
+      dispatch(spotifyFetchPlaylist(spotifyToken))
+    );
+  };
+
+  const onScrollReloadNewData = (e) => {
+    const scrollAtBottom =
+      e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight;
+
+    if (scrollAtBottom) {
+      setScrollIndex((prevState) => prevState + 1);
+      dispatch(
+        spotifyAddPlaylistTracks(
+          spotifyToken,
+          selectedPlaylist.id,
+          "ES",
+          scrollIndex
+        )
+      );
+    }
+  };
+
   const params = {
     songList: {
-      songs: openSearchBar ? searchResult : selectedPlaylist.data,
-      currentlyPlaying,
+      songs: openSearchBar ? searchResult : currentTracks,
       changeSongHandler,
-      inputValue,
-      inputChangeHandler,
       searchButtonHandler,
+      searchInputChangeHandler,
+      searchValue,
       openSearchBar,
+      addSongToPlaylist,
+      onScrollReloadNewData,
     },
     playlistSelection: {
-      playlists,
-      selectedPlaylist,
       selectPlaylistHandler,
-      searchButtonToggle,
-      newPlaylist,
       formInputChangeHandler,
       newPlaylistSubmitHandler,
+      searchButtonToggle,
+      selectedPlaylist,
+      newPlaylist,
     },
   };
 
@@ -151,10 +192,9 @@ export default function Index({ spotifyToken }) {
   return (
     <PageLayout>
       <div css={styles.container}>
-        <SongPlayer currentlyPlaying={currentlyPlaying} />
+        <SongPlayer />
         <PlaylistSelection {...params.playlistSelection} />
         <SongList {...params.songList} />
-        <FrostedBackground imageUrl={currentlyPlaying.album.images[0].url} />
       </div>
     </PageLayout>
   );

@@ -7,21 +7,33 @@ import SongCard from "./songCard";
 import SearchBar from "./searchBar";
 import Header from "./header";
 import { COLORS, FONTS } from "constants/theme";
+import { useSelector } from "react-redux";
 
 export default function SongList(props) {
+  const currentlyPlaying = useSelector(
+    (store) => store.playlistState.currentlyPlaying
+  );
   const [toggleMenu, setToggleMenu] = useState("");
 
   const {
     songs,
-    currentlyPlaying,
     changeSongHandler,
-    inputValue,
-    inputChangeHandler,
+    searchValue,
+    searchInputChangeHandler,
     searchButtonHandler,
     openSearchBar,
+    addSongToPlaylist,
+    onScrollReloadNewData,
   } = props;
 
-  const menuHandler = (id) => setToggleMenu(toggleMenu === id ? "" : id);
+  const openMenuHandler = (id) => setToggleMenu(toggleMenu === id ? "" : id);
+
+  const menuHandler = (e, song) => {
+    if (e.target.id === "play") {
+      setToggleMenu("");
+      return changeSongHandler(song);
+    }
+  };
 
   const styles = {
     container: css`
@@ -46,32 +58,47 @@ export default function SongList(props) {
       font-size: ${FONTS.CONTENT};
       color: ${COLORS.GRAY};
     `,
+    loading: css`
+      display: grid;
+      justify-items: center;
+      align-items: center;
+      font-family: "Noto Sans", sans-serif;
+      font-size: ${FONTS.CONTENT};
+      color: ${COLORS.GRAY};
+    `,
   };
 
   return (
-    <div css={styles.container}>
+    <div css={styles.container} onScroll={onScrollReloadNewData}>
       {openSearchBar && (
         <SearchBar
-          inputValue={inputValue}
-          inputChangeHandler={inputChangeHandler}
+          searchValue={searchValue}
+          searchInputChangeHandler={searchInputChangeHandler}
           searchButtonHandler={searchButtonHandler}
         />
       )}
       <Header />
       {songs?.length > 0 ? (
-        songs.map((song) => (
+        songs.map((song, index) => (
           <SongCard
-            key={song.id}
+            key={`${index}-${song.id}`}
+            selected={song.id === currentlyPlaying?.id}
+            openMenu={song.id === toggleMenu}
             songData={song}
             changeSongHandler={changeSongHandler}
-            selected={song.id === currentlyPlaying.id}
+            openMenuHandler={openMenuHandler}
             menuHandler={menuHandler}
-            openMenu={song.id === toggleMenu}
+            addSongToPlaylist={addSongToPlaylist}
           />
         ))
       ) : (
         <div css={styles.noSongAlert}>
           <p>playlist empty</p>
+        </div>
+      )}
+      {songs?.length > 0 && (
+        <div css={styles.loading}>
+          <p>Loading..</p>
         </div>
       )}
     </div>

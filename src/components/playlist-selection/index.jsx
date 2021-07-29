@@ -4,15 +4,16 @@ import { css, jsx } from "@emotion/react";
 import { useState } from "react";
 
 import PlaylistCard from "./playlistCard";
-import { PopupForm } from "components";
+import PopupForm from "./popupForm";
 import CreateNewCard from "./createNewCard";
 import Header from "./header";
+import { useSelector } from "react-redux";
 
 export default function Index(props) {
+  const playlists = useSelector((store) => store.playlistState.playlists);
   const [formToggle, setFormToggle] = useState(false);
 
   const {
-    playlists,
     selectedPlaylist,
     searchButtonToggle,
     newPlaylist,
@@ -23,12 +24,20 @@ export default function Index(props) {
 
   const styles = {
     container: css`
+      grid-column: 1/2;
+      grid-row: 2/3;
+      overflow-y: scroll;
       display: grid;
       grid-template-rows: repeat(auto-fill, 1fr);
       grid-auto-rows: min-content;
-      gap: 1rem;
+      gap: 0.9rem;
       z-index: 1000;
       font-family: "Noto Sans", sans-serif;
+      scrollbar-width: none;
+
+      ::-webkit-scrollbar {
+        display: none;
+      }
     `,
   };
 
@@ -46,7 +55,7 @@ export default function Index(props) {
         />
       )}
       <Header searchFormButtonHandler={searchFormButtonHandler} />
-      {playlists.map((playlist, index) => (
+      {playlists?.map((playlist, index) => (
         <PlaylistCard
           key={index}
           playlistData={playlist}

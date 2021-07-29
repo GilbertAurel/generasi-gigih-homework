@@ -1,64 +1,39 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import { css, jsx } from "@emotion/react";
-import { useState, useEffect } from "react";
-
-import { MENU_SELECTION } from "constants/dummyData";
-import { hashSeparator } from "constants/converter";
-import { COLORS } from "constants/theme";
-import { spotifyLogin, spotifyLogout } from "adapters/spotifyAuth";
-
 import { Provider } from "react-redux";
 import rootReducer from "redux/reducers";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
-import Navbar from "components/navbar";
-import HandsonPage from "pages/handson";
-import HomeworkPage from "pages/homework";
-import LandingPage from "pages/landing";
+import { COLORS } from "constants/theme";
 
-const HASH_SUBSTRING_INDEX = 1;
+import { Navbar } from "components";
+import { PAGES } from "constants/pages";
 
 const store = rootReducer;
 
 export default function App() {
-  const [selectedMenu, setSelectedMenu] = useState(MENU_SELECTION[0]);
-  const [spotifyToken, setSpotifyAuth] = useState("");
-
-  useEffect(() => {
-    if (window.location.hash) {
-      setSpotifyAuth(hashSeparator(window.location.hash, HASH_SUBSTRING_INDEX));
-    }
-  }, []);
-
-  const loginHandler = () => spotifyLogin();
-
-  const logoutHandler = async () => {
-    await spotifyLogout();
-    return setSpotifyAuth("");
-  };
-
-  const selectMenuHandler = (menu) => setSelectedMenu(menu);
-
-  if (!spotifyToken) return <LandingPage loginHandler={loginHandler} />;
-
   return (
     <Provider store={store}>
-      <div
-        css={css`
-          background-color: ${COLORS.BG_DARK};
-        `}
-      >
-        <Navbar
-          selectedMenu={selectedMenu}
-          selectMenuHandler={selectMenuHandler}
-          logoutHandler={logoutHandler}
-        />
-        {selectedMenu === MENU_SELECTION[0] ? (
-          <HomeworkPage spotifyToken={spotifyToken} />
-        ) : (
-          <HandsonPage />
-        )}
-      </div>
+      <Router>
+        <div
+          css={css`
+            background-color: ${COLORS.BG_DARK};
+          `}
+        >
+          <Navbar />
+          <Switch>
+            {PAGES.map((page, pageIdx) => {
+              const PageComponent = page.component;
+              return (
+                <Route key={pageIdx} exact={page.exact} path={page.path}>
+                  <PageComponent />
+                </Route>
+              );
+            })}
+          </Switch>
+        </div>
+      </Router>
     </Provider>
   );
 }

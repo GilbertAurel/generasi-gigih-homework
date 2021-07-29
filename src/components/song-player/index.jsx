@@ -1,23 +1,21 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import { css, jsx } from "@emotion/react";
+import { FrostedBackground, Skeleton } from "components";
 import { useState } from "react";
+import { useSelector } from "react-redux";
 
 import Details from "./details";
 import Tracker from "./tracker";
 
-export default function PlayingCard({ currentlyPlaying }) {
-  const [playSong, setPlaySong] = useState("PLAY");
+export default function PlayingCard() {
+  const currentlyPlaying = useSelector(
+    (store) => store.playlistState.currentlyPlaying
+  );
+  const [togglePlay, setTogglePlay] = useState("PLAY");
 
   const playPauseHandler = () =>
-    playSong === "PAUSE" ? setPlaySong("PLAY") : setPlaySong("PAUSE");
-
-  const song = {
-    image: currentlyPlaying.album.images[0].url,
-    title: currentlyPlaying.name,
-    artist: currentlyPlaying.artists[0].name,
-    album: currentlyPlaying.album.name,
-  };
+    togglePlay === "PAUSE" ? setTogglePlay("PLAY") : setTogglePlay("PAUSE");
 
   const styles = {
     container: css`
@@ -37,11 +35,31 @@ export default function PlayingCard({ currentlyPlaying }) {
     `,
   };
 
+  if (currentlyPlaying) {
+    const song = {
+      background: currentlyPlaying.album.images[2].url,
+      image: currentlyPlaying.album.images[1].url,
+      title: currentlyPlaying.name,
+      artist: currentlyPlaying.artists[0].name,
+      album: currentlyPlaying.album.name,
+    };
+
+    return (
+      <div css={styles.container}>
+        <img src={song.image} alt="Album img" css={styles.albumImage} />
+        <Details artist={song.artist} album={song.album} song={song.title} />
+        <Tracker playPauseHandler={playPauseHandler} icon={togglePlay} />
+        <FrostedBackground imageUrl={song.background} />
+      </div>
+    );
+  }
+
   return (
     <div css={styles.container}>
-      <img src={song.image} alt="Album img" css={styles.albumImage} />
-      <Details artist={song.artist} album={song.album} song={song.title} />
-      <Tracker playPauseHandler={playPauseHandler} icon={playSong} />
+      <Skeleton type={"album"} />
+      <Details artist={""} album={""} song={"No current song"} />
+      <Tracker playPauseHandler={playPauseHandler} icon={togglePlay} />
+      <FrostedBackground imageUrl={""} />
     </div>
   );
 }

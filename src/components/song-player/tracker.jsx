@@ -25,7 +25,7 @@ export default function Tracker({ playPauseHandler, icon }) {
     trackerBody: css`
       height: 100%;
       width: 100%;
-      background-color: ${COLORS.BRIGHT};
+      background-color: ${COLORS.BG_BRIGHT};
       border-radius: inherit;
     `,
     buttonsContainer: css`
