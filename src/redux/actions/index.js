@@ -2,6 +2,7 @@ import fetchHandler from "adapters/fetchHandlers";
 
 import {
   GET_NEW_GIF,
+  GIPHY_GET_TRENDING,
   SPOTIFY_LOGIN_AUTH,
   SPOTIFY_SET_PLAYLIST,
   SPOTIFY_SET_CURRENT_TRACKS,
@@ -15,6 +16,7 @@ import {
   SPOTIFY_FETCH_PLAYLIST_URL,
   SPOTIFY_FETCH_PLAYLIST_TRACK_URL,
   SPOTIFY_FETCH_CURRENTLY_PLAYING_URL,
+  GIPHY_GET_TRENDS_URL,
 } from "constants/urls";
 
 import { SPOTIFY_PLAYLIST_OFFSET_LIMIT } from "constants/dummyData";
@@ -34,6 +36,23 @@ export function getNewGIF(GIPHY_KEY, inputValue, DATA_LIMIT) {
     fetchHandler(GIPHY_SEARCH_URL, config).then((res) => {
       dispatch({
         type: GET_NEW_GIF,
+        payload: res.data.map((gif) => gif.images.original.url),
+      });
+    });
+  };
+}
+
+export function giphyFetchTrending(GIPHY_KEY) {
+  const config = {
+    params: {
+      api_key: GIPHY_KEY,
+    },
+  };
+
+  return (dispatch) => {
+    fetchHandler(GIPHY_GET_TRENDS_URL, config).then((res) => {
+      dispatch({
+        type: GIPHY_GET_TRENDING,
         payload: res.data.map((gif) => gif.images.original.url),
       });
     });
@@ -64,12 +83,11 @@ export function spotifyLoginAuth(hashParams) {
   };
 }
 
-export function spotifyFetchPlaylist(hashParams) {
-  const { access_token } = hashParams;
-
+export function spotifyFetchPlaylist(token) {
+  console.log(typeof token);
   const config = {
     headers: {
-      Authorization: "Bearer " + access_token,
+      Authorization: "Bearer " + token,
     },
   };
 
@@ -83,12 +101,10 @@ export function spotifyFetchPlaylist(hashParams) {
   };
 }
 
-export function spotifyFetchPlaylistTracks(hashParams, id, market) {
-  const { access_token } = hashParams;
-
+export function spotifyFetchPlaylistTracks(token, id, market) {
   const config = {
     headers: {
-      Authorization: "Bearer " + access_token,
+      Authorization: "Bearer " + token,
     },
     params: {
       market: market,
@@ -107,12 +123,10 @@ export function spotifyFetchPlaylistTracks(hashParams, id, market) {
   };
 }
 
-export function spotifyAddPlaylistTracks(hashParams, id, market, newOffset) {
-  const { access_token } = hashParams;
-
+export function spotifyAddPlaylistTracks(token, id, market, newOffset) {
   const config = {
     headers: {
-      Authorization: "Bearer " + access_token,
+      Authorization: "Bearer " + token,
     },
     params: {
       market: market,
@@ -131,12 +145,10 @@ export function spotifyAddPlaylistTracks(hashParams, id, market, newOffset) {
   };
 }
 
-export function spotifyFetchCurrentlyPlaying(hashParams, market) {
-  const { access_token } = hashParams;
-
+export function spotifyFetchCurrentlyPlaying(token, market) {
   const config = {
     headers: {
-      Authorization: "Bearer " + access_token,
+      Authorization: "Bearer " + token,
     },
     params: {
       market: market,
@@ -147,7 +159,7 @@ export function spotifyFetchCurrentlyPlaying(hashParams, market) {
     fetchHandler(SPOTIFY_FETCH_CURRENTLY_PLAYING_URL, config).then((res) =>
       dispatch({
         type: SPOTIFY_SET_CURRENTLY_PLAYING,
-        payload: res.item,
+        payload: res?.item,
       })
     );
   };

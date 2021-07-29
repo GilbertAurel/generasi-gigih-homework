@@ -1,7 +1,8 @@
-import { GET_NEW_GIF } from "redux/constant";
+import { GET_NEW_GIF, GIPHY_GET_TRENDING } from "redux/constant";
 
 const initialState = {
   currentGIF: [],
+  trending: [],
 };
 
 export const gifReducer = (state = initialState, action) => {
@@ -11,7 +12,11 @@ export const gifReducer = (state = initialState, action) => {
         ...state,
         currentGIF: action.payload,
       };
-
+    case GIPHY_GET_TRENDING:
+      return {
+        ...state,
+        trending: action.payload,
+      };
     default:
       return state;
   }
