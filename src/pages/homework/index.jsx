@@ -4,7 +4,6 @@ import { css, jsx } from "@emotion/react";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  spotifyLoginAuth,
   spotifyFetchPlaylist,
   spotifyFetchPlaylistTracks,
   spotifyFetchCurrentlyPlaying,
@@ -35,9 +34,9 @@ const initialFormData = {
 
 const initialScrollIndex = 1;
 
-export default function Index({ spotifyToken }) {
+export default function Index() {
   const dispatch = useDispatch();
-  const user = useSelector((store) => store.userState.user);
+  const { user, token: spotifyToken } = useSelector((store) => store.userState);
   const currentTracks = useSelector(
     (store) => store.playlistState.currentTracks
   );
@@ -53,9 +52,10 @@ export default function Index({ spotifyToken }) {
   const [scrollIndex, setScrollIndex] = useState(initialScrollIndex);
 
   useEffect(() => {
-    dispatch(spotifyLoginAuth(spotifyToken));
-    dispatch(spotifyFetchPlaylist(spotifyToken));
-    dispatch(spotifyFetchCurrentlyPlaying(spotifyToken, "ES"));
+    if (spotifyToken) {
+      dispatch(spotifyFetchPlaylist(spotifyToken));
+      dispatch(spotifyFetchCurrentlyPlaying(spotifyToken, "ES"));
+    }
   }, [dispatch, spotifyToken]);
 
   const searchButtonToggle = ({ state }) => setOpenSearchBar(state);

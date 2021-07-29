@@ -8,7 +8,6 @@ import SearchBar from "./searchBar";
 import Header from "./header";
 import { COLORS, FONTS } from "constants/theme";
 import { useSelector } from "react-redux";
-import { Skeleton } from "components";
 
 export default function SongList(props) {
   const currentlyPlaying = useSelector(

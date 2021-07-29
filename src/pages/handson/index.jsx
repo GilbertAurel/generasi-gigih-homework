@@ -2,10 +2,11 @@
 /** @jsx jsx */
 import { css, jsx } from "@emotion/react";
 import { useSelector, useDispatch } from "react-redux";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 
-import { PageLayout, Skeleton } from "components";
-import { getNewGIF } from "redux/actions";
+import { PageLayout } from "components";
+import { getNewGIF, giphyFetchTrending } from "redux/actions";
 
 import InputForm from "./inputForm";
 import GifCard from "./gifCard";
@@ -13,19 +14,34 @@ import GifCard from "./gifCard";
 const DATA_LIMIT = 6;
 
 export default function Index() {
-  const showGif = useSelector((store) => store.gifState.currentGIF);
+  const search = useSelector((store) => store.gifState.currentGIF);
+  const trending = useSelector((store) => store.gifState.trending);
   const dispatch = useDispatch();
+  const location = useLocation().pathname;
   const [inputValue, setInputValue] = useState("");
-  const [loaded, setLoaded] = useState(true);
+  const [showGif, setShowGif] = useState();
   const GIPHY_KEY = process.env.REACT_APP_GIPHY_KEY;
+
+  useEffect(() => {
+    if (location === "/trending") {
+      dispatch(giphyFetchTrending(GIPHY_KEY));
+    }
+  }, [GIPHY_KEY, dispatch, location]);
+
+  useEffect(() => {
+    if (location === "/trending") {
+      return setShowGif(trending);
+    }
+
+    return setShowGif(search);
+  }, [search, trending, location]);
 
   const inputChangeHandler = (e) => setInputValue(e.target.value);
 
   const searchButtonHandler = (event) => {
     event.preventDefault();
-    setLoaded(false);
     dispatch(getNewGIF(GIPHY_KEY, inputValue, DATA_LIMIT));
-    setLoaded(true);
+    setShowGif(search);
   };
 
   const styles = {
@@ -40,20 +56,24 @@ export default function Index() {
     `,
   };
 
-  return (
-    <PageLayout>
-      <div css={styles.container}>
-        <InputForm
-          inputChangeHandler={inputChangeHandler}
-          inputValue={inputValue}
-          searchButtonHandler={searchButtonHandler}
-        />
-        {loaded ? (
-          showGif.map((gif, index) => <GifCard key={index} url={gif} />)
-        ) : (
-          <Skeleton type={"gif"} />
-        )}
-      </div>
-    </PageLayout>
-  );
+  if (showGif) {
+    return (
+      <PageLayout>
+        <div css={styles.container}>
+          {location === "/handson" && (
+            <InputForm
+              inputChangeHandler={inputChangeHandler}
+              inputValue={inputValue}
+              searchButtonHandler={searchButtonHandler}
+            />
+          )}
+          {showGif.map((gif, index) => (
+            <GifCard key={index} url={gif} />
+          ))}
+        </div>
+      </PageLayout>
+    );
+  }
+
+  return <h1>loading</h1>;
 }

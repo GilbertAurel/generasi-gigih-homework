@@ -3,8 +3,9 @@
 import { css, jsx } from "@emotion/react";
 import { COLORS, FONTS } from "constants/theme";
 import { MENU_SELECTION, SIGN_OUT_TEXT } from "constants/dummyData";
+import { Link } from "react-router-dom";
 
-export default function Menu({ selectMenuHandler, logoutHandler }) {
+export default function Menu({ logoutHandler }) {
   const styles = {
     container: css`
       display: flex;
@@ -33,13 +34,9 @@ export default function Menu({ selectMenuHandler, logoutHandler }) {
   return (
     <div css={styles.container}>
       {MENU_SELECTION.map((menu, index) => (
-        <p
-          key={index}
-          onClick={() => selectMenuHandler(menu)}
-          css={styles.button}
-        >
+        <Link key={index} css={styles.button} to={`/${menu}`}>
           {menu}
-        </p>
+        </Link>
       ))}
       <p onClick={logoutHandler} css={styles.button}>
         {SIGN_OUT_TEXT}

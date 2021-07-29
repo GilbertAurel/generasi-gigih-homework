@@ -53,9 +53,11 @@ export default function skeleton({ type }) {
     `,
   };
 
-  const gif = [1, 2, 3, 4, 5, 6];
-  const album = [1];
-  const song = [1, 2, 3];
+  const total = {
+    gif: [1, 2, 3, 4, 5, 6],
+    album: [1],
+    song: [1, 2, 3],
+  };
 
   const styles = {
     innerContainer: css`
@@ -75,7 +77,7 @@ export default function skeleton({ type }) {
     `,
   };
 
-  return [type].map((item, index) => (
+  return total[type].map((item, index) => (
     <div key={`${item}-${index}`} css={types[type]}>
       <div css={styles.innerContainer}>
         <div css={styles.shimmer} />
