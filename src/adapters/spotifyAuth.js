@@ -14,7 +14,6 @@ export function spotifyLogout() {
 
     setTimeout(() => {
       spotifyLogoutWindow.close();
-      window.location = "";
       resolve();
     }, 2000);
   });
