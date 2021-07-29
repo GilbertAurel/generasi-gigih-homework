@@ -1,4 +1,4 @@
-export const MENU_SELECTION = ["Playlist", "Hands on"];
+export const MENU_SELECTION = ["playlist", "handson", "trending"];
 
 export const SIGN_OUT_TEXT = "Sign out";
 
