@@ -54,7 +54,7 @@ export default function Index() {
   useEffect(() => {
     if (spotifyToken) {
       dispatch(spotifyFetchPlaylist(spotifyToken));
-      dispatch(spotifyFetchCurrentlyPlaying(spotifyToken, "ES"));
+      dispatch(spotifyFetchCurrentlyPlaying(spotifyToken));
     }
   }, [dispatch, spotifyToken]);
 
@@ -63,19 +63,19 @@ export default function Index() {
   const changeSongHandler = (song) => dispatch(spotifyChangeSong(song));
 
   const selectPlaylistHandler = (playlist) => {
-    dispatch(spotifyFetchPlaylistTracks(spotifyToken, playlist.id, "ES"));
+    dispatch(spotifyFetchPlaylistTracks(spotifyToken, playlist.id));
     searchButtonToggle({ state: false });
     setSelectedPlaylist(playlist);
     setScrollIndex(initialScrollIndex);
   };
 
-  const searchButtonHandler = (event) => {
+  const searchButtonHandler = async (event) => {
     event.preventDefault();
 
     if (searchValue) {
       const config = {
         headers: {
-          Authorization: "Bearer " + spotifyToken.access_token,
+          Authorization: "Bearer " + spotifyToken,
         },
         params: {
           q: searchValue.search,
@@ -84,17 +84,17 @@ export default function Index() {
         },
       };
 
-      return SPOTIFY_FETCH_SEARCH(config).then((res) =>
+      return await SPOTIFY_FETCH_SEARCH(config).then((res) =>
         setSearchResult(res.tracks.items)
       );
     }
   };
 
-  const createNewPlaylist = () => {
+  const createNewPlaylist = async () => {
     if (newPlaylist) {
       const config = {
         headers: {
-          Authorization: "Bearer " + spotifyToken.access_token,
+          Authorization: "Bearer " + spotifyToken,
           "Content-Type": "application/json",
           Accept: "application/json",
         },
@@ -106,10 +106,12 @@ export default function Index() {
         public: false,
       };
 
-      return SPOTIFY_CREATE_PLAYLIST(user.id, postData, config).then(() => {
-        dispatch(spotifyFetchPlaylist(spotifyToken));
-        resetPlaylistForm(initialFormData.playlist);
-      });
+      return await SPOTIFY_CREATE_PLAYLIST(user.id, postData, config).then(
+        () => {
+          dispatch(spotifyFetchPlaylist(spotifyToken));
+          resetPlaylistForm(initialFormData.playlist);
+        }
+      );
     }
   };
 
@@ -125,7 +127,7 @@ export default function Index() {
   const addSongToPlaylist = (playlistId, songUri) => {
     const config = {
       headers: {
-        Authorization: "Bearer " + spotifyToken.access_token,
+        Authorization: "Bearer " + spotifyToken,
       },
       params: {
         uris: songUri,
@@ -144,12 +146,7 @@ export default function Index() {
     if (scrollAtBottom) {
       setScrollIndex((prevState) => prevState + 1);
       dispatch(
-        spotifyAddPlaylistTracks(
-          spotifyToken,
-          selectedPlaylist.id,
-          "ES",
-          scrollIndex
-        )
+        spotifyAddPlaylistTracks(spotifyToken, selectedPlaylist.id, scrollIndex)
       );
     }
   };
