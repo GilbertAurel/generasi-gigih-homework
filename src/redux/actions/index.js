@@ -84,7 +84,6 @@ export function spotifyLoginAuth(hashParams) {
 }
 
 export function spotifyFetchPlaylist(token) {
-  console.log(typeof token);
   const config = {
     headers: {
       Authorization: "Bearer " + token,
