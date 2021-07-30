@@ -2,8 +2,9 @@
 /** @jsx jsx */
 import { css, jsx } from "@emotion/react";
 import { COLORS, FONTS } from "constants/theme";
-import { MENU_SELECTION, SIGN_OUT_TEXT } from "constants/dummyData";
 import { Link } from "react-router-dom";
+
+const MENU_SELECTION = ["playlist", "handson", "trending"];
 
 export default function Menu({ logoutHandler }) {
   const styles = {
@@ -39,7 +40,7 @@ export default function Menu({ logoutHandler }) {
         </Link>
       ))}
       <p onClick={logoutHandler} css={styles.button}>
-        {SIGN_OUT_TEXT}
+        Sign out
       </p>
     </div>
   );

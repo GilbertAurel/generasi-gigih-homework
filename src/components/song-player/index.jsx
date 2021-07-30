@@ -2,17 +2,24 @@
 /** @jsx jsx */
 import { css, jsx } from "@emotion/react";
 import { FrostedBackground, Skeleton } from "components";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
 import Details from "./details";
 import Tracker from "./tracker";
 
 export default function PlayingCard() {
-  const currentlyPlaying = useSelector(
+  const currentSong = useSelector(
     (store) => store.playlistState.currentlyPlaying
   );
   const [togglePlay, setTogglePlay] = useState("PLAY");
+  const [currentlyPlaying, setCurrentlyPlaying] = useState();
+
+  useEffect(() => {
+    if (currentSong) {
+      setCurrentlyPlaying(currentSong);
+    }
+  }, [currentSong]);
 
   const playPauseHandler = () =>
     togglePlay === "PAUSE" ? setTogglePlay("PLAY") : setTogglePlay("PAUSE");

@@ -4,7 +4,6 @@ import { css, jsx } from "@emotion/react";
 import { useRef } from "react";
 
 import { COLORS, FONTS } from "constants/theme";
-import { APP_NAME } from "constants/dummyData";
 import Menu from "./menu";
 import { useHistory, useLocation } from "react-router-dom";
 import { spotifyLogout } from "adapters/spotifyAuth";
@@ -47,7 +46,7 @@ export default function Index() {
 
   return (
     <div ref={navbarRef} css={styles.container}>
-      <h1 css={styles.logo}>{APP_NAME}</h1>
+      <h1 css={styles.logo}>My Spotify</h1>
       <Menu logoutHandler={logoutHandler} />
     </div>
   );

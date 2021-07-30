@@ -6,12 +6,10 @@ import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 
 import { PageLayout } from "components";
-import { getNewGIF, giphyFetchTrending } from "redux/actions";
+import { giphyFetchSearchResult, giphyFetchTrending } from "redux/actions";
 
 import InputForm from "./inputForm";
 import GifCard from "./gifCard";
-
-const DATA_LIMIT = 6;
 
 export default function Index() {
   const search = useSelector((store) => store.gifState.currentGIF);
@@ -40,7 +38,7 @@ export default function Index() {
 
   const searchButtonHandler = (event) => {
     event.preventDefault();
-    dispatch(getNewGIF(GIPHY_KEY, inputValue, DATA_LIMIT));
+    dispatch(giphyFetchSearchResult(GIPHY_KEY, inputValue));
     setShowGif(search);
   };
 

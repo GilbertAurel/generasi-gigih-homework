@@ -1,7 +1,6 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import { css, jsx } from "@emotion/react";
-import { SEARCH_GIF_HEADING } from "constants/dummyData";
 import { COLORS } from "constants/theme";
 
 export default function InputForm({
@@ -36,7 +35,7 @@ export default function InputForm({
 
   return (
     <form css={styles.container} onSubmit={searchButtonHandler}>
-      <h1 css={styles.heading}>{SEARCH_GIF_HEADING}</h1>
+      <h1 css={styles.heading}>Search GIF</h1>
       <input
         type="text"
         value={inputValue}

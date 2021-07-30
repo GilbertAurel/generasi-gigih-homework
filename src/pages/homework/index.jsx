@@ -54,7 +54,7 @@ export default function Index() {
   useEffect(() => {
     if (spotifyToken) {
       dispatch(spotifyFetchPlaylist(spotifyToken));
-      dispatch(spotifyFetchCurrentlyPlaying(spotifyToken, "ES"));
+      dispatch(spotifyFetchCurrentlyPlaying(spotifyToken));
     }
   }, [dispatch, spotifyToken]);
 
@@ -63,7 +63,7 @@ export default function Index() {
   const changeSongHandler = (song) => dispatch(spotifyChangeSong(song));
 
   const selectPlaylistHandler = (playlist) => {
-    dispatch(spotifyFetchPlaylistTracks(spotifyToken, playlist.id, "ES"));
+    dispatch(spotifyFetchPlaylistTracks(spotifyToken, playlist.id));
     searchButtonToggle({ state: false });
     setSelectedPlaylist(playlist);
     setScrollIndex(initialScrollIndex);
@@ -146,12 +146,7 @@ export default function Index() {
     if (scrollAtBottom) {
       setScrollIndex((prevState) => prevState + 1);
       dispatch(
-        spotifyAddPlaylistTracks(
-          spotifyToken,
-          selectedPlaylist.id,
-          "ES",
-          scrollIndex
-        )
+        spotifyAddPlaylistTracks(spotifyToken, selectedPlaylist.id, scrollIndex)
       );
     }
   };

@@ -1,19 +1,9 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import { css, jsx } from "@emotion/react";
-import { useEffect, useRef } from "react";
-import gsap from "gsap";
+import { COLORS } from "constants/theme";
 
 export default function PageLayout({ children }) {
-  const containerRef = useRef(null);
-
-  useEffect(() => {
-    gsap.to(containerRef.current, {
-      visibility: "visible",
-      duration: 0.2,
-    });
-  }, []);
-
   const styles = {
     container: css`
       min-height: 100vh;
@@ -22,13 +12,9 @@ export default function PageLayout({ children }) {
       flex-direction: row;
       position: relative;
       overflow: hidden;
-      visibility: hidden;
+      background-color: ${COLORS.BG_DARK};
     `,
   };
 
-  return (
-    <div ref={containerRef} css={styles.container}>
-      {children}
-    </div>
-  );
+  return <div css={styles.container}>{children}</div>;
 }

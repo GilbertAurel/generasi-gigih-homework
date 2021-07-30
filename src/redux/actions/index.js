@@ -19,16 +19,17 @@ import {
   GIPHY_GET_TRENDS_URL,
 } from "constants/urls";
 
-import { SPOTIFY_PLAYLIST_OFFSET_LIMIT } from "constants/dummyData";
+const playlistPaging = { offset: 0, limit: 15, market: "ES" };
+const gifPaging = { limit: 6 };
 
-const { offset, limit } = SPOTIFY_PLAYLIST_OFFSET_LIMIT;
+export function giphyFetchSearchResult(GIPHY_KEY, inputValue) {
+  const { limit } = gifPaging;
 
-export function getNewGIF(GIPHY_KEY, inputValue, DATA_LIMIT) {
   const config = {
     params: {
       api_key: GIPHY_KEY,
       q: inputValue,
-      limit: DATA_LIMIT,
+      limit,
     },
   };
 
@@ -43,9 +44,12 @@ export function getNewGIF(GIPHY_KEY, inputValue, DATA_LIMIT) {
 }
 
 export function giphyFetchTrending(GIPHY_KEY) {
+  const { limit } = gifPaging;
+
   const config = {
     params: {
       api_key: GIPHY_KEY,
+      limit,
     },
   };
 
@@ -100,13 +104,14 @@ export function spotifyFetchPlaylist(token) {
   };
 }
 
-export function spotifyFetchPlaylistTracks(token, id, market) {
+export function spotifyFetchPlaylistTracks(token, id) {
+  const { offset, limit, market } = playlistPaging;
   const config = {
     headers: {
       Authorization: "Bearer " + token,
     },
     params: {
-      market: market,
+      market,
       limit,
       offset,
     },
@@ -122,13 +127,14 @@ export function spotifyFetchPlaylistTracks(token, id, market) {
   };
 }
 
-export function spotifyAddPlaylistTracks(token, id, market, newOffset) {
+export function spotifyAddPlaylistTracks(token, id, newOffset) {
+  const { limit, market } = playlistPaging;
   const config = {
     headers: {
       Authorization: "Bearer " + token,
     },
     params: {
-      market: market,
+      market,
       limit,
       offset: limit * newOffset,
     },
@@ -144,23 +150,26 @@ export function spotifyAddPlaylistTracks(token, id, market, newOffset) {
   };
 }
 
-export function spotifyFetchCurrentlyPlaying(token, market) {
+export function spotifyFetchCurrentlyPlaying(token) {
+  const { market } = playlistPaging;
   const config = {
     headers: {
       Authorization: "Bearer " + token,
     },
     params: {
-      market: market,
+      market,
     },
   };
 
   return (dispatch) => {
-    fetchHandler(SPOTIFY_FETCH_CURRENTLY_PLAYING_URL, config).then((res) =>
-      dispatch({
-        type: SPOTIFY_SET_CURRENTLY_PLAYING,
-        payload: res?.item,
-      })
-    );
+    fetchHandler(SPOTIFY_FETCH_CURRENTLY_PLAYING_URL, config).then((res) => {
+      if (res) {
+        dispatch({
+          type: SPOTIFY_SET_CURRENTLY_PLAYING,
+          payload: res?.item,
+        });
+      }
+    });
   };
 }
 
