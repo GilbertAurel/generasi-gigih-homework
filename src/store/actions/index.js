@@ -8,7 +8,7 @@ import {
   SPOTIFY_SET_CURRENT_TRACKS,
   SPOTIFY_SET_CURRENTLY_PLAYING,
   SPOTIFY_ADD_CURRENT_TRACKS,
-} from "redux/constant";
+} from "store/constant";
 
 import {
   SPOTIFY_USER_DATA_URL,
