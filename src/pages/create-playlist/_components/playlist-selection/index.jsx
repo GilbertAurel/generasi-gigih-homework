@@ -3,14 +3,14 @@
 import { css, jsx } from '@emotion/react';
 import { useState } from 'react';
 
-import PlaylistCard from './playlistCard';
-import PopupForm from './popupForm';
-import CreateNewCard from './createNewCard';
-import Header from './header';
 import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from 'utils/useForm';
 import { SPOTIFY_CREATE_PLAYLIST } from 'adapters/postHandler';
 import { spotifyFetchPlaylist } from 'store/actions';
+import PlaylistCard from './playlistCard';
+import PopupForm from './popupForm';
+import CreateNewCard from './createNewCard';
+import Header from './header';
 
 const initialFormData = { name: '', description: '', data: [] };
 
@@ -21,11 +21,11 @@ export default function Index({ selectedPlaylist, searchButtonToggle, selectPlay
   const [formToggle, setFormToggle] = useState(false);
   const [playlistForm, formChangeHandler, resetForm] = useForm(initialFormData);
 
-  const createNewPlaylist = async () => {
+  const createNewPlaylist = () => {
     if (playlistForm) {
       const config = {
         headers: {
-          Authorization: 'Bearer ' + token,
+          Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
           Accept: 'application/json',
         },
@@ -37,7 +37,7 @@ export default function Index({ selectedPlaylist, searchButtonToggle, selectPlay
         public: false,
       };
 
-      return await SPOTIFY_CREATE_PLAYLIST(user.id, postData, config).then(() => {
+      SPOTIFY_CREATE_PLAYLIST(user.id, postData, config).then(() => {
         dispatch(spotifyFetchPlaylist(token));
         resetForm(initialFormData);
       });
@@ -86,9 +86,9 @@ export default function Index({ selectedPlaylist, searchButtonToggle, selectPlay
         />
       )}
       <Header searchFormButtonHandler={searchFormButtonHandler} />
-      {playlists?.map((playlist, index) => (
+      {playlists?.map((playlist) => (
         <PlaylistCard
-          key={index}
+          key={playlist.id}
           playlistData={playlist}
           selectPlaylistHandler={selectPlaylistHandler}
           selectedPlaylist={selectedPlaylist}

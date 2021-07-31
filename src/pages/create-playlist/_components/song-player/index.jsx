@@ -61,10 +61,10 @@ export default function PlayingCard() {
 
   return (
     <div css={styles.container}>
-      <Skeleton type={'album'} />
-      <Details artist={''} album={''} song={'No current song'} />
+      <Skeleton type="album" />
+      <Details artist="" album="" song="No current song" />
       <Tracker playPauseHandler={playPauseHandler} icon={togglePlay} />
-      <FrostedBackground imageUrl={''} />
+      <FrostedBackground imageUrl="" />
     </div>
   );
 }

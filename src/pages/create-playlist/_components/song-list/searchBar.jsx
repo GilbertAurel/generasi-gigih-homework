@@ -32,7 +32,9 @@ export default function SearchBar(props) {
         placeholder="Artists, songs, or podcasts"
         css={styles.inputText}
       />
-      <button type="submit" css={styles.button} />
+      <button type="submit" css={styles.button}>
+        button
+      </button>
     </form>
   );
 }

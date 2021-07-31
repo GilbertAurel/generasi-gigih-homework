@@ -19,16 +19,16 @@ export const SPOTIFY_SEARCH_URL = 'https://api.spotify.com/v1/search';
 
 export const SPOTIFY_USER_DATA_URL = 'https://api.spotify.com/v1/me';
 
-export const SPOTIFY_CREATE_PLAYLIST_URL = (user_id) =>
-  `https://api.spotify.com/v1/users/${user_id}/playlists`;
+export const SPOTIFY_CREATE_PLAYLIST_URL = (id) =>
+  `https://api.spotify.com/v1/users/${id}/playlists`;
 
 export const SPOTIFY_FETCH_PLAYLIST_URL = 'https://api.spotify.com/v1/me/playlists';
 
-export const SPOTIFY_FETCH_PLAYLIST_TRACK_URL = (playlist_id) =>
-  `https://api.spotify.com/v1/playlists/${playlist_id}/tracks`;
+export const SPOTIFY_FETCH_PLAYLIST_TRACK_URL = (id) =>
+  `https://api.spotify.com/v1/playlists/${id}/tracks`;
 
 export const SPOTIFY_FETCH_CURRENTLY_PLAYING_URL =
   'https://api.spotify.com/v1/me/player/currently-playing';
 
-export const SPOTIFY_ADD_TO_PLAYLIST_URL = (playlist_id) =>
-  `https://api.spotify.com/v1/playlists/${playlist_id}/tracks`;
+export const SPOTIFY_ADD_TO_PLAYLIST_URL = (id) =>
+  `https://api.spotify.com/v1/playlists/${id}/tracks`;

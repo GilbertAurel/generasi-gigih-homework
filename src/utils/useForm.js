@@ -9,3 +9,5 @@ export function useForm(initialValues) {
 
   return [value, changeHandler, resetForm];
 }
+
+export default useForm;

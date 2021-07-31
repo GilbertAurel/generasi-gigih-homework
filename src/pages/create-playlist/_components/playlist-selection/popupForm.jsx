@@ -50,13 +50,12 @@ export default function popupForm({ formSubmitHandler, inputHandler, inputValue 
         placeholder="My playlist"
       />
       <textarea
-        type="text"
         name="description"
         value={inputValue.description}
         onChange={inputHandler}
         placeholder="Add an optional description"
       />
-      <button type="submit" />
+      <button type="submit">button</button>
     </form>
   );
 }

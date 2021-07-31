@@ -21,3 +21,5 @@ export const gifReducer = (state = initialState, action) => {
       return state;
   }
 };
+
+export default gifReducer;

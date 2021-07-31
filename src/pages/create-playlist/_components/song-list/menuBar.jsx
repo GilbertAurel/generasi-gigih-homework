@@ -40,40 +40,36 @@ export default function Menu({ menuHandler, songData, addSongToPlaylist, openMen
     `,
   };
 
-  const MainMenu = () => {
-    return (
-      <section css={styles.menuContainer}>
-        <p id="play" css={styles.button} onClick={(e) => menuHandler(e, songData)}>
-          play
-        </p>
-        <p css={styles.button} onClick={togglePlaylistSelection}>
-          add to playlist
-        </p>
-        <p css={styles.button} onClick={() => openMenuHandler(songData.id)}>
-          Close
-        </p>
-      </section>
-    );
-  };
+  const MainMenu = () => (
+    <section css={styles.menuContainer}>
+      <p id="play" css={styles.button} onClick={(e) => menuHandler(e, songData)}>
+        play
+      </p>
+      <p css={styles.button} onClick={togglePlaylistSelection}>
+        add to playlist
+      </p>
+      <p css={styles.button} onClick={() => openMenuHandler(songData.id)}>
+        Close
+      </p>
+    </section>
+  );
 
-  const PlaylistSelections = () => {
-    return (
-      <section css={styles.menuContainer}>
-        {playlists?.map((playlist) => (
-          <p
-            key={playlist.id}
-            css={styles.button}
-            onClick={() => addSongToPlaylist(playlist.id, songData.uri)}
-          >
-            {playlist.name}
-          </p>
-        ))}
-        <p css={styles.button} onClick={togglePlaylistSelection}>
-          Back
+  const PlaylistSelections = () => (
+    <section css={styles.menuContainer}>
+      {playlists?.map((playlist) => (
+        <p
+          key={playlist.id}
+          css={styles.button}
+          onClick={() => addSongToPlaylist(playlist.id, songData.uri)}
+        >
+          {playlist.name}
         </p>
-      </section>
-    );
-  };
+      ))}
+      <p css={styles.button} onClick={togglePlaylistSelection}>
+        Back
+      </p>
+    </section>
+  );
 
   return (
     <div css={styles.container}>

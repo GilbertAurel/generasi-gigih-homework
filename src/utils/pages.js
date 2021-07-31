@@ -24,3 +24,5 @@ export const PAGES = [
     name: 'Trending',
   },
 ];
+
+export default PAGES;

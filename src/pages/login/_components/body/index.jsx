@@ -67,7 +67,7 @@ function Title({ loginHandler }) {
       <h1 id="headline" css={styles.headline}>
         Just For You.
       </h1>
-      <button id="button" css={styles.button} onClick={loginHandler}>
+      <button id="button" type="button" css={styles.button} onClick={loginHandler}>
         Sign in
       </button>
     </div>

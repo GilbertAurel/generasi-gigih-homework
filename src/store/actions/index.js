@@ -64,11 +64,12 @@ export function giphyFetchTrending(GIPHY_KEY) {
 }
 
 export function spotifyLoginAuth(hashParams) {
+  // eslint-disable-next-line camelcase
   const { access_token, expires_in } = hashParams;
-  console.log(hashParams);
 
   const config = {
     headers: {
+      // eslint-disable-next-line camelcase
       Authorization: `Bearer ${access_token}`,
     },
   };
@@ -76,8 +77,9 @@ export function spotifyLoginAuth(hashParams) {
   return (dispatch) => {
     fetchHandler(SPOTIFY_USER_DATA_URL, config).then((res) => {
       const payload = {
+        // eslint-disable-next-line camelcase
         token: access_token,
-        expires_in,
+        expires: expires_in,
         user: res,
       };
 

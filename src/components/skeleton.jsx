@@ -77,8 +77,8 @@ export default function skeleton({ type }) {
     `,
   };
 
-  return total[type].map((item, index) => (
-    <div key={`${item}-${index}`} css={types[type]}>
+  return total[type].map((item) => (
+    <div key={`${item}`} css={types[type]}>
       <div css={styles.innerContainer}>
         <div css={styles.shimmer} />
         &nbsp;

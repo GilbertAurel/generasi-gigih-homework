@@ -2,11 +2,10 @@
 /** @jsx jsx */
 import { css, jsx } from '@emotion/react';
 import { useRef } from 'react';
-
 import { COLORS, FONTS } from 'utils/theme';
-import Menu from './menu';
 import { useHistory, useLocation } from 'react-router-dom';
 import { spotifyLogout } from 'adapters/spotifyAuth';
+import Menu from './menu';
 
 export default function Index() {
   const navbarRef = useRef(null);

@@ -11,9 +11,9 @@ export default function PageRouter() {
         <Navbar />
         <Switch>
           <Route exact path="/" component={LoginPage} />
-          {PAGES.map((page, pageIdx) => (
+          {PAGES.map((page) => (
             <Route
-              key={pageIdx}
+              key={page.name}
               exact={page.exact}
               path={page.path}
               component={page.component}

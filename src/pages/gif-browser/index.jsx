@@ -64,8 +64,8 @@ export default function Page() {
               searchButtonHandler={searchButtonHandler}
             />
           )}
-          {showGif.map((gif, index) => (
-            <GifCard key={index} url={gif} />
+          {showGif.map((gif) => (
+            <GifCard key={gif} url={gif} />
           ))}
         </div>
       </PageLayout>

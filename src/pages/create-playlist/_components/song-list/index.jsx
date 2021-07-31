@@ -3,11 +3,11 @@
 import { css, jsx } from '@emotion/react';
 import { useState } from 'react';
 
+import { COLORS, FONTS } from 'utils/theme';
+import { useSelector } from 'react-redux';
 import SongCard from './songCard';
 import SearchBar from './searchBar';
 import Header from './header';
-import { COLORS, FONTS } from 'utils/theme';
-import { useSelector } from 'react-redux';
 
 export default function SongList(props) {
   const currentlyPlaying = useSelector((store) => store.playlistState.currentlyPlaying);
@@ -29,7 +29,7 @@ export default function SongList(props) {
   const menuHandler = (e, song) => {
     if (e.target.id === 'play') {
       setToggleMenu('');
-      return changeSongHandler(song);
+      changeSongHandler(song);
     }
   };
 
@@ -77,9 +77,9 @@ export default function SongList(props) {
       )}
       <Header />
       {songs?.length > 0 ? (
-        songs.map((song, index) => (
+        songs.map((song) => (
           <SongCard
-            key={`${index}-${song.id}`}
+            key={`${song.id}`}
             selected={song.id === currentlyPlaying?.id}
             openMenu={song.id === toggleMenu}
             songData={song}

@@ -35,7 +35,7 @@ export default function Page() {
   useEffect(() => {
     if (spotifyToken.access_token) {
       dispatch(spotifyLoginAuth(spotifyToken));
-      return history.push('/playlist');
+      history.push('/playlist');
     }
   }, [dispatch, history, spotifyToken]);
 

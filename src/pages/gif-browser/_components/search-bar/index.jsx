@@ -33,7 +33,9 @@ export default function InputForm({ inputValue, inputChangeHandler, searchButton
     <form css={styles.container} onSubmit={searchButtonHandler}>
       <h1 css={styles.heading}>Search GIF</h1>
       <input type="text" value={inputValue} onChange={inputChangeHandler} css={styles.inputText} />
-      <button type="submit" css={styles.button} />
+      <button type="submit" css={styles.button}>
+        button
+      </button>
     </form>
   );
 }

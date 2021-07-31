@@ -4,8 +4,10 @@ export function hashSeparator(hash, index) {
   const keyValueParams = {};
 
   params.forEach((param) => {
-    const value = param.split('=');
-    keyValueParams[value[0]] = value[1];
+    const values = param.split('=');
+    const name = values[0];
+    const value = values[1];
+    keyValueParams[name] = value;
   });
 
   return keyValueParams;

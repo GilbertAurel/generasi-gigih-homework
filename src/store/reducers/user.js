@@ -12,7 +12,7 @@ export const userReducer = (state = initialState, action) => {
       return {
         ...state,
         token: action.payload.token,
-        expiry: action.payload.expires_in,
+        expiry: action.payload.expires,
         user: action.payload.user,
       };
 
@@ -20,3 +20,5 @@ export const userReducer = (state = initialState, action) => {
       return state;
   }
 };
+
+export default userReducer;

@@ -37,3 +37,5 @@ export const playlistReducer = (state = initialState, action) => {
       return state;
   }
 };
+
+export default playlistReducer;

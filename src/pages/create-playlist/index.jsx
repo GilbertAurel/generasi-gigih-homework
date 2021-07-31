@@ -61,7 +61,7 @@ export default function Page() {
     if (searchValue) {
       const config = {
         headers: {
-          Authorization: 'Bearer ' + spotifyToken,
+          Authorization: `Bearer ${spotifyToken}`,
         },
         params: {
           q: searchValue.search,
@@ -70,21 +70,21 @@ export default function Page() {
         },
       };
 
-      return await SPOTIFY_FETCH_SEARCH(config).then((res) => setSearchResult(res.tracks.items));
+      await SPOTIFY_FETCH_SEARCH(config).then((res) => setSearchResult(res.tracks.items));
     }
   };
 
   const addSongToPlaylist = (playlistId, songUri) => {
     const config = {
       headers: {
-        Authorization: 'Bearer ' + spotifyToken,
+        Authorization: `Bearer ${spotifyToken}`,
       },
       params: {
         uris: songUri,
       },
     };
 
-    return SPOTIFY_ADD_TO_PLAYLIST(config, playlistId).then((res) =>
+    return SPOTIFY_ADD_TO_PLAYLIST(config, playlistId).then(() =>
       dispatch(spotifyFetchPlaylist(spotifyToken))
     );
   };

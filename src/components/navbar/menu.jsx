@@ -35,9 +35,9 @@ export default function Menu({ logoutHandler }) {
   return (
     <div css={styles.container}>
       {PAGES.map(
-        ({ name, path }, index) =>
+        ({ name, path }) =>
           name && (
-            <Link key={index} css={styles.button} to={`${path}`}>
+            <Link key={name} css={styles.button} to={`${path}`}>
               {name}
             </Link>
           )
