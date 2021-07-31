@@ -6,12 +6,11 @@ import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 
 import { PageLayout } from "components";
-import { giphyFetchSearchResult, giphyFetchTrending } from "redux/actions";
+import { giphyFetchSearchResult, giphyFetchTrending } from "store/actions";
 
-import InputForm from "./inputForm";
-import GifCard from "./gifCard";
+import { SearchBar, GifCard } from "./_components";
 
-export default function Index() {
+export default function Page() {
   const search = useSelector((store) => store.gifState.currentGIF);
   const trending = useSelector((store) => store.gifState.trending);
   const dispatch = useDispatch();
@@ -59,7 +58,7 @@ export default function Index() {
       <PageLayout>
         <div css={styles.container}>
           {location === "/handson" && (
-            <InputForm
+            <SearchBar
               inputChangeHandler={inputChangeHandler}
               inputValue={inputValue}
               searchButtonHandler={searchButtonHandler}

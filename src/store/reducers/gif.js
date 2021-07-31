@@ -1,4 +1,4 @@
-import { GET_NEW_GIF, GIPHY_GET_TRENDING } from "redux/constant";
+import { GET_NEW_GIF, GIPHY_GET_TRENDING } from "store/constant";
 
 const initialState = {
   currentGIF: [],

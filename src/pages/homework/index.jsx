@@ -9,7 +9,7 @@ import {
   spotifyFetchCurrentlyPlaying,
   spotifyChangeSong,
   spotifyAddPlaylistTracks,
-} from "redux/actions";
+} from "store/actions";
 
 import { SPOTIFY_FETCH_SEARCH } from "adapters/fetchHandlers";
 import {
@@ -18,12 +18,8 @@ import {
 } from "adapters/postHandler";
 import { useForm } from "constants/useForm";
 
-import {
-  PageLayout,
-  SongList,
-  SongPlayer,
-  PlaylistSelection,
-} from "components";
+import { PageLayout } from "components";
+import { PlaylistSelection, SongList, SongPlayer } from "./_components";
 
 const initialFormData = {
   playlist: { name: "", description: "", data: [] },
@@ -34,7 +30,7 @@ const initialFormData = {
 
 const initialScrollIndex = 1;
 
-export default function Index() {
+export default function Page() {
   const dispatch = useDispatch();
   const { user, token: spotifyToken } = useSelector((store) => store.userState);
   const currentTracks = useSelector(

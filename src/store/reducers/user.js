@@ -1,4 +1,4 @@
-import { SPOTIFY_LOGIN_AUTH } from "redux/constant";
+import { SPOTIFY_LOGIN_AUTH } from "store/constant";
 
 const initialState = {
   token: "",

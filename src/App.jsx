@@ -1,6 +1,6 @@
 import React from "react";
 import { Provider } from "react-redux";
-import rootReducer from "redux/reducers";
+import rootReducer from "store/reducers";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { Navbar } from "components";
 import { PAGES } from "constants/pages";

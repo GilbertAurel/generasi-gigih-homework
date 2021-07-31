@@ -5,18 +5,17 @@ import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 
 import { COLORS } from "constants/theme";
-import Title from "./title";
-import Footer from "./footer";
-import Background from "./background";
-import { spotifyLoginAuth } from "redux/actions";
+import { spotifyLoginAuth } from "store/actions";
 import { useDispatch } from "react-redux";
 import { hashSeparator } from "constants/converter";
 import { useHistory } from "react-router-dom";
 import { spotifyLogin } from "adapters/spotifyAuth";
 
+import { Background, Body, Footer } from "./_components";
+
 const HASH_SUBSTRING_INDEX = 1;
 
-export default function Index() {
+export default function Page() {
   const containerRef = useRef(null);
   const [spotifyToken, setSpotifyAuth] = useState("");
   const dispatch = useDispatch();
@@ -58,7 +57,7 @@ export default function Index() {
 
   return (
     <div ref={containerRef} css={styles.container}>
-      <Title loginHandler={loginHandler} />
+      <Body loginHandler={loginHandler} />
       <Footer />
       <Background />
     </div>
