@@ -1,8 +1,8 @@
-import { SPOTIFY_LOGIN_AUTH } from "store/constant";
+import { SPOTIFY_LOGIN_AUTH } from 'store/constant';
 
 const initialState = {
-  token: "",
-  expiry: "",
+  token: '',
+  expiry: '',
   user: {},
 };
 

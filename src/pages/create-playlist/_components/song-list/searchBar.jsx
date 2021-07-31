@@ -1,6 +1,6 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
-import { css, jsx } from "@emotion/react";
+import { css, jsx } from '@emotion/react';
 
 export default function SearchBar(props) {
   const { searchValue, searchInputChangeHandler, searchButtonHandler } = props;

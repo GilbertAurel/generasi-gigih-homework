@@ -1,14 +1,7 @@
 import GifPage from "pages/gif-browser";
 import PlaylistPage from "pages/create-playlist";
-import LoginPage from "pages/login";
 
 export const PAGES = [
-  {
-    path: "/",
-    component: LoginPage,
-    navbar: false,
-    exact: true,
-  },
   {
     path: "/playlist",
     component: PlaylistPage,

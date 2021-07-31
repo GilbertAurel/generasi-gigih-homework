@@ -1,6 +1,6 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
-import { css, jsx } from "@emotion/react";
+import { css, jsx } from '@emotion/react';
 
 export default function GifCard({ url }) {
   const styles = {

@@ -1,13 +1,9 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
-import { css, jsx } from "@emotion/react";
-import { COLORS } from "utils/theme";
+import { css, jsx } from '@emotion/react';
+import { COLORS } from 'utils/theme';
 
-export default function InputForm({
-  inputValue,
-  inputChangeHandler,
-  searchButtonHandler,
-}) {
+export default function InputForm({ inputValue, inputChangeHandler, searchButtonHandler }) {
   const styles = {
     container: css`
       grid-column: 1/3;
@@ -36,12 +32,7 @@ export default function InputForm({
   return (
     <form css={styles.container} onSubmit={searchButtonHandler}>
       <h1 css={styles.heading}>Search GIF</h1>
-      <input
-        type="text"
-        value={inputValue}
-        onChange={inputChangeHandler}
-        css={styles.inputText}
-      />
+      <input type="text" value={inputValue} onChange={inputChangeHandler} css={styles.inputText} />
       <button type="submit" css={styles.button} />
     </form>
   );

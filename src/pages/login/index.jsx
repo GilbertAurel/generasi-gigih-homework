@@ -1,29 +1,29 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
-import { css, jsx } from "@emotion/react";
-import { useEffect, useRef, useState } from "react";
-import gsap from "gsap";
+import { css, jsx } from '@emotion/react';
+import { useEffect, useRef, useState } from 'react';
+import gsap from 'gsap';
 
-import { COLORS } from "utils/theme";
-import { spotifyLoginAuth } from "store/actions";
-import { useDispatch } from "react-redux";
-import { hashSeparator } from "utils/converter";
-import { useHistory } from "react-router-dom";
-import { spotifyLogin } from "adapters/spotifyAuth";
+import { COLORS } from 'utils/theme';
+import { spotifyLoginAuth } from 'store/actions';
+import { useDispatch } from 'react-redux';
+import { hashSeparator } from 'utils/converter';
+import { useHistory } from 'react-router-dom';
+import { spotifyLogin } from 'adapters/spotifyAuth';
 
-import { Background, Body, Footer } from "./_components";
+import { Background, Body, Footer } from './_components';
 
 const HASH_SUBSTRING_INDEX = 1;
 
 export default function Page() {
   const containerRef = useRef(null);
-  const [spotifyToken, setSpotifyAuth] = useState("");
+  const [spotifyToken, setSpotifyAuth] = useState('');
   const dispatch = useDispatch();
   const history = useHistory();
 
   useEffect(() => {
     gsap.to(containerRef.current, {
-      visibility: "visible",
+      visibility: 'visible',
       duration: 0.2,
     });
 
@@ -35,7 +35,7 @@ export default function Page() {
   useEffect(() => {
     if (spotifyToken.access_token) {
       dispatch(spotifyLoginAuth(spotifyToken));
-      return history.push("/playlist");
+      return history.push('/playlist');
     }
   }, [dispatch, history, spotifyToken]);
 

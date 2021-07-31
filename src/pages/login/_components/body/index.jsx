@@ -1,21 +1,21 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
-import { css, jsx } from "@emotion/react";
-import { useEffect } from "react";
-import { COLORS, FONTS } from "utils/theme";
-import gsap from "gsap";
+import { css, jsx } from '@emotion/react';
+import { useEffect } from 'react';
+import { COLORS, FONTS } from 'utils/theme';
+import gsap from 'gsap';
 
 function Title({ loginHandler }) {
   useEffect(() => {
     gsap
       .timeline()
-      .from("#headline", {
+      .from('#headline', {
         y: 100,
         opacity: 0,
         stagger: 0.2,
         duration: 0.6,
       })
-      .from(["#name", "#button"], {
+      .from(['#name', '#button'], {
         opacity: 0,
         duration: 0.6,
       });
@@ -28,7 +28,7 @@ function Title({ loginHandler }) {
       grid-column: 2/7;
       grid-row: 2/5;
       z-index: 1000;
-      font-family: "Noto Sans", sans-serif;
+      font-family: 'Noto Sans', sans-serif;
     `,
     appName: css`
       margin: 0;

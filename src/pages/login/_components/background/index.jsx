@@ -1,9 +1,9 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
-import { css, jsx } from "@emotion/react";
-import { useEffect, useRef } from "react";
-import gsap from "gsap";
-import IMAGES from "assets/images";
+import { css, jsx } from '@emotion/react';
+import { useEffect, useRef } from 'react';
+import gsap from 'gsap';
+import IMAGES from 'assets/images';
 
 export default function Background() {
   const imageRef = useRef(null);
@@ -28,12 +28,5 @@ export default function Background() {
     `,
   };
 
-  return (
-    <img
-      ref={imageRef}
-      src={IMAGES.HOME_BG}
-      alt="Album img"
-      css={styles.background}
-    />
-  );
+  return <img ref={imageRef} src={IMAGES.HOME_BG} alt="Album img" css={styles.background} />;
 }

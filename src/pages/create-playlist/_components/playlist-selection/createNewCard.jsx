@@ -1,8 +1,8 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
-import { css, jsx } from "@emotion/react";
-import { COLORS, FONTS } from "utils/theme";
-import ICONS from "assets/icons";
+import { css, jsx } from '@emotion/react';
+import { COLORS, FONTS } from 'utils/theme';
+import ICONS from 'assets/icons';
 
 export default function CreateNewCard({ createNewButtonHandler }) {
   const styles = {
@@ -12,7 +12,7 @@ export default function CreateNewCard({ createNewButtonHandler }) {
       align-items: center;
       gap: 1rem;
       cursor: pointer;
-      font-family: "Noto Sans", sans-serif;
+      font-family: 'Noto Sans', sans-serif;
       font-size: ${FONTS.CONTENT};
       color: ${COLORS.GRAY};
     `,

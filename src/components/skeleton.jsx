@@ -1,7 +1,7 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
-import { css, jsx, keyframes } from "@emotion/react";
-import { COLORS } from "utils/theme";
+import { css, jsx, keyframes } from '@emotion/react';
+import { COLORS } from 'utils/theme';
 
 export default function skeleton({ type }) {
   const loading = keyframes`

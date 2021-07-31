@@ -1,5 +1,5 @@
-import axios from "axios";
-import { SPOTIFY_SEARCH_URL } from "utils/urls";
+import axios from 'axios';
+import { SPOTIFY_SEARCH_URL } from 'utils/urls';
 
 export default function fetchData(url, config = {}) {
   return axios

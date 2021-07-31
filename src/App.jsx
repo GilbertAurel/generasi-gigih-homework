@@ -1,7 +1,7 @@
-import React from "react";
-import { Provider } from "react-redux";
-import rootReducer from "store/reducers";
-import Router from "pages/router";
+import React from 'react';
+import { Provider } from 'react-redux';
+import rootReducer from 'store/reducers';
+import Router from 'pages/router';
 
 const store = rootReducer;
 

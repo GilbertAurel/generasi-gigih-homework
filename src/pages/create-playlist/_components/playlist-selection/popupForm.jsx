@@ -1,20 +1,16 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
-import { css, jsx } from "@emotion/react";
-import { COLORS, FONTS } from "utils/theme";
+import { css, jsx } from '@emotion/react';
+import { COLORS, FONTS } from 'utils/theme';
 
-export default function popupForm({
-  formSubmitHandler,
-  inputHandler,
-  inputValue,
-}) {
+export default function popupForm({ formSubmitHandler, inputHandler, inputValue }) {
   const styles = {
     container: css`
       height: 10rem;
       display: grid;
       grid-template-rows: min-content min-content 1fr;
       gap: 1rem;
-      font-family: "Noto Sans", sans-serif;
+      font-family: 'Noto Sans', sans-serif;
 
       h1 {
         margin: 0;

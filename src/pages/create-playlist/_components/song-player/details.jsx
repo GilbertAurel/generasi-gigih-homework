@@ -1,7 +1,7 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
-import { css, jsx } from "@emotion/react";
-import { COLORS, FONTS } from "utils/theme";
+import { css, jsx } from '@emotion/react';
+import { COLORS, FONTS } from 'utils/theme';
 
 export default function PlayingDetails({ artist, album, song }) {
   const styles = {
@@ -12,7 +12,7 @@ export default function PlayingDetails({ artist, album, song }) {
       p {
         margin: 0.2rem;
         padding: 0;
-        font-family: "Noto Sans", sans-serif;
+        font-family: 'Noto Sans', sans-serif;
         font-size: ${FONTS.CONTENT};
         cursor: default;
         color: ${COLORS.TEXT_BRIGHT};
