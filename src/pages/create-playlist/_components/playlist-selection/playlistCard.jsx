@@ -1,13 +1,9 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
-import { css, jsx } from "@emotion/react";
-import { COLORS, FONTS } from "utils/theme";
+import { css, jsx } from '@emotion/react';
+import { COLORS, FONTS } from 'utils/theme';
 
-export default function PlaylistCard({
-  selectedPlaylist,
-  selectPlaylistHandler,
-  playlistData,
-}) {
+export default function PlaylistCard({ selectedPlaylist, selectPlaylistHandler, playlistData }) {
   const styles = {
     container: css`
       display: flex;
@@ -15,7 +11,7 @@ export default function PlaylistCard({
       align-items: center;
       gap: 1rem;
       cursor: pointer;
-      font-family: "Noto Sans", sans-serif;
+      font-family: 'Noto Sans', sans-serif;
       font-size: ${FONTS.CONTENT};
 
       img {
@@ -31,16 +27,11 @@ export default function PlaylistCard({
   };
 
   return (
-    <div
-      onClick={() => selectPlaylistHandler(playlistData)}
-      css={styles.container}
-    >
+    <div onClick={() => selectPlaylistHandler(playlistData)} css={styles.container}>
       <img src={playlist.image} alt="playlist" />
       <p
         css={css`
-          color: ${selectedPlaylist?.name === playlist.name
-            ? COLORS.PRIMARY
-            : COLORS.TEXT_BRIGHT};
+          color: ${selectedPlaylist?.name === playlist.name ? COLORS.PRIMARY : COLORS.TEXT_BRIGHT};
           :hover {
             color: ${COLORS.PRIMARY};
           }

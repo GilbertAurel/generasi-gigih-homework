@@ -1,18 +1,16 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
-import { css, jsx } from "@emotion/react";
-import { FrostedBackground, Skeleton } from "components";
-import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { css, jsx } from '@emotion/react';
+import { FrostedBackground, Skeleton } from 'components';
+import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 
-import Details from "./details";
-import Tracker from "./tracker";
+import Details from './details';
+import Tracker from './tracker';
 
 export default function PlayingCard() {
-  const currentSong = useSelector(
-    (store) => store.playlistState.currentlyPlaying
-  );
-  const [togglePlay, setTogglePlay] = useState("PLAY");
+  const currentSong = useSelector((store) => store.playlistState.currentlyPlaying);
+  const [togglePlay, setTogglePlay] = useState('PLAY');
   const [currentlyPlaying, setCurrentlyPlaying] = useState();
 
   useEffect(() => {
@@ -22,7 +20,7 @@ export default function PlayingCard() {
   }, [currentSong]);
 
   const playPauseHandler = () =>
-    togglePlay === "PAUSE" ? setTogglePlay("PLAY") : setTogglePlay("PAUSE");
+    togglePlay === 'PAUSE' ? setTogglePlay('PLAY') : setTogglePlay('PAUSE');
 
   const styles = {
     container: css`
@@ -63,10 +61,10 @@ export default function PlayingCard() {
 
   return (
     <div css={styles.container}>
-      <Skeleton type={"album"} />
-      <Details artist={""} album={""} song={"No current song"} />
+      <Skeleton type="album" />
+      <Details artist="" album="" song="No current song" />
       <Tracker playPauseHandler={playPauseHandler} icon={togglePlay} />
-      <FrostedBackground imageUrl={""} />
+      <FrostedBackground imageUrl="" />
     </div>
   );
 }

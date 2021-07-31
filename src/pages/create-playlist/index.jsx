@@ -1,27 +1,27 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
-import { css, jsx } from "@emotion/react";
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { css, jsx } from '@emotion/react';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   spotifyFetchPlaylist,
   spotifyFetchPlaylistTracks,
   spotifyFetchCurrentlyPlaying,
   spotifyChangeSong,
   spotifyAddPlaylistTracks,
-} from "store/actions";
+} from 'store/actions';
 
-import { SPOTIFY_FETCH_SEARCH } from "adapters/fetchHandlers";
-import { SPOTIFY_ADD_TO_PLAYLIST } from "adapters/postHandler";
-import { useForm } from "utils/useForm";
+import { SPOTIFY_FETCH_SEARCH } from 'adapters/fetchHandlers';
+import { SPOTIFY_ADD_TO_PLAYLIST } from 'adapters/postHandler';
+import { useForm } from 'utils/useForm';
 
-import { PageLayout } from "components";
-import { PlaylistSelection, SongList, SongPlayer } from "./_components";
+import { PageLayout } from 'components';
+import { PlaylistSelection, SongList, SongPlayer } from './_components';
 
 const initialFormData = {
-  playlist: { name: "", description: "", data: [] },
+  playlist: { name: '', description: '', data: [] },
   search: {
-    search: "",
+    search: '',
   },
 };
 
@@ -30,15 +30,11 @@ const initialScrollIndex = 1;
 export default function Page() {
   const dispatch = useDispatch();
   const { token: spotifyToken } = useSelector((store) => store.userState);
-  const currentTracks = useSelector(
-    (store) => store.playlistState.currentTracks
-  );
-  const [selectedPlaylist, setSelectedPlaylist] = useState("");
+  const currentTracks = useSelector((store) => store.playlistState.currentTracks);
+  const [selectedPlaylist, setSelectedPlaylist] = useState('');
   const [openSearchBar, setOpenSearchBar] = useState(false);
   const [searchResult, setSearchResult] = useState([]);
-  const [searchValue, searchInputChangeHandler] = useForm(
-    initialFormData.search
-  );
+  const [searchValue, searchInputChangeHandler] = useForm(initialFormData.search);
   const [scrollIndex, setScrollIndex] = useState(initialScrollIndex);
 
   useEffect(() => {
@@ -65,45 +61,40 @@ export default function Page() {
     if (searchValue) {
       const config = {
         headers: {
-          Authorization: "Bearer " + spotifyToken,
+          Authorization: `Bearer ${spotifyToken}`,
         },
         params: {
           q: searchValue.search,
-          type: "track",
+          type: 'track',
           limit: 15,
         },
       };
 
-      return await SPOTIFY_FETCH_SEARCH(config).then((res) =>
-        setSearchResult(res.tracks.items)
-      );
+      await SPOTIFY_FETCH_SEARCH(config).then((res) => setSearchResult(res.tracks.items));
     }
   };
 
   const addSongToPlaylist = (playlistId, songUri) => {
     const config = {
       headers: {
-        Authorization: "Bearer " + spotifyToken,
+        Authorization: `Bearer ${spotifyToken}`,
       },
       params: {
         uris: songUri,
       },
     };
 
-    return SPOTIFY_ADD_TO_PLAYLIST(config, playlistId).then((res) =>
+    return SPOTIFY_ADD_TO_PLAYLIST(config, playlistId).then(() =>
       dispatch(spotifyFetchPlaylist(spotifyToken))
     );
   };
 
   const onScrollReloadNewData = (e) => {
-    const scrollAtBottom =
-      e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight;
+    const scrollAtBottom = e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight;
 
     if (scrollAtBottom) {
       setScrollIndex((prevState) => prevState + 1);
-      dispatch(
-        spotifyAddPlaylistTracks(spotifyToken, selectedPlaylist.id, scrollIndex)
-      );
+      dispatch(spotifyAddPlaylistTracks(spotifyToken, selectedPlaylist.id, scrollIndex));
     }
   };
 

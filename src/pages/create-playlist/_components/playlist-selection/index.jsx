@@ -1,37 +1,33 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
-import { css, jsx } from "@emotion/react";
-import { useState } from "react";
+import { css, jsx } from '@emotion/react';
+import { useState } from 'react';
 
-import PlaylistCard from "./playlistCard";
-import PopupForm from "./popupForm";
-import CreateNewCard from "./createNewCard";
-import Header from "./header";
-import { useDispatch, useSelector } from "react-redux";
-import { useForm } from "utils/useForm";
-import { SPOTIFY_CREATE_PLAYLIST } from "adapters/postHandler";
-import { spotifyFetchPlaylist } from "store/actions";
+import { useDispatch, useSelector } from 'react-redux';
+import { useForm } from 'utils/useForm';
+import { SPOTIFY_CREATE_PLAYLIST } from 'adapters/postHandler';
+import { spotifyFetchPlaylist } from 'store/actions';
+import PlaylistCard from './playlistCard';
+import PopupForm from './popupForm';
+import CreateNewCard from './createNewCard';
+import Header from './header';
 
-const initialFormData = { name: "", description: "", data: [] };
+const initialFormData = { name: '', description: '', data: [] };
 
-export default function Index({
-  selectedPlaylist,
-  searchButtonToggle,
-  selectPlaylistHandler,
-}) {
+export default function Index({ selectedPlaylist, searchButtonToggle, selectPlaylistHandler }) {
   const dispatch = useDispatch();
   const { user, token } = useSelector((store) => store.userState);
   const playlists = useSelector((store) => store.playlistState.playlists);
   const [formToggle, setFormToggle] = useState(false);
   const [playlistForm, formChangeHandler, resetForm] = useForm(initialFormData);
 
-  const createNewPlaylist = async () => {
+  const createNewPlaylist = () => {
     if (playlistForm) {
       const config = {
         headers: {
-          Authorization: "Bearer " + token,
-          "Content-Type": "application/json",
-          Accept: "application/json",
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
         },
       };
 
@@ -41,12 +37,10 @@ export default function Index({
         public: false,
       };
 
-      return await SPOTIFY_CREATE_PLAYLIST(user.id, postData, config).then(
-        () => {
-          dispatch(spotifyFetchPlaylist(token));
-          resetForm(initialFormData);
-        }
-      );
+      SPOTIFY_CREATE_PLAYLIST(user.id, postData, config).then(() => {
+        dispatch(spotifyFetchPlaylist(token));
+        resetForm(initialFormData);
+      });
     }
   };
 
@@ -73,7 +67,7 @@ export default function Index({
       grid-auto-rows: min-content;
       gap: 0.9rem;
       z-index: 1000;
-      font-family: "Noto Sans", sans-serif;
+      font-family: 'Noto Sans', sans-serif;
       scrollbar-width: none;
 
       ::-webkit-scrollbar {
@@ -92,9 +86,9 @@ export default function Index({
         />
       )}
       <Header searchFormButtonHandler={searchFormButtonHandler} />
-      {playlists?.map((playlist, index) => (
+      {playlists?.map((playlist) => (
         <PlaylistCard
-          key={index}
+          key={playlist.id}
           playlistData={playlist}
           selectPlaylistHandler={selectPlaylistHandler}
           selectedPlaylist={selectedPlaylist}

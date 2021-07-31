@@ -1,19 +1,17 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
-import { css, jsx } from "@emotion/react";
-import { useState } from "react";
+import { css, jsx } from '@emotion/react';
+import { useState } from 'react';
 
-import SongCard from "./songCard";
-import SearchBar from "./searchBar";
-import Header from "./header";
-import { COLORS, FONTS } from "utils/theme";
-import { useSelector } from "react-redux";
+import { COLORS, FONTS } from 'utils/theme';
+import { useSelector } from 'react-redux';
+import SongCard from './songCard';
+import SearchBar from './searchBar';
+import Header from './header';
 
 export default function SongList(props) {
-  const currentlyPlaying = useSelector(
-    (store) => store.playlistState.currentlyPlaying
-  );
-  const [toggleMenu, setToggleMenu] = useState("");
+  const currentlyPlaying = useSelector((store) => store.playlistState.currentlyPlaying);
+  const [toggleMenu, setToggleMenu] = useState('');
 
   const {
     songs,
@@ -26,12 +24,12 @@ export default function SongList(props) {
     onScrollReloadNewData,
   } = props;
 
-  const openMenuHandler = (id) => setToggleMenu(toggleMenu === id ? "" : id);
+  const openMenuHandler = (id) => setToggleMenu(toggleMenu === id ? '' : id);
 
   const menuHandler = (e, song) => {
-    if (e.target.id === "play") {
-      setToggleMenu("");
-      return changeSongHandler(song);
+    if (e.target.id === 'play') {
+      setToggleMenu('');
+      changeSongHandler(song);
     }
   };
 
@@ -54,7 +52,7 @@ export default function SongList(props) {
       display: grid;
       justify-items: center;
       align-items: center;
-      font-family: "Noto Sans", sans-serif;
+      font-family: 'Noto Sans', sans-serif;
       font-size: ${FONTS.CONTENT};
       color: ${COLORS.GRAY};
     `,
@@ -62,7 +60,7 @@ export default function SongList(props) {
       display: grid;
       justify-items: center;
       align-items: center;
-      font-family: "Noto Sans", sans-serif;
+      font-family: 'Noto Sans', sans-serif;
       font-size: ${FONTS.CONTENT};
       color: ${COLORS.GRAY};
     `,
@@ -79,9 +77,9 @@ export default function SongList(props) {
       )}
       <Header />
       {songs?.length > 0 ? (
-        songs.map((song, index) => (
+        songs.map((song) => (
           <SongCard
-            key={`${index}-${song.id}`}
+            key={`${song.id}`}
             selected={song.id === currentlyPlaying?.id}
             openMenu={song.id === toggleMenu}
             songData={song}

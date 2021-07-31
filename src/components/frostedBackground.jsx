@@ -1,8 +1,8 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
-import { css, jsx } from "@emotion/react";
-import gsap, { Power3 } from "gsap";
-import { useRef, useEffect } from "react";
+import { css, jsx } from '@emotion/react';
+import gsap, { Power3 } from 'gsap';
+import { useRef, useEffect } from 'react';
 
 export default function FrostedBackground({ imageUrl }) {
   const imageRef = useRef(null);
@@ -28,7 +28,5 @@ export default function FrostedBackground({ imageUrl }) {
     `,
   };
 
-  return (
-    <img ref={imageRef} src={imageUrl} alt="Album img" css={styles.image} />
-  );
+  return <img ref={imageRef} src={imageUrl} alt="Album img" css={styles.image} />;
 }

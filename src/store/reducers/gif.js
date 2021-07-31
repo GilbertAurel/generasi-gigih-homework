@@ -1,4 +1,4 @@
-import { GET_NEW_GIF, GIPHY_GET_TRENDING } from "store/constant";
+import { GET_NEW_GIF, GIPHY_GET_TRENDING } from 'store/constant';
 
 const initialState = {
   currentGIF: [],
@@ -21,3 +21,5 @@ export const gifReducer = (state = initialState, action) => {
       return state;
   }
 };
+
+export default gifReducer;

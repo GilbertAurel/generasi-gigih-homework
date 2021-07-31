@@ -3,12 +3,12 @@ import {
   SPOTIFY_SET_CURRENT_TRACKS,
   SPOTIFY_SET_CURRENTLY_PLAYING,
   SPOTIFY_ADD_CURRENT_TRACKS,
-} from "store/constant";
+} from 'store/constant';
 
 const initialState = {
   playlists: [],
   currentTracks: [],
-  currentlyPlaying: "",
+  currentlyPlaying: '',
 };
 
 export const playlistReducer = (state = initialState, action) => {
@@ -37,3 +37,5 @@ export const playlistReducer = (state = initialState, action) => {
       return state;
   }
 };
+
+export default playlistReducer;

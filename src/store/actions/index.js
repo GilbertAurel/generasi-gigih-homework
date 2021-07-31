@@ -1,4 +1,4 @@
-import fetchHandler from "adapters/fetchHandlers";
+import fetchHandler from 'adapters/fetchHandlers';
 
 import {
   GET_NEW_GIF,
@@ -8,7 +8,7 @@ import {
   SPOTIFY_SET_CURRENT_TRACKS,
   SPOTIFY_SET_CURRENTLY_PLAYING,
   SPOTIFY_ADD_CURRENT_TRACKS,
-} from "store/constant";
+} from 'store/constant';
 
 import {
   SPOTIFY_USER_DATA_URL,
@@ -17,9 +17,9 @@ import {
   SPOTIFY_FETCH_PLAYLIST_TRACK_URL,
   SPOTIFY_FETCH_CURRENTLY_PLAYING_URL,
   GIPHY_GET_TRENDS_URL,
-} from "utils/urls";
+} from 'utils/urls';
 
-const playlistPaging = { offset: 0, limit: 15, market: "ES" };
+const playlistPaging = { offset: 0, limit: 15, market: 'ES' };
 const gifPaging = { limit: 6 };
 
 export function giphyFetchSearchResult(GIPHY_KEY, inputValue) {
@@ -64,26 +64,28 @@ export function giphyFetchTrending(GIPHY_KEY) {
 }
 
 export function spotifyLoginAuth(hashParams) {
+  // eslint-disable-next-line camelcase
   const { access_token, expires_in } = hashParams;
-  console.log(hashParams);
 
   const config = {
     headers: {
-      Authorization: "Bearer " + access_token,
+      // eslint-disable-next-line camelcase
+      Authorization: `Bearer ${access_token}`,
     },
   };
 
   return (dispatch) => {
     fetchHandler(SPOTIFY_USER_DATA_URL, config).then((res) => {
       const payload = {
+        // eslint-disable-next-line camelcase
         token: access_token,
-        expires_in: expires_in,
+        expires: expires_in,
         user: res,
       };
 
       dispatch({
         type: SPOTIFY_LOGIN_AUTH,
-        payload: payload,
+        payload,
       });
     });
   };
@@ -92,7 +94,7 @@ export function spotifyLoginAuth(hashParams) {
 export function spotifyFetchPlaylist(token) {
   const config = {
     headers: {
-      Authorization: "Bearer " + token,
+      Authorization: `Bearer ${token}`,
     },
   };
 
@@ -110,7 +112,7 @@ export function spotifyFetchPlaylistTracks(token, id) {
   const { offset, limit, market } = playlistPaging;
   const config = {
     headers: {
-      Authorization: "Bearer " + token,
+      Authorization: `Bearer ${token}`,
     },
     params: {
       market,
@@ -133,7 +135,7 @@ export function spotifyAddPlaylistTracks(token, id, newOffset) {
   const { limit, market } = playlistPaging;
   const config = {
     headers: {
-      Authorization: "Bearer " + token,
+      Authorization: `Bearer ${token}`,
     },
     params: {
       market,
@@ -156,7 +158,7 @@ export function spotifyFetchCurrentlyPlaying(token) {
   const { market } = playlistPaging;
   const config = {
     headers: {
-      Authorization: "Bearer " + token,
+      Authorization: `Bearer ${token}`,
     },
     params: {
       market,

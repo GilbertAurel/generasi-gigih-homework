@@ -1,9 +1,9 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
-import { css, jsx } from "@emotion/react";
-import { COLORS, FONTS } from "utils/theme";
-import { Link } from "react-router-dom";
-import { PAGES } from "utils/pages";
+import { css, jsx } from '@emotion/react';
+import { COLORS, FONTS } from 'utils/theme';
+import { Link } from 'react-router-dom';
+import { PAGES } from 'utils/pages';
 
 export default function Menu({ logoutHandler }) {
   const styles = {
@@ -19,7 +19,7 @@ export default function Menu({ logoutHandler }) {
     button: css`
       margin: 0;
       padding: 0;
-      font-family: "Noto Sans", sans-serif;
+      font-family: 'Noto Sans', sans-serif;
       font-size: ${FONTS.BODY};
       cursor: pointer;
       transition: color 0.6s;
@@ -35,9 +35,9 @@ export default function Menu({ logoutHandler }) {
   return (
     <div css={styles.container}>
       {PAGES.map(
-        ({ name, path }, index) =>
+        ({ name, path }) =>
           name && (
-            <Link key={index} css={styles.button} to={`${path}`}>
+            <Link key={name} css={styles.button} to={`${path}`}>
               {name}
             </Link>
           )
