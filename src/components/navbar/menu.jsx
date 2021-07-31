@@ -1,10 +1,9 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import { css, jsx } from "@emotion/react";
-import { COLORS, FONTS } from "constants/theme";
+import { COLORS, FONTS } from "utils/theme";
 import { Link } from "react-router-dom";
-
-const MENU_SELECTION = ["playlist", "handson", "trending"];
+import { PAGES } from "utils/pages";
 
 export default function Menu({ logoutHandler }) {
   const styles = {
@@ -25,6 +24,7 @@ export default function Menu({ logoutHandler }) {
       cursor: pointer;
       transition: color 0.6s;
       color: ${COLORS.BTN_NOT_ACTIVE_DARK};
+      text-decoration: none;
 
       :hover {
         color: ${COLORS.BTN_ACTIVE_DARK};
@@ -34,11 +34,14 @@ export default function Menu({ logoutHandler }) {
 
   return (
     <div css={styles.container}>
-      {MENU_SELECTION.map((menu, index) => (
-        <Link key={index} css={styles.button} to={`/${menu}`}>
-          {menu}
-        </Link>
-      ))}
+      {PAGES.map(
+        ({ name, path }, index) =>
+          name && (
+            <Link key={index} css={styles.button} to={`${path}`}>
+              {name}
+            </Link>
+          )
+      )}
       <p onClick={logoutHandler} css={styles.button}>
         Sign out
       </p>

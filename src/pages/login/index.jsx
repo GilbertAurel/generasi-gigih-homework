@@ -4,10 +4,10 @@ import { css, jsx } from "@emotion/react";
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 
-import { COLORS } from "constants/theme";
+import { COLORS } from "utils/theme";
 import { spotifyLoginAuth } from "store/actions";
 import { useDispatch } from "react-redux";
-import { hashSeparator } from "constants/converter";
+import { hashSeparator } from "utils/converter";
 import { useHistory } from "react-router-dom";
 import { spotifyLogin } from "adapters/spotifyAuth";
 

@@ -1,7 +1,7 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import { css, jsx } from "@emotion/react";
-import { COLORS, FONTS } from "constants/theme";
+import { COLORS, FONTS } from "utils/theme";
 
 export default function Header({ searchFormButtonHandler }) {
   const styles = {

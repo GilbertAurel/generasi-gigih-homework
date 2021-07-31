@@ -12,11 +12,8 @@ import {
 } from "store/actions";
 
 import { SPOTIFY_FETCH_SEARCH } from "adapters/fetchHandlers";
-import {
-  SPOTIFY_CREATE_PLAYLIST,
-  SPOTIFY_ADD_TO_PLAYLIST,
-} from "adapters/postHandler";
-import { useForm } from "constants/useForm";
+import { SPOTIFY_ADD_TO_PLAYLIST } from "adapters/postHandler";
+import { useForm } from "utils/useForm";
 
 import { PageLayout } from "components";
 import { PlaylistSelection, SongList, SongPlayer } from "./_components";
@@ -32,7 +29,7 @@ const initialScrollIndex = 1;
 
 export default function Page() {
   const dispatch = useDispatch();
-  const { user, token: spotifyToken } = useSelector((store) => store.userState);
+  const { token: spotifyToken } = useSelector((store) => store.userState);
   const currentTracks = useSelector(
     (store) => store.playlistState.currentTracks
   );
@@ -41,9 +38,6 @@ export default function Page() {
   const [searchResult, setSearchResult] = useState([]);
   const [searchValue, searchInputChangeHandler] = useForm(
     initialFormData.search
-  );
-  const [newPlaylist, formInputChangeHandler, resetPlaylistForm] = useForm(
-    initialFormData.playlist
   );
   const [scrollIndex, setScrollIndex] = useState(initialScrollIndex);
 
@@ -86,40 +80,6 @@ export default function Page() {
     }
   };
 
-  const createNewPlaylist = async () => {
-    if (newPlaylist) {
-      const config = {
-        headers: {
-          Authorization: "Bearer " + spotifyToken,
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-      };
-
-      const postData = {
-        name: newPlaylist.name,
-        description: newPlaylist.description,
-        public: false,
-      };
-
-      return await SPOTIFY_CREATE_PLAYLIST(user.id, postData, config).then(
-        () => {
-          dispatch(spotifyFetchPlaylist(spotifyToken));
-          resetPlaylistForm(initialFormData.playlist);
-        }
-      );
-    }
-  };
-
-  const newPlaylistSubmitHandler = (event) => {
-    event.preventDefault();
-    return (
-      newPlaylist.name.length > 10 &&
-      newPlaylist.description.length > 20 &&
-      createNewPlaylist(newPlaylist)
-    );
-  };
-
   const addSongToPlaylist = (playlistId, songUri) => {
     const config = {
       headers: {
@@ -158,14 +118,6 @@ export default function Page() {
       addSongToPlaylist,
       onScrollReloadNewData,
     },
-    playlistSelection: {
-      selectPlaylistHandler,
-      formInputChangeHandler,
-      newPlaylistSubmitHandler,
-      searchButtonToggle,
-      selectedPlaylist,
-      newPlaylist,
-    },
   };
 
   const styles = {
@@ -186,7 +138,11 @@ export default function Page() {
     <PageLayout>
       <div css={styles.container}>
         <SongPlayer />
-        <PlaylistSelection {...params.playlistSelection} />
+        <PlaylistSelection
+          selectPlaylistHandler={selectPlaylistHandler}
+          searchButtonToggle={searchButtonToggle}
+          selectedPlaylist={selectedPlaylist}
+        />
         <SongList {...params.songList} />
       </div>
     </PageLayout>

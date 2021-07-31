@@ -2,7 +2,7 @@
 /** @jsx jsx */
 import { css, jsx } from "@emotion/react";
 import { useEffect } from "react";
-import { COLORS, FONTS } from "constants/theme";
+import { COLORS, FONTS } from "utils/theme";
 import gsap from "gsap";
 
 function Title({ loginHandler }) {
