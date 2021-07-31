@@ -69,7 +69,7 @@ export function spotifyLoginAuth(hashParams) {
 
   const config = {
     headers: {
-      Authorization: 'Bearer ' + access_token,
+      Authorization: `Bearer ${access_token}`,
     },
   };
 
@@ -77,13 +77,13 @@ export function spotifyLoginAuth(hashParams) {
     fetchHandler(SPOTIFY_USER_DATA_URL, config).then((res) => {
       const payload = {
         token: access_token,
-        expires_in: expires_in,
+        expires_in,
         user: res,
       };
 
       dispatch({
         type: SPOTIFY_LOGIN_AUTH,
-        payload: payload,
+        payload,
       });
     });
   };
@@ -92,7 +92,7 @@ export function spotifyLoginAuth(hashParams) {
 export function spotifyFetchPlaylist(token) {
   const config = {
     headers: {
-      Authorization: 'Bearer ' + token,
+      Authorization: `Bearer ${token}`,
     },
   };
 
@@ -110,7 +110,7 @@ export function spotifyFetchPlaylistTracks(token, id) {
   const { offset, limit, market } = playlistPaging;
   const config = {
     headers: {
-      Authorization: 'Bearer ' + token,
+      Authorization: `Bearer ${token}`,
     },
     params: {
       market,
@@ -133,7 +133,7 @@ export function spotifyAddPlaylistTracks(token, id, newOffset) {
   const { limit, market } = playlistPaging;
   const config = {
     headers: {
-      Authorization: 'Bearer ' + token,
+      Authorization: `Bearer ${token}`,
     },
     params: {
       market,
@@ -156,7 +156,7 @@ export function spotifyFetchCurrentlyPlaying(token) {
   const { market } = playlistPaging;
   const config = {
     headers: {
-      Authorization: 'Bearer ' + token,
+      Authorization: `Bearer ${token}`,
     },
     params: {
       market,
