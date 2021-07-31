@@ -3,7 +3,7 @@ import axios from "axios";
 import {
   SPOTIFY_ADD_TO_PLAYLIST_URL,
   SPOTIFY_CREATE_PLAYLIST_URL,
-} from "constants/urls";
+} from "utils/urls";
 
 function postData(url, config, data) {
   return axios

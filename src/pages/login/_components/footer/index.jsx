@@ -3,7 +3,7 @@
 import { css, jsx } from "@emotion/react";
 import { useEffect } from "react";
 import gsap from "gsap";
-import { COLORS, FONTS } from "constants/theme";
+import { COLORS, FONTS } from "utils/theme";
 
 export default function Footer() {
   useEffect(() => {

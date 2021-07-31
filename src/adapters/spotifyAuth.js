@@ -1,4 +1,4 @@
-import { SPOTIFY_AUTH_LOGOUT, SPOTIFY_AUTH_URL } from "constants/urls";
+import { SPOTIFY_AUTH_LOGOUT, SPOTIFY_AUTH_URL } from "utils/urls";
 
 export function spotifyLogin() {
   return (window.location = SPOTIFY_AUTH_URL);

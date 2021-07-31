@@ -2,7 +2,7 @@
 /** @jsx jsx */
 import { css, jsx } from "@emotion/react";
 import { useSelector } from "react-redux";
-import { COLORS, FONTS } from "constants/theme";
+import { COLORS, FONTS } from "utils/theme";
 import { useState } from "react";
 
 export default function Menu({

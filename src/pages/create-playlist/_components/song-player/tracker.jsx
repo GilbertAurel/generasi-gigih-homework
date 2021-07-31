@@ -1,7 +1,7 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import { css, jsx } from "@emotion/react";
-import { COLORS } from "constants/theme";
+import { COLORS } from "utils/theme";
 import ICONS from "assets/icons";
 
 export default function Tracker({ playPauseHandler, icon }) {

@@ -1,9 +1,9 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import { css, jsx } from "@emotion/react";
-import { COLORS, FONTS } from "constants/theme";
+import { COLORS, FONTS } from "utils/theme";
 
-import { msToMinutesConverter } from "constants/converter";
+import { msToMinutesConverter } from "utils/converter";
 import ICONS from "assets/icons";
 import MenuBar from "./menuBar";
 

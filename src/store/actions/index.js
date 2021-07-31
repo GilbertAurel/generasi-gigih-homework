@@ -17,7 +17,7 @@ import {
   SPOTIFY_FETCH_PLAYLIST_TRACK_URL,
   SPOTIFY_FETCH_CURRENTLY_PLAYING_URL,
   GIPHY_GET_TRENDS_URL,
-} from "constants/urls";
+} from "utils/urls";
 
 const playlistPaging = { offset: 0, limit: 15, market: "ES" };
 const gifPaging = { limit: 6 };
@@ -64,7 +64,8 @@ export function giphyFetchTrending(GIPHY_KEY) {
 }
 
 export function spotifyLoginAuth(hashParams) {
-  const { access_token } = hashParams;
+  const { access_token, expires_in } = hashParams;
+  console.log(hashParams);
 
   const config = {
     headers: {
@@ -76,6 +77,7 @@ export function spotifyLoginAuth(hashParams) {
     fetchHandler(SPOTIFY_USER_DATA_URL, config).then((res) => {
       const payload = {
         token: access_token,
+        expires_in: expires_in,
         user: res,
       };
 

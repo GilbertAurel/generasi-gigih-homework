@@ -20,13 +20,13 @@ export default function Page() {
   const GIPHY_KEY = process.env.REACT_APP_GIPHY_KEY;
 
   useEffect(() => {
-    if (location === "/trending") {
+    if (location === "/trending-gif") {
       dispatch(giphyFetchTrending(GIPHY_KEY));
     }
   }, [GIPHY_KEY, dispatch, location]);
 
   useEffect(() => {
-    if (location === "/trending") {
+    if (location === "/trending-gif") {
       return setShowGif(trending);
     }
 
@@ -57,7 +57,7 @@ export default function Page() {
     return (
       <PageLayout>
         <div css={styles.container}>
-          {location === "/handson" && (
+          {location === "/search-gif" && (
             <SearchBar
               inputChangeHandler={inputChangeHandler}
               inputValue={inputValue}

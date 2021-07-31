@@ -6,7 +6,7 @@ import { useState } from "react";
 import SongCard from "./songCard";
 import SearchBar from "./searchBar";
 import Header from "./header";
-import { COLORS, FONTS } from "constants/theme";
+import { COLORS, FONTS } from "utils/theme";
 import { useSelector } from "react-redux";
 
 export default function SongList(props) {

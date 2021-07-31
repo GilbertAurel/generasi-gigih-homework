@@ -3,7 +3,7 @@
 import { css, jsx } from "@emotion/react";
 import { useRef } from "react";
 
-import { COLORS, FONTS } from "constants/theme";
+import { COLORS, FONTS } from "utils/theme";
 import Menu from "./menu";
 import { useHistory, useLocation } from "react-router-dom";
 import { spotifyLogout } from "adapters/spotifyAuth";
