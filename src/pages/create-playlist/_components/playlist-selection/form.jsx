@@ -3,7 +3,7 @@
 import { css, jsx } from '@emotion/react';
 import { COLORS, FONTS } from 'utils/theme';
 
-export default function popupForm({ formSubmitHandler, inputHandler, inputValue }) {
+export default function Form({ formSubmitHandler, inputHandler, inputValue }) {
   const styles = {
     container: css`
       height: 10rem;

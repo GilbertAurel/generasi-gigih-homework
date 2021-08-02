@@ -4,19 +4,39 @@ import { css, jsx } from '@emotion/react';
 import { COLORS, FONTS } from 'utils/theme';
 
 import { msToMinutesConverter } from 'utils/converter';
+import { SPOTIFY_ADD_TO_PLAYLIST } from 'adapters/postHandler';
+import { spotifyFetchPlaylist } from 'store/actions';
+import { useDispatch, useSelector } from 'react-redux';
 import ICONS from 'assets/icons';
 import MenuBar from './menuBar';
 
 export default function SongCard(props) {
-  const {
-    songData,
-    changeSongHandler,
-    selected,
-    openMenuHandler,
-    openMenu,
-    menuHandler,
-    addSongToPlaylist,
-  } = props;
+  const { songData, changeSongHandler, selected, openMenuHandler, openMenu, menuHandler } = props;
+  const dispatch = useDispatch();
+  const spotifyToken = useSelector((store) => store.userState.token);
+
+  const addSongToPlaylist = (playlistId, songUri) => {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${spotifyToken}`,
+      },
+      params: {
+        uris: songUri,
+      },
+    };
+
+    return SPOTIFY_ADD_TO_PLAYLIST(config, playlistId).then(() =>
+      dispatch(spotifyFetchPlaylist(spotifyToken))
+    );
+  };
+
+  const song = {
+    id: songData.id,
+    image: songData.album.images[2].url,
+    title: songData.name,
+    artist: songData.artists[0].name,
+    length: msToMinutesConverter(songData.duration_ms),
+  };
 
   const styles = {
     container: css`
@@ -47,14 +67,6 @@ export default function SongCard(props) {
     menuButton: css`
       transform: scale(0.6);
     `,
-  };
-
-  const song = {
-    id: songData.id,
-    image: songData.album.images[2].url,
-    title: songData.name,
-    artist: songData.artists[0].name,
-    length: msToMinutesConverter(songData.duration_ms),
   };
 
   return (

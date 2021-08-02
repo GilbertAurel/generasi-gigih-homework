@@ -8,21 +8,23 @@ import { useForm } from 'utils/useForm';
 import { SPOTIFY_CREATE_PLAYLIST } from 'adapters/postHandler';
 import { spotifyFetchPlaylist } from 'store/actions';
 import PlaylistCard from './playlistCard';
-import PopupForm from './popupForm';
-import CreateNewCard from './createNewCard';
+import Form from './form';
+import CreateNewButton from './createNewButton';
 import Header from './header';
 
 const initialFormData = { name: '', description: '', data: [] };
 
-export default function Index({ selectedPlaylist, searchButtonToggle, selectPlaylistHandler }) {
+export default function Index({ searchButtonToggle, selectPlaylistHandler }) {
   const dispatch = useDispatch();
   const { user, token } = useSelector((store) => store.userState);
   const playlists = useSelector((store) => store.playlistState.playlists);
   const [formToggle, setFormToggle] = useState(false);
   const [playlistForm, formChangeHandler, resetForm] = useForm(initialFormData);
 
-  const createNewPlaylist = () => {
-    if (playlistForm) {
+  const newPlaylistSubmitHandler = (event) => {
+    event.preventDefault();
+
+    if (playlistForm.name.length > 10 && playlistForm.description.length > 20) {
       const config = {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -40,17 +42,9 @@ export default function Index({ selectedPlaylist, searchButtonToggle, selectPlay
       SPOTIFY_CREATE_PLAYLIST(user.id, postData, config).then(() => {
         dispatch(spotifyFetchPlaylist(token));
         resetForm(initialFormData);
+        setFormToggle(false);
       });
     }
-  };
-
-  const newPlaylistSubmitHandler = (event) => {
-    event.preventDefault();
-    return (
-      playlistForm.name.length > 10 &&
-      playlistForm.description.length > 20 &&
-      createNewPlaylist(playlistForm)
-    );
   };
 
   const createNewButtonHandler = () => setFormToggle((prevState) => !prevState);
@@ -79,7 +73,7 @@ export default function Index({ selectedPlaylist, searchButtonToggle, selectPlay
   return (
     <div css={styles.container}>
       {formToggle && (
-        <PopupForm
+        <Form
           formSubmitHandler={newPlaylistSubmitHandler}
           inputValue={playlistForm}
           inputHandler={formChangeHandler}
@@ -91,10 +85,9 @@ export default function Index({ selectedPlaylist, searchButtonToggle, selectPlay
           key={playlist.id}
           playlistData={playlist}
           selectPlaylistHandler={selectPlaylistHandler}
-          selectedPlaylist={selectedPlaylist}
         />
       ))}
-      <CreateNewCard createNewButtonHandler={createNewButtonHandler} />
+      <CreateNewButton createNewButtonHandler={createNewButtonHandler} />
     </div>
   );
 }

@@ -5,10 +5,11 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
-import { PageLayout } from 'components';
 import { giphyFetchSearchResult, giphyFetchTrending } from 'store/actions';
 
-import { SearchBar, GifCard } from './_components';
+import PageLayout from 'components/pageLayout';
+import GifCard from './_components/gif-card';
+import SearchBar from './_components/search-bar';
 
 export default function Page() {
   const search = useSelector((store) => store.gifState.currentGIF);

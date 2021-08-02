@@ -1,30 +1,42 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import { css, jsx } from '@emotion/react';
-import { useState } from 'react';
-
-import { COLORS, FONTS } from 'utils/theme';
-import { useSelector } from 'react-redux';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { spotifyAddPlaylistTracks, spotifyChangeSong } from 'store/actions';
 import SongCard from './songCard';
 import SearchBar from './searchBar';
 import Header from './header';
+import AlertSpinner from './alertSpinner';
+
+const initialScrollIndex = 1;
 
 export default function SongList(props) {
+  const dispatch = useDispatch();
+  const token = useSelector((store) => store.userState.token);
+  const playlistId = useSelector((store) => store.playlistState.currentPlaylist);
   const currentlyPlaying = useSelector((store) => store.playlistState.currentlyPlaying);
   const [toggleMenu, setToggleMenu] = useState('');
+  const [scrollIndex, setScrollIndex] = useState(initialScrollIndex);
 
-  const {
-    songs,
-    changeSongHandler,
-    searchValue,
-    searchInputChangeHandler,
-    searchButtonHandler,
-    openSearchBar,
-    addSongToPlaylist,
-    onScrollReloadNewData,
-  } = props;
+  const { songs, searchValue, searchValueHandler, searchButtonHandler, openSearchBar } = props;
+
+  useEffect(() => {
+    setScrollIndex(initialScrollIndex);
+  }, [playlistId]);
 
   const openMenuHandler = (id) => setToggleMenu(toggleMenu === id ? '' : id);
+
+  const changeSongHandler = (song) => dispatch(spotifyChangeSong(song));
+
+  const onScrollReloadNewData = (e) => {
+    const scrollAtBottom = e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight;
+
+    if (scrollAtBottom) {
+      setScrollIndex((prevState) => prevState + 1);
+      dispatch(spotifyAddPlaylistTracks(token, playlistId, scrollIndex));
+    }
+  };
 
   const menuHandler = (e, song) => {
     if (e.target.id === 'play') {
@@ -48,22 +60,6 @@ export default function SongList(props) {
         display: none;
       }
     `,
-    noSongAlert: css`
-      display: grid;
-      justify-items: center;
-      align-items: center;
-      font-family: 'Noto Sans', sans-serif;
-      font-size: ${FONTS.CONTENT};
-      color: ${COLORS.GRAY};
-    `,
-    loading: css`
-      display: grid;
-      justify-items: center;
-      align-items: center;
-      font-family: 'Noto Sans', sans-serif;
-      font-size: ${FONTS.CONTENT};
-      color: ${COLORS.GRAY};
-    `,
   };
 
   return (
@@ -71,7 +67,7 @@ export default function SongList(props) {
       {openSearchBar && (
         <SearchBar
           searchValue={searchValue}
-          searchInputChangeHandler={searchInputChangeHandler}
+          searchValueHandler={searchValueHandler}
           searchButtonHandler={searchButtonHandler}
         />
       )}
@@ -79,26 +75,19 @@ export default function SongList(props) {
       {songs?.length > 0 ? (
         songs.map((song) => (
           <SongCard
-            key={`${song.id}`}
+            key={song.id}
             selected={song.id === currentlyPlaying?.id}
             openMenu={song.id === toggleMenu}
             songData={song}
             changeSongHandler={changeSongHandler}
             openMenuHandler={openMenuHandler}
             menuHandler={menuHandler}
-            addSongToPlaylist={addSongToPlaylist}
           />
         ))
       ) : (
-        <div css={styles.noSongAlert}>
-          <p>playlist empty</p>
-        </div>
+        <AlertSpinner type="noSong" />
       )}
-      {songs?.length > 0 && (
-        <div css={styles.loading}>
-          <p>Loading..</p>
-        </div>
-      )}
+      {songs?.length > 0 && <AlertSpinner type="loading" />}
     </div>
   );
 }

@@ -7,35 +7,28 @@ import {
   spotifyFetchPlaylist,
   spotifyFetchPlaylistTracks,
   spotifyFetchCurrentlyPlaying,
-  spotifyChangeSong,
-  spotifyAddPlaylistTracks,
+  spotifySetPlaylistId,
 } from 'store/actions';
 
 import { SPOTIFY_FETCH_SEARCH } from 'adapters/fetchHandlers';
-import { SPOTIFY_ADD_TO_PLAYLIST } from 'adapters/postHandler';
 import { useForm } from 'utils/useForm';
 
-import { PageLayout } from 'components';
-import { PlaylistSelection, SongList, SongPlayer } from './_components';
+import PageLayout from 'components/pageLayout';
+import PlaylistSelection from './_components/playlist-selection';
+import SongList from './_components/song-list';
+import SongPlayer from './_components/song-player';
 
 const initialFormData = {
-  playlist: { name: '', description: '', data: [] },
-  search: {
-    search: '',
-  },
+  search: '',
 };
-
-const initialScrollIndex = 1;
 
 export default function Page() {
   const dispatch = useDispatch();
-  const { token: spotifyToken } = useSelector((store) => store.userState);
+  const spotifyToken = useSelector((store) => store.userState.token);
   const currentTracks = useSelector((store) => store.playlistState.currentTracks);
-  const [selectedPlaylist, setSelectedPlaylist] = useState('');
-  const [openSearchBar, setOpenSearchBar] = useState(false);
+  const [toggleSearchBar, setToggleSearchBar] = useState(false);
   const [searchResult, setSearchResult] = useState([]);
-  const [searchValue, searchInputChangeHandler] = useForm(initialFormData.search);
-  const [scrollIndex, setScrollIndex] = useState(initialScrollIndex);
+  const [searchValue, searchValueHanlder] = useForm(initialFormData);
 
   useEffect(() => {
     if (spotifyToken) {
@@ -44,15 +37,12 @@ export default function Page() {
     }
   }, [dispatch, spotifyToken]);
 
-  const searchButtonToggle = ({ state }) => setOpenSearchBar(state);
-
-  const changeSongHandler = (song) => dispatch(spotifyChangeSong(song));
+  const searchButtonToggle = ({ state }) => setToggleSearchBar(state);
 
   const selectPlaylistHandler = (playlist) => {
     dispatch(spotifyFetchPlaylistTracks(spotifyToken, playlist.id));
+    dispatch(spotifySetPlaylistId(playlist.id));
     searchButtonToggle({ state: false });
-    setSelectedPlaylist(playlist);
-    setScrollIndex(initialScrollIndex);
   };
 
   const searchButtonHandler = async (event) => {
@@ -72,43 +62,6 @@ export default function Page() {
 
       await SPOTIFY_FETCH_SEARCH(config).then((res) => setSearchResult(res.tracks.items));
     }
-  };
-
-  const addSongToPlaylist = (playlistId, songUri) => {
-    const config = {
-      headers: {
-        Authorization: `Bearer ${spotifyToken}`,
-      },
-      params: {
-        uris: songUri,
-      },
-    };
-
-    return SPOTIFY_ADD_TO_PLAYLIST(config, playlistId).then(() =>
-      dispatch(spotifyFetchPlaylist(spotifyToken))
-    );
-  };
-
-  const onScrollReloadNewData = (e) => {
-    const scrollAtBottom = e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight;
-
-    if (scrollAtBottom) {
-      setScrollIndex((prevState) => prevState + 1);
-      dispatch(spotifyAddPlaylistTracks(spotifyToken, selectedPlaylist.id, scrollIndex));
-    }
-  };
-
-  const params = {
-    songList: {
-      songs: openSearchBar ? searchResult : currentTracks,
-      changeSongHandler,
-      searchButtonHandler,
-      searchInputChangeHandler,
-      searchValue,
-      openSearchBar,
-      addSongToPlaylist,
-      onScrollReloadNewData,
-    },
   };
 
   const styles = {
@@ -132,9 +85,14 @@ export default function Page() {
         <PlaylistSelection
           selectPlaylistHandler={selectPlaylistHandler}
           searchButtonToggle={searchButtonToggle}
-          selectedPlaylist={selectedPlaylist}
         />
-        <SongList {...params.songList} />
+        <SongList
+          songs={toggleSearchBar ? searchResult : currentTracks}
+          searchButtonHandler={searchButtonHandler}
+          searchValueHandler={searchValueHanlder}
+          searchValue={searchValue}
+          openSearchBar={toggleSearchBar}
+        />
       </div>
     </PageLayout>
   );

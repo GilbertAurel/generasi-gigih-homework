@@ -11,7 +11,9 @@ import { hashSeparator } from 'utils/converter';
 import { useHistory } from 'react-router-dom';
 import { spotifyLogin } from 'adapters/spotifyAuth';
 
-import { Background, Body, Footer } from './_components';
+import Background from './_components/background';
+import Body from './_components/body';
+import Footer from './_components/footer';
 
 const HASH_SUBSTRING_INDEX = 1;
 

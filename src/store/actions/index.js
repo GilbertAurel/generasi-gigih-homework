@@ -8,6 +8,7 @@ import {
   SPOTIFY_SET_CURRENT_TRACKS,
   SPOTIFY_SET_CURRENTLY_PLAYING,
   SPOTIFY_ADD_CURRENT_TRACKS,
+  SPOTIFY_CHANGE_PLAYLIST_ID,
 } from 'store/constant';
 
 import {
@@ -127,6 +128,15 @@ export function spotifyFetchPlaylistTracks(token, id) {
         type: SPOTIFY_SET_CURRENT_TRACKS,
         payload: res.items.map((item) => item.track),
       });
+    });
+  };
+}
+
+export function spotifySetPlaylistId(id) {
+  return (dispatch) => {
+    dispatch({
+      type: SPOTIFY_CHANGE_PLAYLIST_ID,
+      payload: id,
     });
   };
 }

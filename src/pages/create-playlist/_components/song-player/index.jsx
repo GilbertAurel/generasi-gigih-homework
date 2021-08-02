@@ -1,10 +1,11 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import { css, jsx } from '@emotion/react';
-import { FrostedBackground, Skeleton } from 'components';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
+import Skeleton from 'components/skeleton';
+import FrostedBackground from 'components/frostedBackground';
 import Details from './details';
 import Tracker from './tracker';
 

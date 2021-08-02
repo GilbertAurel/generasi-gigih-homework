@@ -2,9 +2,7 @@
 /** @jsx jsx */
 import { css, jsx } from '@emotion/react';
 
-export default function SearchBar(props) {
-  const { searchValue, searchInputChangeHandler, searchButtonHandler } = props;
-
+export default function SearchBar({ searchValue, searchValueHandler, searchButtonHandler }) {
   const styles = {
     container: css`
       display: flex;
@@ -28,7 +26,7 @@ export default function SearchBar(props) {
         type="text"
         name="search"
         value={searchValue.search}
-        onChange={searchInputChangeHandler}
+        onChange={searchValueHandler}
         placeholder="Artists, songs, or podcasts"
         css={styles.inputText}
       />
