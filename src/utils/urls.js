@@ -1,4 +1,4 @@
-export const DEV_URL = encodeURIComponent('https://gfe01103-spotify.netlify.app/');
+export const DEV_URL = encodeURIComponent('https://gfe01103-spotify.netlify.app');
 
 const scope = [
   'user-read-currently-playing',
