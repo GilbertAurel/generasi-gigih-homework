@@ -1,4 +1,5 @@
-export const DEV_URL = encodeURIComponent('https://gfe01103-spotify.netlify.app');
+export const DEV_URL = encodeURIComponent('http://localhost:3000');
+export const DEPLOYMENT_URL = encodeURIComponent('https://gfe01103-spotify.netlify.app');
 
 const scope = [
   'user-read-currently-playing',
@@ -7,7 +8,7 @@ const scope = [
   'playlist-read-private',
 ].join('%20');
 
-export const SPOTIFY_AUTH_URL = `https://accounts.spotify.com/authorize?client_id=${process.env.REACT_APP_SPOTIFY_ID}&response_type=token&redirect_uri=${DEV_URL}&scope=${scope}`;
+export const SPOTIFY_AUTH_URL = `https://accounts.spotify.com/authorize?client_id=${process.env.REACT_APP_SPOTIFY_ID}&response_type=token&redirect_uri=${DEPLOYMENT_URL}&scope=${scope}`;
 
 export const SPOTIFY_AUTH_LOGOUT = `https://accounts.spotify.com/en/logout`;
 
