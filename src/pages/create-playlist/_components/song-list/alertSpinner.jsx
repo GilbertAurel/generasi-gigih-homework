@@ -2,13 +2,15 @@
 /** @jsx jsx */
 import { css, jsx } from '@emotion/react';
 import { COLORS, FONTS } from 'utils/theme';
+import { CircularProgress } from '@material-ui/core';
 
 export default function LoadingSpinner({ type }) {
   const styles = {
     loading: css`
-      display: grid;
-      justify-items: center;
+      display: flex;
+      justify-content: center;
       align-items: center;
+      gap: 1rem;
       font-family: 'Noto Sans', sans-serif;
       font-size: ${FONTS.CONTENT};
       color: ${COLORS.GRAY};
@@ -30,6 +32,7 @@ export default function LoadingSpinner({ type }) {
 
   return (
     <div css={styles[type]}>
+      {type === 'loading' && <CircularProgress color="primary" size={16} />}
       <p>{label[type]}</p>
     </div>
   );

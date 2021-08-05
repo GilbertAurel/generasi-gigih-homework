@@ -4,6 +4,7 @@ import { css, jsx } from '@emotion/react';
 import { useEffect } from 'react';
 import { COLORS, FONTS } from 'utils/theme';
 import gsap from 'gsap';
+import { Button } from '@material-ui/core';
 
 function Title({ loginHandler }) {
   useEffect(() => {
@@ -45,14 +46,16 @@ function Title({ loginHandler }) {
     button: css`
       width: 15rem;
       margin-top: 2rem;
-      padding: 0.5rem 4rem;
-      box-sizing: border-box;
-      background-color: ${COLORS.PRIMARY};
-      border: none;
-      border-radius: 1rem;
-      font-weight: 700;
-      font-size: ${FONTS.BODY};
-      color: ${COLORS.BG_DARK};
+
+      .MuiButton-label {
+        padding: 0.2rem 4rem;
+        border: none;
+        border-radius: 1rem;
+        background-color: ${COLORS.PRIMARY};
+        font-weight: 700;
+        font-size: ${FONTS.BODY};
+        color: ${COLORS.BG_DARK};
+      }
     `,
   };
 
@@ -67,9 +70,9 @@ function Title({ loginHandler }) {
       <h1 id="headline" css={styles.headline}>
         Just For You.
       </h1>
-      <button id="button" type="button" css={styles.button} onClick={loginHandler}>
+      <Button id="button" type="button" css={styles.button} onClick={loginHandler}>
         Sign in
-      </button>
+      </Button>
     </div>
   );
 }

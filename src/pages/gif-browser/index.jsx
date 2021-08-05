@@ -4,6 +4,7 @@ import { css, jsx } from '@emotion/react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
+import { Skeleton } from '@material-ui/lab';
 
 import { giphyFetchSearchResult, giphyFetchTrending } from 'store/actions';
 
@@ -65,9 +66,11 @@ export default function Page() {
               searchButtonHandler={searchButtonHandler}
             />
           )}
-          {showGif.map((gif) => (
-            <GifCard key={gif} url={gif} />
-          ))}
+          {showGif.length > 0
+            ? showGif.map((gif) => <GifCard key={gif} url={gif} />)
+            : [1, 2, 3, 4, 5, 6].map(() => (
+                <Skeleton animation="wave" variant="rect" width={304} height={304} />
+              ))}
         </div>
       </PageLayout>
     );
