@@ -3,8 +3,8 @@
 import { css, jsx } from '@emotion/react';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { Skeleton } from '@material-ui/lab';
 
-import Skeleton from 'components/skeleton';
 import FrostedBackground from 'components/frostedBackground';
 import Details from './details';
 import Tracker from './tracker';
@@ -62,7 +62,7 @@ export default function PlayingCard() {
 
   return (
     <div css={styles.container}>
-      <Skeleton type="album" />
+      <Skeleton animation="wave" variant="rect" width={128} height={128} />
       <Details artist="" album="" song="No current song" />
       <Tracker playPauseHandler={playPauseHandler} icon={togglePlay} />
       <FrostedBackground imageUrl="" />

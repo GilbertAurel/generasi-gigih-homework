@@ -28,10 +28,6 @@ export default function Index() {
       align-items: center;
       z-index: 1000;
       visibility: ${path === '/' && 'hidden'};
-
-      @media (max-width: 1600px) {
-        visibility: hidden;
-      }
     `,
     logo: css`
       margin: 0;
